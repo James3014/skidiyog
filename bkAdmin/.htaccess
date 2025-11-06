@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Auth. Required!"
+AuthUserFile  /var/www/html/1819/bkAdmin/.htpasswd
+Require valid-user

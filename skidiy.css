@@ -1,0 +1,49 @@
+div.blank{
+  position: relative;
+  height: 42px;  
+}
+
+div.dateSchedule{
+  position: relative;
+  height: 220px;
+  background-color: #FFF;
+}
+
+div.today{
+  background-color: rgba(234,241,252,0.5);
+}
+
+div[schedule]{  
+  background-color: #fff;
+  position: absolute; 
+  width: 98%;
+}
+
+
+
+.slot1{
+  top: 42px;
+}
+.slot2{
+  top: 87px;
+}
+.slot3{
+  top: 130px;
+}
+.slot4{
+  top: 173px;
+}
+
+.booked{
+  color: #F00;
+  font-weight: bold;
+}
+
+#summary{
+  font-weight: bold;
+}
+
+#message{
+  height: 60px;
+  border: 1px dashed #999;
+}

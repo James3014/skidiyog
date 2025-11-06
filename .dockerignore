@@ -1,0 +1,43 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+README*
+DEPLOYMENT*
+
+# Development files
+.env
+.env.local
+.env.development
+*.log
+
+# SQLite databases (will be created fresh)
+*.db
+*.sqlite
+*.sqlite3
+data/*.db
+
+# macOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Temporary files
+tmp/
+temp/
+cache/

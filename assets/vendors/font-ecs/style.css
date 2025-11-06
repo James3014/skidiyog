@@ -1,0 +1,71 @@
+@font-face {
+  font-family: 'font-ecs';
+  src:  url('fonts/font-ecs.eot?ewo8tz');
+  src:  url('fonts/font-ecs.eot?ewo8tz#iefix') format('embedded-opentype'),
+    url('fonts/font-ecs.ttf?ewo8tz') format('truetype'),
+    url('fonts/font-ecs.woff?ewo8tz') format('woff'),
+    url('fonts/font-ecs.svg?ewo8tz#font-ecs') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+i {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'font-ecs' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-invoice-sum:before {
+  content: "\e90e";
+}
+.icon-cancel:before {
+  content: "\e908";
+}
+.icon-delete:before {
+  content: "\e909";
+}
+.icon-detail:before {
+  content: "\e90a";
+}
+.icon-edit:before {
+  content: "\e90b";
+}
+.icon-add:before {
+  content: "\e90c";
+}
+.icon-save:before {
+  content: "\e90d";
+}
+.icon-chart:before {
+  content: "\e900";
+}
+.icon-discount:before {
+  content: "\e901";
+}
+.icon-invoice:before {
+  content: "\e902";
+}
+.icon-lock:before {
+  content: "\e903";
+}
+.icon-slide-arrow-left:before {
+  content: "\e904";
+}
+.icon-slide-arrow-right:before {
+  content: "\e905";
+}
+.icon-user:before {
+  content: "\e906";
+}
+.icon-warning:before {
+  content: "\e907";
+}

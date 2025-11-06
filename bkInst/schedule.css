@@ -1,0 +1,36 @@
+div.dateSchedule{
+  position: relative;
+  height: 222px;
+}
+
+div[schedule]{
+  position: absolute;
+  width: 100%;
+}
+
+.slot1{
+  top: 52px;
+}
+.slot2{
+  top: 94px;
+}
+.slot3{
+  top: 136px;
+}
+.slot4{
+  top: 178px;
+}
+
+.slot9{
+  left: 6px;
+  top: 70px;
+}
+
+table.order{
+	font-size: 0.8rem;
+}
+
+table.order td, 
+table.order th{
+	padding: 0px;
+}

@@ -1,0 +1,40 @@
+# PHP
+*.log
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Config files with sensitive data (but config.php is now tracked for Zeabur)
+# Only ignore local development config
+config.local.php
+.env
+.env.local
+
+# Cache and temp
+tmp/
+temp/
+cache/
+*.cache
+
+# IDE
+.vscode/
+.idea/
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (if any)
+node_modules/
+package-lock.json
+
+# Backup files
+*.backup
+*.bak
+*~
+
+# SQLite Database (auto-generated, don't track)
+data/skidiyog.db
+data/*.db

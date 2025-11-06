@@ -1,0 +1,5 @@
+AuthType Basic
+AuthName "Auth. Required!"
+AuthUserFile  /var/www/html/1819/bkInsurance/.htpasswd
+Require valid-user
+RewriteRule . index.php [L]

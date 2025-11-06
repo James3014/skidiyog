@@ -1,0 +1,46 @@
+---
+# Zeabur Serverless Configuration for SKidiyog
+# This configuration optimizes PHP performance for Zeabur environment
+
+services:
+  php:
+    runtime: php
+    # Use latest stable PHP 8.1
+    configs:
+      php:
+        version: "8.1"
+        # PHP-FPM Configuration
+        fpm:
+          pm: dynamic
+          pm.max_children: 50
+          pm.start_servers: 5
+          pm.min_spare_servers: 5
+          pm.max_spare_servers: 20
+          pm.max_spawn_rate: 32
+          # Performance settings
+          request_timeout: 300
+        # PHP Settings
+        settings:
+          upload_max_filesize: 100M
+          post_max_size: 100M
+          max_execution_time: 300
+          default_socket_timeout: 120
+          memory_limit: 512M
+          # Database connection pooling
+          mysqli.default_socket: /var/run/mysqld/mysqld.sock
+          mysqli.default_host: ~
+          # Optimization
+          opcache.enable: "1"
+          opcache.memory_consumption: 256
+          opcache.max_accelerated_files: 20000
+          opcache.revalidate_freq: 0
+    # Environment variables
+    envs:
+      - name: DB_HOST
+        default: skidiy-rds-master.cgseduwrbkzc.ap-northeast-1.rds.amazonaws.com
+      - name: DB_USER
+        default: dba
+      - name: DB_PASS
+        default: dba_Skidiy66
+      - name: DB_NAME
+        default: skidiyog

@@ -1,0 +1,33 @@
+div.dateSchedule{
+  position: relative;
+  height: 222px;
+}
+
+div[schedule]{
+  position: absolute;
+  width: 100%;
+}
+
+.slot1{
+  top: 52px;
+}
+.slot2{
+  top: 94px;
+}
+.slot3{
+  top: 136px;
+}
+.slot4{
+  top: 178px;
+}
+
+#loading{
+	position: fixed;
+	left: 0px;
+  top: 0px;
+	z-index: 9999999999;
+	background-color: rgba(0,0,0,0.7);
+	width: 100%;
+	height: 100vh;
+	padding-top: 30rem;
+}
