@@ -97,7 +97,36 @@ if(isset($in['park'])){
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.esm.bundle.js"></script>
 
-      <link rel="stylesheet" href="https://diy.ski/assets/css/workaround.css"> 
+      <link rel="stylesheet" href="https://diy.ski/assets/css/workaround.css">
+
+      <style>
+        /* Fix heading sizes for park sections */
+        #private2 h2 {
+          font-size: 1.8rem;
+          margin: 1rem 0 0.5rem 0;
+          font-weight: 500;
+        }
+
+        /* TinyMCE editor content styling */
+        .tox-tinymce {
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        }
+
+        .tox .tox-edit-area__iframe {
+          background-color: #fff;
+        }
+
+        /* Ensure proper font sizing in editor */
+        .tox-tinymce iframe {
+          min-height: 300px !important;
+        }
+
+        /* Section spacing */
+        .row {
+          margin-bottom: 1rem;
+        }
+      </style>
     </head>
 
     <body>
@@ -224,20 +253,22 @@ if(isset($in['park'])){
         // Initialize TinyMCE for all textareas
         tinymce.init({
           selector: 'textarea',
-          height: 400,
+          height: 350,
           menubar: false,
           plugins: [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
             'insertdatetime', 'media', 'table', 'help', 'wordcount'
           ],
-          toolbar: 'undo redo | blocks | bold italic underline strikethrough | ' +
+          toolbar: 'undo redo | blocks fontsize | bold italic underline strikethrough | ' +
             'alignleft aligncenter alignright alignjustify | ' +
             'bullist numlist outdent indent | forecolor backcolor | ' +
             'removeformat | link image | code fullscreen | help',
-          content_style: 'body { font-family: Arial, sans-serif; font-size: 14px }',
+          font_size_formats: '12px 14px 16px 18px 20px 24px 28px 32px 36px',
+          content_style: 'body { font-family: "Microsoft JhengHei", "微軟正黑體", Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333; }',
           language: 'zh_TW',
-          branding: false
+          branding: false,
+          min_height: 300
         });
 
          //alert('x')
