@@ -85,7 +85,7 @@ if ($db->error) {
 }
 
 echo "\n=== Password Hash Generator ===\n";
-$password = 'skidiy2024';
+$password = '5232523';
 $hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
 echo "Password: {$password}\n";
 echo "Hash: {$hash}\n";
