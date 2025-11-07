@@ -228,19 +228,25 @@ function renderFAQBlocks($faqs, $lang) {
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    (function() {
+        // 立即執行，不等待 DOMContentLoaded
         const faqItems = document.querySelectorAll('.faq-proxy-item');
 
         faqItems.forEach(item => {
             const question = item.querySelector('.faq-proxy-question');
 
-            question.addEventListener('click', function() {
+            // 移除可能存在的舊事件（避免重複綁定）
+            const newQuestion = question.cloneNode(true);
+            question.parentNode.replaceChild(newQuestion, question);
+
+            // 綁定新事件
+            newQuestion.addEventListener('click', function() {
                 item.classList.toggle('active');
             });
         });
 
         console.log('✅ FAQ Proxy loaded:', faqItems.length, 'items');
-    });
+    })();
     </script>
     <?php
 }
