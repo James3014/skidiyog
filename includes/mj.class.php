@@ -134,6 +134,11 @@ class PARKS{
         $parkInfo = $this->db->query('SELECT', $sql);
         return $parkInfo[0]['cnt'];
     }
+
+    public function listing(){
+        $sql = "SELECT * FROM `parks` ORDER BY `idx` ASC";
+        return $this->db->QUERY('SELECT', $sql);
+    }
 	public function update($name,$section, $data){
 		$where['name'] = $name;
 		$where['section'] = $section;
