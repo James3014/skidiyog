@@ -1,0 +1,16 @@
+/* SKidiyog Custom Styles */
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;margin:0;padding:0}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+.park-content{padding:20px}
+.park-content img{max-width:100%;height:auto}
+.park-content h3{margin-top:30px;color:#2196F3}
+.resort-block{margin:20px 0}
+.location-img{width:100%;overflow:hidden;border-radius:8px}
+.location-img img{width:100%;height:auto;object-fit:cover}
+.slogan{font-weight:600;margin:10px 0;text-align:center}
+.header-block-index{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:60px 20px;text-align:center}
+.slogan-en{font-size:2rem;margin-bottom:10px}
+.slogan-ch{font-size:1.2rem;opacity:.9}
+.btn-primary{background-color:#2196F3;color:#fff;padding:12px 24px;border:none;border-radius:4px;cursor:pointer}
+.btn-primary:hover{background-color:#1976D2}
+.footer-copyright{background:#333;color:#fff;padding:20px;text-align:center;margin-top:40px}
