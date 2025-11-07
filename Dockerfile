@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y \
 
 # Configure Apache
 RUN a2enmod rewrite
+RUN a2enmod auth_basic
+RUN a2enmod authn_file
+RUN a2enmod authz_user
 RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
