@@ -86,10 +86,34 @@ if($name=='iski'){$park_info['cname']='iSKI';}
         <div class="row">
           <div class="col s12">
             <?php
-            // Display park content from location field
-            if(!empty($park_info['location'])){
-              echo $park_info['location'];
-            } else {
+            // Define section display order and titles
+            $sections = array(
+              'about' => '介紹',
+              'location_section' => '位置',
+              'access_section' => '交通',
+              'slope_section' => '雪道',
+              'ticket_section' => '雪票',
+              'time_section' => '開放時間',
+              'live_section' => '住宿',
+              'rental_section' => '租借',
+              'delivery_section' => '宅配',
+              'luggage_section' => '行前裝備',
+              'workout_section' => '體能',
+              'remind_section' => '上課地點及事項',
+              'join_section' => '約伴及討論',
+              'event_section' => '優惠活動'
+            );
+
+            $has_content = false;
+            foreach($sections as $field => $title){
+              if(!empty($park_info[$field])){
+                echo '<h3>' . $title . '</h3>';
+                echo '<div class="section-content">' . $park_info[$field] . '</div>';
+                $has_content = true;
+              }
+            }
+
+            if(!$has_content){
               echo '<p>暫無雪場詳細資訊</p>';
             }
             ?>

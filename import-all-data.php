@@ -22,29 +22,69 @@ if (file_exists(__DIR__ . '/database/parks.json')) {
     $json = file_get_contents(__DIR__ . '/database/parks.json');
     $parks_sections = json_decode($json, true);
 
-    // Extract unique parks from sections data
+    // Section mapping to database fields
+    $section_map = array(
+        'about' => 'about',
+        'photo' => 'photo_section',
+        'location' => 'location_section',
+        'slope' => 'slope_section',
+        'ticket' => 'ticket_section',
+        'time' => 'time_section',
+        'access' => 'access_section',
+        'live' => 'live_section',
+        'rental' => 'rental_section',
+        'delivery' => 'delivery_section',
+        'luggage' => 'luggage_section',
+        'workout' => 'workout_section',
+        'remind' => 'remind_section',
+        'join' => 'join_section',
+        'event' => 'event_section'
+    );
+
+    // Build parks data structure
     $parks_map = array();
 
-    foreach ($parks_sections as $section) {
-        $name = $section['name'] ?? '';
+    foreach ($parks_sections as $record) {
+        $name = $record['name'] ?? '';
+        $section_type = $record['section'] ?? '';
+        $content = $record['content'] ?? '';  // content field contains the section data
+
         if (empty($name)) continue;
 
+        // Initialize park if not exists
         if (!isset($parks_map[$name])) {
             $parks_map[$name] = array(
                 'name' => $name,
                 'cname' => '',
-                'location' => ''
+                'description' => '',
+                'location' => '',
+                'photo' => '',
+                'about' => '',
+                'photo_section' => '',
+                'location_section' => '',
+                'slope_section' => '',
+                'ticket_section' => '',
+                'time_section' => '',
+                'access_section' => '',
+                'live_section' => '',
+                'rental_section' => '',
+                'delivery_section' => '',
+                'luggage_section' => '',
+                'workout_section' => '',
+                'remind_section' => '',
+                'join_section' => '',
+                'event_section' => ''
             );
         }
 
-        // Extract cname from section
-        if ($section['section'] === 'cname' && !empty($section['content'])) {
-            $parks_map[$name]['cname'] = $section['content'];
-        }
-
-        // Extract location from section
-        if ($section['section'] === 'location' && !empty($section['content'])) {
-            $parks_map[$name]['location'] = $section['content'];
+        // Map sections to fields
+        if ($section_type === 'cname' && !empty($record['content'])) {
+            $parks_map[$name]['cname'] = $record['content'];
+        } elseif ($section_type === 'desc' && !empty($record['content'])) {
+            $parks_map[$name]['description'] = $record['content'];
+        } elseif (isset($section_map[$section_type]) && !empty($content)) {
+            $field = $section_map[$section_type];
+            $parks_map[$name][$field] = $content;
         }
     }
 
@@ -56,7 +96,24 @@ if (file_exists(__DIR__ . '/database/parks.json')) {
                 'idx' => $idx,
                 'name' => $park['name'],
                 'cname' => $park['cname'],
-                'location' => $park['location']
+                'description' => $park['description'],
+                'location' => $park['location'],
+                'photo' => $park['photo'],
+                'about' => $park['about'],
+                'photo_section' => $park['photo_section'],
+                'location_section' => $park['location_section'],
+                'slope_section' => $park['slope_section'],
+                'ticket_section' => $park['ticket_section'],
+                'time_section' => $park['time_section'],
+                'access_section' => $park['access_section'],
+                'live_section' => $park['live_section'],
+                'rental_section' => $park['rental_section'],
+                'delivery_section' => $park['delivery_section'],
+                'luggage_section' => $park['luggage_section'],
+                'workout_section' => $park['workout_section'],
+                'remind_section' => $park['remind_section'],
+                'join_section' => $park['join_section'],
+                'event_section' => $park['event_section']
             );
 
             try {
@@ -69,7 +126,7 @@ if (file_exists(__DIR__ . '/database/parks.json')) {
             }
         }
     }
-    echo "  Imported $count parks\n\n";
+    echo "  Imported $count parks with sections\n\n";
 } else {
     echo "  ⚠ parks.json not found\n\n";
 }
