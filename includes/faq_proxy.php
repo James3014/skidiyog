@@ -207,7 +207,7 @@ function renderFAQBlocks($faqs, $lang) {
         <h3 class="faq-proxy-header">常見問題</h3>
 
         <?php foreach ($faqs as $index => $faq): ?>
-        <div class="faq-proxy-item" data-faq-index="<?= $index ?>">
+        <div class="faq-proxy-item" data-faq-index="<?= $index ?>" data-faq-id="<?= htmlspecialchars($faq['id']) ?>">
             <?php if ($faq['badge']): ?>
             <div class="faq-proxy-badge"><?= htmlspecialchars($faq['badge']) ?></div>
             <?php endif; ?>
@@ -229,19 +229,42 @@ function renderFAQBlocks($faqs, $lang) {
 
     <script>
     (function() {
-        // 立即執行，不等待 DOMContentLoaded
+        const FAQ_API_BASE = 'https://faq.diy.ski/api/v1';
         const faqItems = document.querySelectorAll('.faq-proxy-item');
 
         faqItems.forEach(item => {
             const question = item.querySelector('.faq-proxy-question');
+            const faqId = item.dataset.faqId;
 
             // 移除可能存在的舊事件（避免重複綁定）
             const newQuestion = question.cloneNode(true);
             question.parentNode.replaceChild(newQuestion, question);
 
-            // 綁定新事件
-            newQuestion.addEventListener('click', function() {
+            // 綁定點擊事件
+            newQuestion.addEventListener('click', async function() {
+                const wasActive = item.classList.contains('active');
                 item.classList.toggle('active');
+
+                // 只在展開時追蹤（不在收合時追蹤）
+                if (!wasActive) {
+                    try {
+                        await fetch(`${FAQ_API_BASE}/analytics/track-faq-view`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                faq_id: faqId,
+                                clicked: true,
+                                language: '<?= $lang ?>',
+                                timestamp: new Date().toISOString(),
+                                source: 'skidiyog'
+                            })
+                        });
+                        console.log(`✅ Tracked FAQ click: ${faqId}`);
+                    } catch (error) {
+                        console.warn('[Analytics] Failed to track:', error);
+                        // 靜默失敗，不影響使用者體驗
+                    }
+                }
             });
         });
 
