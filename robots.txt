@@ -33,8 +33,10 @@ Allow: /parkList.php
 Allow: /instructorList.php
 Allow: /articleList.php
 Allow: /article.php
+Allow: /park.php
+Allow: /instructor.php
 Allow: /assets/
 Allow: /photos/
 
-# Sitemap (add when ready)
-# Sitemap: https://skidiyog.zeabur.app/sitemap.xml
+# Sitemap
+Sitemap: https://skidiyog.zeabur.app/sitemap.php

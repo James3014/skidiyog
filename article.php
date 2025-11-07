@@ -41,7 +41,8 @@
   <html>
     <head>
       <?php require('pageHeader.php'); ?>
-      
+      <?php require_once __DIR__ . '/includes/ga4_tracking.php'; renderGA4Head(); ?>
+
       <!--swiper-->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.min.js"></script>
@@ -92,9 +93,26 @@
             </div>
         </div>
       </div>
+
+      <?php
+      // Add FAQ section
+      require_once __DIR__ . '/includes/faq_component.php';
+      $faqs = getArticleFAQs($article_id);
+      ?>
+      <div class="container">
+        <?php renderFAQSection($faqs, '滑雪課程常見問題'); ?>
+      </div>
+
       <div style="margin: 0px auto;">
       <button class="btn btn-outline btn-outline-primary" onclick="history.back();"><i class="material-icons">keyboard_arrow_left</i> 回前一頁</button>
       </div>
+
+      <?php
+      // Add Booking CTA
+      require_once __DIR__ . '/includes/booking_cta.php';
+      renderBookingCTA('article');
+      ?>
+
       <footer class="footer-copyright">
         <div class="container footer-copyright">
             <p class="center-align">©2025 diy.ski</p>
@@ -210,6 +228,7 @@
               }
           });
       </script>
-     
+
+      <?php renderGA4Events(); ?>
     </body>
   </html>

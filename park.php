@@ -35,6 +35,7 @@ if($name=='iski'){$park_info['cname']='iSKI';}
   <html>
     <head>
       <?php require('pageHeader.php'); ?>
+      <?php require_once __DIR__ . '/includes/ga4_tracking.php'; renderGA4Head(); ?>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
       <!--Import materialize.css-->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
@@ -121,9 +122,24 @@ if($name=='iski'){$park_info['cname']='iSKI';}
         </div>
       </div>
 
+      <?php
+      // Add FAQ section
+      require_once __DIR__ . '/includes/faq_component.php';
+      $faqs = getParkFAQs($name);
+      ?>
+      <div class="container">
+        <?php renderFAQSection($faqs, $park_info['cname'] . ' 常見問題'); ?>
+      </div>
+
       <div style="margin: 20px auto; text-align: center;">
         <button class="btn btn-outline btn-outline-primary" onclick="history.back();"><i class="material-icons">keyboard_arrow_left</i> 回前一頁</button>
       </div>
+
+      <?php
+      // Add Booking CTA
+      require_once __DIR__ . '/includes/booking_cta.php';
+      renderBookingCTA('park', ['park_name' => $name, 'park_cname' => $park_info['cname']]);
+      ?>
 
       <footer class="footer-copyright">
           <div class="container footer-copyright">
@@ -139,5 +155,7 @@ if($name=='iski'){$park_info['cname']='iSKI';}
             $('.sidenav').sidenav();
           });
       </script>
+
+      <?php renderGA4Events(); ?>
     </body>
   </html>
