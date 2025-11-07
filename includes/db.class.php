@@ -3,9 +3,14 @@
 // Database file is stored in /data/skidiyog.db
 
 // Determine database file path
-$db_dir = __DIR__ . '/../data';
-if (!is_dir($db_dir)) {
-    mkdir($db_dir, 0755, true);
+// Use Zeabur Volume at /data if available, otherwise use local ./data
+if (is_dir('/data') && is_writable('/data')) {
+    $db_dir = '/data';
+} else {
+    $db_dir = __DIR__ . '/../data';
+    if (!is_dir($db_dir)) {
+        mkdir($db_dir, 0755, true);
+    }
 }
 
 define('DB_TYPE', 'sqlite'); // SQLite database type
