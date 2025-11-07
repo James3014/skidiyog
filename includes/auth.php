@@ -2,6 +2,9 @@
 // Admin Authentication Middleware
 // Include this file at the top of every admin page
 
+// Prevent search engines from indexing admin pages
+header('X-Robots-Tag: noindex, nofollow', true);
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

@@ -1,0 +1,40 @@
+# SkiDIY Robots.txt
+# Block search engines from indexing admin and sensitive pages
+
+User-agent: *
+
+# Block admin backend
+Disallow: /bkAdmin/
+Disallow: /admin/
+
+# Block login pages
+Disallow: /login.php
+Disallow: /account_login.php
+Disallow: /bkAdmin/login.php
+
+# Block query/internal tools
+Disallow: /oquery.php
+Disallow: /post-cgi.php
+Disallow: /instructor_form.php
+
+# Block data files
+Disallow: /data/
+Disallow: /includes/
+
+# Block debug/test files
+Disallow: /debug_db.php
+Disallow: /import_*.php
+Disallow: /check_*.php
+Disallow: /generate_*.php
+Disallow: /test_*.php
+
+# Allow public pages (explicit)
+Allow: /parkList.php
+Allow: /instructorList.php
+Allow: /articleList.php
+Allow: /article.php
+Allow: /assets/
+Allow: /photos/
+
+# Sitemap (add when ready)
+# Sitemap: https://skidiyog.zeabur.app/sitemap.xml

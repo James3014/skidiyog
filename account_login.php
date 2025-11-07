@@ -228,6 +228,7 @@ if((isset($_REQUEST['act']) && $_REQUEST['act']=='login') || (isset($_REQUEST['a
 <!DOCTYPE html>
   <html>
     <head>
+    <meta name="robots" content="noindex, nofollow">
     <?php require('head.php'); ?>
     </head>
 
