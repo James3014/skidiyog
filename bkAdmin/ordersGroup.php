@@ -1,11 +1,11 @@
 <?php
 require('../includes/sdk.php');
     $filters = array(
-        'year'          =>  FILTER_SANITIZE_STRING,
-        'month'         =>  FILTER_SANITIZE_STRING,        
-        'park'          =>  FILTER_SANITIZE_STRING,
-        'instructor'    =>  FILTER_SANITIZE_STRING,
-        'status'        =>  FILTER_SANITIZE_STRING,
+        'year'          =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'month'         =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,        
+        'park'          =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'instructor'    =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'status'        =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
     );//_v($_POST);
     $in = filter_var_array(array_merge($_REQUEST,$_POST), $filters);//_v($in);//exit();
 

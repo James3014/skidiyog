@@ -4,9 +4,9 @@ require('../includes/sdk.php');
 
 
 $filters = array(
-    'date'        =>  FILTER_SANITIZE_STRING,
-    'expertise'   =>  FILTER_SANITIZE_STRING,
-    'park'        =>  FILTER_SANITIZE_STRING,
+    'date'        =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+    'expertise'   =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+    'park'        =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 );//_v($_POST);
 
 $in = filter_var_array(array_merge($_REQUEST,$_POST), $filters);//_v($in);//exit();
@@ -41,7 +41,7 @@ if(isset($in['instructor'])){
         $sql = "SELECT * FROM `instructors` WHERE `name`='{$query_name}'"; //_d($sql);
         $r2 = $DB->QUERY('SELECT',$sql);//_v($r2);
         if(isset($r2[0]['name'])){
-            foreach($r2 as $n,$v){
+            foreach($r2 as $n => $v){
                 //var_dump($v);
                 $section_content[$v['section']]=$v['content'];  
             }       
@@ -131,7 +131,7 @@ if(isset($in['instructor'])){
 
                 <?php 
                     if($query_name != 'any' && $query_name != '')
-                    foreach($SECTION_HEADER as $key,$val){                         
+                    foreach($SECTION_HEADER as $key => $val){                         
                 ?>
                 
                 <div class="row" style="margin-top:2rem;">

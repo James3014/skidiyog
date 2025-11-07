@@ -31,21 +31,21 @@
     }
 
     $filters = array(
-        'year'          =>  FILTER_SANITIZE_STRING,
-        'cyear'          =>  FILTER_SANITIZE_STRING,
-        'month'         =>  FILTER_SANITIZE_STRING,       
-        'cmonth'         =>  FILTER_SANITIZE_STRING, 
-        'cday'          =>  FILTER_SANITIZE_STRING,            
-        'tdays'          =>  FILTER_SANITIZE_STRING,                
-        'park'          =>  FILTER_SANITIZE_STRING,
-        'instructor'    =>  FILTER_SANITIZE_STRING,
-        'status'        =>  FILTER_SANITIZE_STRING,
-        'istatus'        =>  FILTER_SANITIZE_STRING,
-        'insurance'     =>  FILTER_SANITIZE_STRING,
-        'order_date_s'  =>  FILTER_SANITIZE_STRING,
-        'order_date_e'  =>  FILTER_SANITIZE_STRING,
-        'class_date_s'  =>  FILTER_SANITIZE_STRING,
-        'class_date_e'  =>  FILTER_SANITIZE_STRING,
+        'year'          =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'cyear'          =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'month'         =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,       
+        'cmonth'         =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS, 
+        'cday'          =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,            
+        'tdays'          =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,                
+        'park'          =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'instructor'    =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'status'        =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'istatus'        =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'insurance'     =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'order_date_s'  =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'order_date_e'  =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'class_date_s'  =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'class_date_e'  =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
     );//_v($_POST);
     $in = filter_var_array(array_merge($_REQUEST,$_POST), $filters);//_v($in);//exit();
 

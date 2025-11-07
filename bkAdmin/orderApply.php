@@ -2,8 +2,8 @@
 require('../includes/sdk.php');
 
 $filters = array(
-    'oidx'        =>  FILTER_SANITIZE_STRING,
-    'instructor'  =>  FILTER_SANITIZE_STRING,
+    'oidx'        =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+    'instructor'  =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 );
 $in = filter_var_array(array_merge($_REQUEST,$_POST), $filters);
 //測試用

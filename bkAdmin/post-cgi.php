@@ -17,7 +17,7 @@ switch ($_REQUEST['cmd']) {
 			echo NULL_INPUT;
 			//break;
 		}else{		
-			  foreach($SECTION_HEADER as $key,$val){
+			  foreach($SECTION_HEADER as $key => $val){
 			  	//echo 'key:'.$key.'\r\n';
 			  	$update_data['content']   = $_REQUEST[$key];
 			  	//var_dump($update_data);
@@ -32,7 +32,7 @@ switch ($_REQUEST['cmd']) {
 			echo NULL_INPUT;
 			//break;
 		}else{		
-			  foreach($PARK_SECTION_HEADER as $key,$val){
+			  foreach($PARK_SECTION_HEADER as $key => $val){
 			  	// echo 'key:'.$key.'\r\n';
 			  	if($key != "all"){
 				  	$update_data['content']   = $_REQUEST[$key];

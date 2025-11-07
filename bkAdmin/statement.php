@@ -1,7 +1,7 @@
 <?php
 require('../includes/sdk.php');
 $filters = array(
-	'instructor'    =>  FILTER_SANITIZE_STRING,
+	'instructor'    =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 );//_v($_POST);
 $in = filter_var_array(array_merge($_REQUEST,$_POST), $filters);//_v($in);//exit();
 

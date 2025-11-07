@@ -3,10 +3,11 @@ require('../includes/sdk.php');
 
 
 
+// PHP 8.1+ compatible: Use FILTER_SANITIZE_FULL_SPECIAL_CHARS instead of deprecated FILTER_SANITIZE_FULL_SPECIAL_CHARS
 $filters = array(
-    'date'        =>  FILTER_SANITIZE_STRING,
-    'expertise'   =>  FILTER_SANITIZE_STRING,
-    'park'        =>  FILTER_SANITIZE_STRING,
+    'date'        =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+    'expertise'   =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+    'park'        =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 );//_v($_POST);
 
 $in = filter_var_array(array_merge($_REQUEST,$_POST), $filters);//_v($in);//exit();
