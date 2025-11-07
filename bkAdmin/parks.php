@@ -80,12 +80,12 @@ if(isset($in['park'])){
 <!DOCTYPE html>
   <html>
     <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=false"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"/>
       
       <!--Import materialize.css-->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
       <!--Import custom.css-->
-      <link rel="stylesheet" href="assets/css/custom.min.css">
+      <link rel="stylesheet" href="/assets/css/custom.min.css">
       <!--Import jQuery-->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       
@@ -196,9 +196,9 @@ if(isset($in['park'])){
       <!--JavaScript at end of body for optimized loading-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
       <script src="https://diy.ski/assets/js/select_workaround.js"></script>
-      
+
       <!--custom js-->
-      <script src="assets/js/custom.js"></script>
+      <script src="/assets/js/custom.js"></script>
       <script>
       $('.class .material-icons').hide();
       $('.class').click(function () {
@@ -214,6 +214,9 @@ if(isset($in['park'])){
 
       <script>
       $(document).ready(function(){
+        $('.modal').modal();
+        $('select').formSelect();
+        M.textareaAutoResize($('textarea'));
         
          //alert('x')
         $('select.park').on('change',function(){
@@ -233,13 +236,17 @@ if(isset($in['park'])){
                     type: "POST",
                     data: $('#instructorForm').serialize(),                   
                     success: function(resp){
-                        //alert("Successfully submitted."+resp)
-                        if(resp==101009){ // save ok                              
+                        var result = $.trim(resp);
+                        if(result === '101009'){ // save ok                              
                              $('#success-msg').modal('open'); 
                         }else{
-                            $('#PERRMSG').text('internal err: code='+resp);
+                            $('#PERRMSG').text('internal err: code='+result);
                             $('#err_msg').modal('open');                                
                         }                         
+                    },
+                    error: function(xhr){
+                        $('#PERRMSG').text('network err: status='+xhr.status);
+                        $('#err_msg').modal('open');
                     }
                 });
            });
