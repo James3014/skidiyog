@@ -88,7 +88,10 @@ if(isset($in['park'])){
       <link rel="stylesheet" href="/assets/css/custom.min.css">
       <!--Import jQuery-->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      
+
+      <!--TinyMCE Rich Text Editor-->
+      <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
       <!--swiper-->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.min.js"></script>
@@ -216,23 +219,46 @@ if(isset($in['park'])){
       $(document).ready(function(){
         $('.modal').modal();
         $('select').formSelect();
-        M.textareaAutoResize($('textarea'));
-        
+        // M.textareaAutoResize($('textarea')); // Disabled for TinyMCE
+
+        // Initialize TinyMCE for all textareas
+        tinymce.init({
+          selector: 'textarea',
+          height: 400,
+          menubar: false,
+          plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'help', 'wordcount'
+          ],
+          toolbar: 'undo redo | blocks | bold italic underline strikethrough | ' +
+            'alignleft aligncenter alignright alignjustify | ' +
+            'bullist numlist outdent indent | forecolor backcolor | ' +
+            'removeformat | link image | code fullscreen | help',
+          content_style: 'body { font-family: Arial, sans-serif; font-size: 14px }',
+          language: 'zh_TW',
+          branding: false
+        });
+
          //alert('x')
         $('select.park').on('change',function(){
             var park = $('#park').val();_d(park);
-            $("#query_form").submit();  
+            $("#query_form").submit();
         });
         $('select.instructor').on('change',function(){
-            var instructor = $('#instructor').val();_d(instructor);    
-            $("#query_form").submit();      
+            var instructor = $('#instructor').val();_d(instructor);
+            $("#query_form").submit();
         });
    
-        $('#modifybt').on('click', function(e){         
+        $('#modifybt').on('click', function(e){
                 e.preventDefault();
+
+                // Trigger TinyMCE to save content back to textareas
+                tinymce.triggerSave();
+
                 $.ajax({
                     //url: "account_info.php?act=up_2fcheck",
-                    url: "post-cgi.php?cmd=park_update",                    
+                    url: "post-cgi.php?cmd=park_update",
                     type: "POST",
                     data: $('#instructorForm').serialize(),                   
                     success: function(resp){
