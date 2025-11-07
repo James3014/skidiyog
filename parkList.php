@@ -56,14 +56,12 @@ foreach($parkList as $n => $r){
             <div class="col s6 m4 l3">
               <div class="location-img">
                 <a href="/park.php?name=<?=$r['name'];?>" class="waves-effect waves-light">
-                  <img src="https://diy.ski/photos/<?=$r['name'];?>/3.jpg?v3" alt="<?=$r['cname'];?>" onerror="this.src='https://placehold.co/400x300/eee/333?text=<?=$r['cname'];?>'">
+                  <img src="https://diy.ski/photos/<?=$r['name'];?>/3.jpg?v3" alt="<?=$r['cname'];?>" onerror="this.src='assets/images/index-bg.jpg'">
                 </a>
               </div>
               <a href="/park.php?name=<?=$r['name'];?>" class="waves-effect waves-light">
                 <p class="slogan"><?=($r['cname'])?$r['cname']:$r['name']; ?></p>
               </a>
-              <p class="location"><?=$r['location']?$r['location']:''; ?></p>
-
             </div>
 
 <?php
