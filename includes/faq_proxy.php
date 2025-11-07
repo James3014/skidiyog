@@ -38,7 +38,7 @@ function renderFAQProxy($faqIds, $lang = 'zh') {
 }
 
 /**
- * 從本地靜態 FAQ 頁面載入內容
+ * 從 faq.diy.ski 抓取靜態 FAQ 頁面內容
  */
 function fetchFAQContent($faqId, $lang) {
     // 檢查快取（如果有 APCu）
@@ -50,18 +50,21 @@ function fetchFAQContent($faqId, $lang) {
         }
     }
 
-    // 從本地檔案載入 FAQ 內容
-    $filePath = __DIR__ . "/../faq/{$faqId}-{$lang}.html";
+    // 從 faq.diy.ski 抓取靜態 FAQ 頁面
+    $url = "https://faq.diy.ski/faq/{$faqId}-{$lang}.html";
 
-    if (!file_exists($filePath)) {
-        error_log("FAQ file not found: {$filePath}");
-        return null;
-    }
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_USERAGENT, 'SkiDIY-Proxy/1.0');
 
-    $html = file_get_contents($filePath);
+    $html = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
 
-    if ($html === false) {
-        error_log("Failed to read FAQ file: {$filePath}");
+    if ($httpCode !== 200 || !$html) {
+        error_log("Failed to fetch FAQ {$faqId}: HTTP {$httpCode}");
         return null;
     }
 
