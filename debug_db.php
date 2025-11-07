@@ -84,5 +84,12 @@ if ($db->error) {
     echo "   Result: " . json_encode($verify, JSON_UNESCAPED_UNICODE) . "\n";
 }
 
+echo "\n=== Password Hash Generator ===\n";
+$password = 'skidiy2024';
+$hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+echo "Password: {$password}\n";
+echo "Hash: {$hash}\n";
+echo "Verify: " . (password_verify($password, $hash) ? "OK" : "FAIL") . "\n";
+
 echo "\n=== End Debug ===\n";
 ?>
