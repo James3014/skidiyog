@@ -46,18 +46,27 @@ switch ($_REQUEST['cmd']) {
 		  'join'  => '約伴及討論',
 		  'event'  => '優惠活動',
 		);
-		if($_POST['about']=='' ){
+
+		// Debug logging
+		error_log("=== Park Update Debug ===");
+		error_log("qname: " . ($_REQUEST['qname'] ?? 'NOT SET'));
+		error_log("about length: " . strlen($_POST['about'] ?? ''));
+
+		if(empty($_POST['about'])){
+			error_log("ERROR: about field is empty");
 			echo NULL_INPUT;
 			//break;
 		}else{
+			  $update_count = 0;
 			  foreach($PARK_SECTION_HEADER as $key => $val){
-			  	// echo 'key:'.$key.'\r\n';
-			  	if($key != "all"){
-				  	$update_data['content']   = $_REQUEST[$key];
-				  	// var_dump($update_data);
-				  	$PARKS->update($_REQUEST['qname'],$key,$update_data);
+			  	if($key != "all" && isset($_REQUEST[$key])){
+				  	$update_data['content'] = $_REQUEST[$key];
+				  	$result = $PARKS->update($_REQUEST['qname'],$key,$update_data);
+				  	error_log("Updated {$key}: result={$result}, length=" . strlen($_REQUEST[$key]));
+				  	if($result !== false) $update_count++;
 			  	}
 			  }
+			  error_log("Total updates: {$update_count}");
 			  echo MODIFY_OK;
 		}
 		break;	

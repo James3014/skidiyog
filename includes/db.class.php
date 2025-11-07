@@ -243,7 +243,11 @@ class DB{/* DBv16.09.03 By Ko - Modified for SQLite */
 			$i++;
 		}
 		$sql = "UPDATE `{$table}` SET {$field} WHERE {$whStr}";
-		return $this->QUERY('UPDATE', $sql, $params);
+		error_log("DB UPDATE SQL: {$sql}");
+		error_log("DB UPDATE params: " . json_encode($params));
+		$result = $this->QUERY('UPDATE', $sql, $params);
+		error_log("DB UPDATE result: " . var_export($result, true));
+		return $result;
 	}///UPDATE
 
 	public function DELETE($table, $where){
