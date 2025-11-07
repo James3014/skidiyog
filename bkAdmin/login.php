@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$valid_username || !$valid_password_hash) {
         $error_message = '尚未設定 ADMIN_USERNAME / ADMIN_PASSWORD_HASH，請於部署環境變數設定後再登入。';
+        $error_message .= '<br>DEBUG: USERNAME=' . ($valid_username ?: 'NOT SET') . ', HASH=' . ($valid_password_hash ? 'SET' : 'NOT SET');
     } elseif ($username === $valid_username && password_verify($password, $valid_password_hash)) {
         $_SESSION['admin_logged_in'] = true;
         $_SESSION['admin_username'] = $username;
@@ -44,6 +45,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     } else {
         $error_message = '帳號或密碼錯誤';
+        // Debug info
+        $debug = '<br>DEBUG: ';
+        $debug .= 'ENV_USER=' . ($valid_username ?: 'NOT SET') . ', ';
+        $debug .= 'ENV_HASH=' . ($valid_password_hash ? substr($valid_password_hash, 0, 20) . '...' : 'NOT SET') . ', ';
+        $debug .= 'INPUT_USER=' . $username . ', ';
+        $debug .= 'USER_MATCH=' . ($username === $valid_username ? 'YES' : 'NO') . ', ';
+        if ($valid_password_hash) {
+            $debug .= 'PWD_VERIFY=' . (password_verify($password, $valid_password_hash) ? 'YES' : 'NO');
+        }
+        $error_message .= $debug;
     }
 }
 ?>
