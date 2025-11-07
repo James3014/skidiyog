@@ -1,5 +1,6 @@
 <?php
     require('../includes/sdk.php');
+require('../includes/auth.php'); // Admin authentication check
     $insuranceFUNC = new INSURANCE();
     $UTILITY_FUNC = new UTILITY();
     $PARK_FUNC = new PARKS();

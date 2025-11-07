@@ -1,5 +1,6 @@
 <?php
 require('../includes/sdk.php');
+require('../includes/auth.php'); // Admin authentication check
     $filters = array(
         'year'          =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         'month'         =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,        

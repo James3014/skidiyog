@@ -1,5 +1,6 @@
 <?php
 require('../includes/sdk.php'); 
+require('../includes/auth.php'); // Admin authentication check
 
 
 //_d($_GET['cmd']);
@@ -28,20 +29,37 @@ switch ($_REQUEST['cmd']) {
 		break;
 	case 'park_update': // 後台 雪場編輯
 		$PARKS = new PARKS();
+		$PARK_SECTION_HEADER = array(
+		  'about'  => '介紹',
+		  'photo' => '照片',
+		  'location'  => '位置',
+		  'slope'  => '雪道',
+		  'ticket' => '雪票',
+		  'time' => '開放時間',
+		  'access' => '交通',
+		  'live'  => '住宿',
+		  'rental' => '租借',
+		  'delivery'  => '宅配',
+		  'luggage' => '行前裝備',
+		  'workout'  => '體能',
+		  'remind'  => '上課地點及事項',
+		  'join'  => '約伴及討論',
+		  'event'  => '優惠活動',
+		);
 		if($_POST['about']=='' ){
 			echo NULL_INPUT;
 			//break;
-		}else{		
+		}else{
 			  foreach($PARK_SECTION_HEADER as $key => $val){
 			  	// echo 'key:'.$key.'\r\n';
 			  	if($key != "all"){
 				  	$update_data['content']   = $_REQUEST[$key];
 				  	// var_dump($update_data);
-				  	$PARKS->update($_REQUEST['qname'],$key,$update_data); 	
+				  	$PARKS->update($_REQUEST['qname'],$key,$update_data);
 			  	}
-			  }	
+			  }
 			  echo MODIFY_OK;
-		}	
+		}
 		break;	
 	case 'article_update': // 後台 文章編輯
 		$ARTICLE = new ARTICLE();

@@ -14,7 +14,8 @@
         <li><a href="stats.php" target="_blank">統計資訊</a></li>
         <li><a href="statement.php" target="_blank" >試算結算</a></li>
         <li><a href="refund.php" target="_blank" >退訂查詢</a></li>
-      </ul>    
+        <li><a href="?act=logout" onclick="return confirm('確定要登出嗎？')"><i class="material-icons">exit_to_app</i> 登出</a></li>
+      </ul>
     </div>
   </nav>
   <ul class="sidenav" id="mobile-demo">
@@ -29,5 +30,7 @@
         <li><a href="stats.php" target="_blank">統計資訊</a></li>
         <li><a href="statement.php" target="_blank" >試算結算</a></li>
         <li><a href="refund.php" target="_blank" >退訂查詢</a></li>
+        <li class="divider"></li>
+        <li><a href="?act=logout" onclick="return confirm('確定要登出嗎？')"><i class="material-icons">exit_to_app</i> 登出</a></li>
   </ul>
   

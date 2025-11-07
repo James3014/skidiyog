@@ -1,5 +1,6 @@
 <?php
 require('../includes/sdk.php');
+require('../includes/auth.php'); // Admin authentication check
 $filters = array(
 	'instructor'    =>  FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 );//_v($_POST);

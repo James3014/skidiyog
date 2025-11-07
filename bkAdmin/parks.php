@@ -1,4 +1,5 @@
 <?php
+require('../includes/auth.php'); // Admin authentication check
 require('../includes/sdk.php');
 
 

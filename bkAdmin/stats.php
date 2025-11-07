@@ -1,5 +1,6 @@
 <?php
 require('../includes/sdk.php');
+require('../includes/auth.php'); // Admin authentication check
 
 
 $db = new db();

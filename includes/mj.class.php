@@ -140,9 +140,31 @@ class PARKS{
         return $this->db->QUERY('SELECT', $sql);
     }
 	public function update($name,$section, $data){
+		// Map section names to database column names
+		$section_column_map = array(
+			'about' => 'about',
+			'photo' => 'photo_section',
+			'location' => 'location_section',
+			'slope' => 'slope_section',
+			'ticket' => 'ticket_section',
+			'time' => 'time_section',
+			'access' => 'access_section',
+			'live' => 'live_section',
+			'rental' => 'rental_section',
+			'delivery' => 'delivery_section',
+			'luggage' => 'luggage_section',
+			'workout' => 'workout_section',
+			'remind' => 'remind_section',
+			'join' => 'join_section',
+			'event' => 'event_section'
+		);
+
 		$where['name'] = $name;
-		$where['section'] = $section;
-		return $this->db->UPDATE($this->tb, $data, $where);
+		$column_name = isset($section_column_map[$section]) ? $section_column_map[$section] : $section;
+
+		// Update the specific column with the content
+		$update_data = array($column_name => $data['content']);
+		return $this->db->UPDATE($this->tb, $update_data, $where);
 	}
 
 	public function park_oplist(){
