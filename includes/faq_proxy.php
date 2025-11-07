@@ -38,11 +38,9 @@ function renderFAQProxy($faqIds, $lang = 'zh') {
 }
 
 /**
- * 透過 cURL 抓取 FAQ 內容（繞過 CORS）
+ * 從本地靜態 FAQ 頁面載入內容
  */
 function fetchFAQContent($faqId, $lang) {
-    $url = "https://faq.diy.ski/faq/{$faqId}-{$lang}.html";
-
     // 檢查快取（如果有 APCu）
     if (function_exists('apcu_fetch')) {
         $cacheKey = "faq_{$faqId}_{$lang}";
@@ -52,19 +50,18 @@ function fetchFAQContent($faqId, $lang) {
         }
     }
 
-    // 使用 cURL 抓取內容
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'SkiDIY-Proxy/1.0');
+    // 從本地檔案載入 FAQ 內容
+    $filePath = __DIR__ . "/../faq/{$faqId}-{$lang}.html";
 
-    $html = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
+    if (!file_exists($filePath)) {
+        error_log("FAQ file not found: {$filePath}");
+        return null;
+    }
 
-    if ($httpCode !== 200 || !$html) {
-        error_log("Failed to fetch FAQ {$faqId}: HTTP {$httpCode}");
+    $html = file_get_contents($filePath);
+
+    if ($html === false) {
+        error_log("Failed to read FAQ file: {$filePath}");
         return null;
     }
 
