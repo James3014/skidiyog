@@ -21,27 +21,48 @@ class DB{/* DBv16.09.03 By Ko - Modified for SQLite */
 
 	public function __construct($db=null){
 		try {
-			// Ensure database file has write permissions
+			// Ensure parent directory exists and is writable
+			$db_dir = dirname(DB_FILE);
+			if (!is_dir($db_dir)) {
+				mkdir($db_dir, 0777, true);
+				error_log("Created database directory: " . $db_dir);
+			}
+
+			// Try to set directory permissions
+			if (!is_writable($db_dir)) {
+				@chmod($db_dir, 0777);
+				error_log("Set directory permissions: " . $db_dir);
+			}
+
+			// If database file exists, fix its permissions
 			if (file_exists(DB_FILE)) {
 				if (!is_writable(DB_FILE)) {
-					// Try to fix permissions
 					@chmod(DB_FILE, 0666);
-					error_log("Database permission fixed: " . DB_FILE);
-				}
-			} else {
-				// Ensure parent directory is writable
-				$db_dir = dirname(DB_FILE);
-				if (!is_writable($db_dir)) {
-					@chmod($db_dir, 0777);
+					error_log("Attempted to fix database file permissions: " . DB_FILE);
 				}
 			}
 
+			// Connect with extended timeout and proper flags
 			$this->pdo = new PDO('sqlite:' . DB_FILE);
 			$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+			$this->pdo->setAttribute(PDO::ATTR_TIMEOUT, 30);
+
+			// Try to enable WAL mode for better concurrent access
+			try {
+				$this->pdo->exec("PRAGMA journal_mode=WAL");
+			} catch (Exception $e) {
+				error_log("Could not enable WAL mode: " . $e->getMessage());
+			}
 
 			// Auto-create tables if they don't exist
 			$this->createTablesIfNotExist();
+
+			// Final permission check after table creation
+			if (file_exists(DB_FILE) && !is_writable(DB_FILE)) {
+				@chmod(DB_FILE, 0666);
+				error_log("Final permission fix attempt: " . DB_FILE);
+			}
 
 			$this->link = $this->pdo; // Compatibility alias
 			$this->error = null;
