@@ -103,8 +103,11 @@ if(isset($in['park'])){
         /* Fix heading sizes for park sections */
         #private2 h2 {
           font-size: 1.8rem;
-          margin: 1rem 0 0.5rem 0;
+          margin: 2rem 0 1rem 0;
           font-weight: 500;
+          padding-left: 1rem;
+          color: #2c3e50;
+          border-left: 4px solid #e74c3c;
         }
 
         /* TinyMCE editor content styling */
@@ -124,7 +127,23 @@ if(isset($in['park'])){
 
         /* Section spacing */
         .row {
-          margin-bottom: 1rem;
+          margin-bottom: 1.5rem;
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+
+        /* Content area styling */
+        #private2 {
+          padding: 1rem 2rem;
+        }
+
+        /* Park name heading */
+        #private2 > h2:first-of-type {
+          font-size: 2.5rem;
+          border-left: none;
+          padding-left: 0;
+          margin-bottom: 2rem;
+          color: #1a1a1a;
         }
       </style>
     </head>
