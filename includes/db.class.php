@@ -99,6 +99,35 @@ class DB{/* DBv16.09.03 By Ko - Modified for SQLite */
 					updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 				)
 			");
+
+			// Create parkInfo view for backward compatibility with backend admin
+			$this->pdo->exec("
+				CREATE VIEW IF NOT EXISTS parkInfo AS
+				SELECT
+					idx,
+					name,
+					cname,
+					description,
+					location,
+					photo,
+					'' as timeslot,
+					'' as active
+				FROM parks
+			");
+
+			// Create instructorInfo view for backward compatibility with backend admin
+			$this->pdo->exec("
+				CREATE VIEW IF NOT EXISTS instructorInfo AS
+				SELECT
+					idx,
+					name,
+					cname,
+					content,
+					photo,
+					1 as active,
+					'' as jobType
+				FROM instructors
+			");
 		} catch (Exception $e) {
 			error_log("Error creating tables: " . $e->getMessage());
 		}
