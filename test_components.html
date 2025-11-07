@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>元件測試 - FAQ & Booking CTA</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif;
+            line-height: 1.6; color: #333; background: #f5f5f5;
+        }
+        .test-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white; padding: 40px 20px; text-align: center;
+        }
+        .test-header h1 { font-size: 36px; margin-bottom: 10px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* FAQ Section Styles */
+        .faq-section { margin: 40px 0; padding: 30px; background: #f8f9fa; border-radius: 8px; }
+        .faq-section h3 { color: #2c3e50; font-size: 28px; margin-bottom: 30px;
+                          padding-bottom: 15px; border-bottom: 3px solid #3498db; }
+        .faq-item { margin-bottom: 20px; background: white; border-radius: 6px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden;
+                    transition: box-shadow 0.3s ease; }
+        .faq-item:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .faq-question {
+            padding: 20px; cursor: pointer; display: flex;
+            justify-content: space-between; align-items: center;
+            font-weight: 500; font-size: 18px; color: #2c3e50;
+            background: white; transition: background-color 0.3s ease;
+        }
+        .faq-question:hover { background: #ecf0f1; }
+        .faq-question::before {
+            content: "Q"; display: inline-block; width: 30px; height: 30px;
+            line-height: 30px; text-align: center; background: #3498db;
+            color: white; border-radius: 50%; margin-right: 15px;
+            font-weight: bold; flex-shrink: 0;
+        }
+        .faq-icon { font-size: 24px; color: #3498db;
+                    transition: transform 0.3s ease; flex-shrink: 0; }
+        .faq-item.active .faq-icon { transform: rotate(180deg); }
+        .faq-answer {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 20px;
+        }
+        .faq-item.active .faq-answer { max-height: 1000px; padding: 0 20px 20px 65px; }
+        .faq-answer p { line-height: 1.8; color: #555; margin: 10px 0; }
+
+        /* Booking CTA Styles */
+        .booking-cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 20px; margin: 60px 0 0 0; text-align: center; color: white;
+        }
+        .booking-cta-title {
+            font-size: 32px; font-weight: bold; margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .booking-cta-subtitle { font-size: 18px; margin-bottom: 30px; opacity: 0.95; }
+        .booking-cta-button {
+            display: inline-block; padding: 18px 45px; background: white;
+            color: #667eea; font-size: 20px; font-weight: bold;
+            border-radius: 50px; text-decoration: none;
+            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .booking-cta-button:hover {
+            transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            color: #764ba2;
+        }
+        .booking-cta-features {
+            margin-top: 40px; display: flex; justify-content: center;
+            flex-wrap: wrap; gap: 30px;
+        }
+        .booking-cta-feature { flex: 0 1 200px; text-align: center; }
+        .booking-cta-feature i { font-size: 48px; margin-bottom: 10px; opacity: 0.9; }
+        .booking-cta-feature-title { font-size: 16px; font-weight: 500; margin-bottom: 5px; }
+        .booking-cta-feature-desc { font-size: 14px; opacity: 0.85; }
+
+        .test-section {
+            background: white; margin: 40px auto; padding: 40px;
+            border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-description {
+            background: #e3f2fd; padding: 20px; border-radius: 8px;
+            margin-bottom: 30px; border-left: 4px solid #2196f3;
+        }
+        .test-description h3 { color: #1565c0; margin-bottom: 10px; }
+        .test-description ul { margin-left: 20px; line-height: 1.8; }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <h1>🧪 元件測試頁面</h1>
+        <p>FAQ Component & Booking CTA - 完整功能展示</p>
+    </div>
+
+    <div class="container">
+        <div class="test-section">
+            <div class="test-description">
+                <h3>✅ FAQ Component 功能特點：</h3>
+                <ul>
+                    <li>手風琴折疊設計 - 點擊問題展開/收合</li>
+                    <li>美觀視覺效果 - Material Icons 圖示（檔案小）</li>
+                    <li>Schema.org 結構化資料 - SEO 優化</li>
+                    <li>響應式設計 - 支援所有裝置</li>
+                </ul>
+            </div>
+
+            <div class="faq-section">
+                <h3>苗場雪場常見問題</h3>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>苗場雪場適合初學者嗎？</span>
+                        <i class="material-icons faq-icon">expand_more</i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>非常適合！苗場有專門的初學者區域，坡度平緩，設施完善。我們的教練會根據您的程度安排適合的練習場地。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>苗場的雪票價格多少？</span>
+                        <i class="material-icons faq-icon">expand_more</i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>成人一日券約 6,200 日圓，多日券有優惠。建議提前在官網或透過 SKIDIY 購買，可享折扣價格。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>從東京到苗場怎麼去最方便？</span>
+                        <i class="material-icons faq-icon">expand_more</i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>搭乘新幹線到越後湯澤站，再轉乘接駁巴士約 40 分鐘。也可選擇直達巴士，從新宿出發約 3.5 小時。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>第一次滑雪需要上課嗎？</span>
+                        <i class="material-icons faq-icon">expand_more</i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>強烈建議！專業教練可以幫助您學習正確姿勢、快速掌握基本技巧、建立信心享受滑雪樂趣。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="booking-cta">
+        <div class="container">
+            <h2 class="booking-cta-title">想在苗場學滑雪嗎？</h2>
+            <p class="booking-cta-subtitle">我們有專業的中文教練團隊，帶您暢遊苗場</p>
+            <a href="/schedule.php?f=p&p=naeba" class="booking-cta-button">
+                立即預約課程 <i class="material-icons" style="vertical-align: middle; margin-left: 8px;">arrow_forward</i>
+            </a>
+
+            <div class="booking-cta-features">
+                <div class="booking-cta-feature">
+                    <i class="material-icons">verified_user</i>
+                    <div class="booking-cta-feature-title">專業認證</div>
+                    <div class="booking-cta-feature-desc">國際認證教練</div>
+                </div>
+                <div class="booking-cta-feature">
+                    <i class="material-icons">language</i>
+                    <div class="booking-cta-feature-title">中文教學</div>
+                    <div class="booking-cta-feature-desc">溝通無障礙</div>
+                </div>
+                <div class="booking-cta-feature">
+                    <i class="material-icons">schedule</i>
+                    <div class="booking-cta-feature-title">彈性時間</div>
+                    <div class="booking-cta-feature-desc">自由安排</div>
+                </div>
+                <div class="booking-cta-feature">
+                    <i class="material-icons">thumb_up</i>
+                    <div class="booking-cta-feature-title">高滿意度</div>
+                    <div class="booking-cta-feature-desc">學員好評推薦</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FAQ accordion functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+
+                question.addEventListener('click', function() {
+                    item.classList.toggle('active');
+                });
+            });
+
+            console.log('✅ FAQ Component loaded');
+            console.log('✅ Booking CTA loaded');
+            console.log('📊 Total FAQ items:', faqItems.length);
+        });
+    </script>
+</body>
+</html>
