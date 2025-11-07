@@ -51,10 +51,25 @@ if(isset($in['park'])){
         $sql = "SELECT * FROM `parks` WHERE `name`='{$query_name}'"; //_d($sql);
         $r2 = $DB->QUERY('SELECT',$sql);//_v($r2);
         if(isset($r2[0]['name'])){
-            foreach($r2 as $n => $v){
-                //var_dump($v);
-                $section_content[$v['section']]=$v['content'];
-            }
+            // Map parks table columns to section names
+            $park_data = $r2[0];
+            $section_content = array(
+                'about' => $park_data['about'] ?? '',
+                'photo' => $park_data['photo_section'] ?? '',
+                'location' => $park_data['location_section'] ?? '',
+                'slope' => $park_data['slope_section'] ?? '',
+                'ticket' => $park_data['ticket_section'] ?? '',
+                'time' => $park_data['time_section'] ?? '',
+                'access' => $park_data['access_section'] ?? '',
+                'live' => $park_data['live_section'] ?? '',
+                'rental' => $park_data['rental_section'] ?? '',
+                'delivery' => $park_data['delivery_section'] ?? '',
+                'luggage' => $park_data['luggage_section'] ?? '',
+                'workout' => $park_data['workout_section'] ?? '',
+                'remind' => $park_data['remind_section'] ?? '',
+                'join' => $park_data['join_section'] ?? '',
+                'event' => $park_data['event_section'] ?? ''
+            );
             //var_dump($section_content);
         }
     }
