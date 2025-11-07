@@ -119,12 +119,12 @@ class PARKS{
 	}
 
     public function getParkInfo(){
-        $sql = "SELECT idx,name,cname,location FROM `parks` ORDER BY `idx` ASC";
+        $sql = "SELECT * FROM `parks` ORDER BY `idx` ASC";
         $parkInfo = $this->db->query('SELECT', $sql);
         return $parkInfo;
     }
     public function getParkInfo_by_Name($parkname){
-        $sql = "SELECT idx,name,cname,location FROM `parks` where `name`='{$parkname}'";
+        $sql = "SELECT * FROM `parks` where `name`='{$parkname}'";
         $parkInfo = $this->db->query('SELECT', $sql);
         if(!empty($parkInfo))
         return $parkInfo[0];
