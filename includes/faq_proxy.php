@@ -68,85 +68,32 @@ function fetchFAQContent($faqId, $lang) {
         return null;
     }
 
-    // 解析 HTML - 使用更健壯的方法
-    $dom = new DOMDocument();
-    libxml_use_internal_errors(true); // 抑制 HTML5 警告
-    $dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
-    libxml_clear_errors();
+    // 直接使用正則表達式解析（更可靠）
+    // 因為 faq.diy.ski 的 HTML 結構是已知且固定的
 
-    $xpath = new DOMXPath($dom);
-
-    // 提取問題 - 多種方法嘗試
+    // 提取問題（h1 標籤）
     $question = '';
-
-    // 方法 1: XPath
-    $h1 = $xpath->query('//h1')->item(0);
-    if ($h1) {
-        $question = trim($h1->textContent);
+    if (preg_match('/<h1[^>]*>(.*?)<\/h1>/s', $html, $matches)) {
+        $question = trim(strip_tags($matches[1]));
     }
 
-    // 方法 2: getElementsByTagName (備用)
-    if (empty($question)) {
-        $h1Tags = $dom->getElementsByTagName('h1');
-        if ($h1Tags->length > 0) {
-            $question = trim($h1Tags->item(0)->textContent);
-        }
-    }
-
-    // 方法 3: 正則表達式 (最後備用)
-    if (empty($question)) {
-        if (preg_match('/<h1[^>]*>(.*?)<\/h1>/s', $html, $matches)) {
-            $question = trim(strip_tags($matches[1]));
-        }
-    }
-
-    // 提取分類標籤
+    // 提取分類標籤（class="badge"）
     $badge = '';
-    $badgeElement = $xpath->query('//*[contains(@class, "badge")]')->item(0);
-    if ($badgeElement) {
-        $badge = trim($badgeElement->textContent);
-    }
-
-    // 備用方法
-    if (empty($badge) && preg_match('/class=["\']badge["\'][^>]*>(.*?)</s', $html, $matches)) {
+    if (preg_match('/<p[^>]*class="badge"[^>]*>(.*?)<\/p>/s', $html, $matches)) {
         $badge = trim(strip_tags($matches[1]));
     }
 
-    // 提取答案
+    // 提取答案（第一個 class="faq-content" 內的內容）
     $answer = '';
-
-    // 方法 1: XPath 查找 faq-content 內的 p 標籤
-    $answerElement = $xpath->query('//*[contains(@class, "faq-content")]//p')->item(0);
-    if ($answerElement) {
-        $answer = $dom->saveHTML($answerElement);
-    }
-
-    // 方法 2: 查找所有 class="card" section 內的第一個 p
-    if (empty($answer)) {
-        $sections = $xpath->query('//section[contains(@class, "card")]');
-        if ($sections->length > 0) {
-            $firstSection = $sections->item(0);
-            $paragraphs = $firstSection->getElementsByTagName('p');
-            if ($paragraphs->length > 0) {
-                $answer = $dom->saveHTML($paragraphs->item(0));
-            }
-        }
-    }
-
-    // 方法 3: 正則表達式提取
-    if (empty($answer)) {
-        if (preg_match('/<div[^>]*class="faq-content"[^>]*>(.*?)<\/div>/s', $html, $matches)) {
-            if (preg_match('/<p[^>]*>(.*?)<\/p>/s', $matches[1], $pMatches)) {
-                $answer = '<p>' . $pMatches[1] . '</p>';
-            }
-        }
+    if (preg_match('/<div[^>]*class="faq-content"[^>]*>(.*?)<\/div>/s', $html, $matches)) {
+        // 保留 HTML 標籤但清理多餘的換行
+        $answer = trim($matches[1]);
     }
 
     // 提取 Schema.org 資料
     $schemaData = null;
-    $schemaScript = $xpath->query('//script[@type="application/ld+json"]')->item(0);
-    if ($schemaScript) {
-        $schemaJson = trim($schemaScript->textContent);
+    if (preg_match('/<script type="application\/ld\+json">(.*?)<\/script>/s', $html, $matches)) {
+        $schemaJson = trim($matches[1]);
         $schemaData = json_decode($schemaJson, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             error_log("FAQ {$faqId}: Schema JSON parse error - " . json_last_error_msg());
