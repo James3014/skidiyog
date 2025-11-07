@@ -13,13 +13,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    // Admin credentials (use environment variables in production)
-    // Default: admin / skidiy2024
-    $valid_username = getenv('ADMIN_USERNAME') ?: 'admin';
-    $valid_password_hash = getenv('ADMIN_PASSWORD_HASH') ?: '$2y$10$YourHashedPasswordHere'; // This is a placeholder
+    // Admin credentials (must be provided via environment variables)
+    $envReader = function($key) {
+        $value = getenv($key);
+        if ($value !== false && $value !== '') {
+            return $value;
+        }
+        if (isset($_ENV[$key]) && $_ENV[$key] !== '') {
+            return $_ENV[$key];
+        }
+        if (isset($_SERVER[$key]) && $_SERVER[$key] !== '') {
+            return $_SERVER[$key];
+        }
+        return null;
+    };
 
-    // For initial setup, accept plain password (MUST CHANGE IN PRODUCTION)
-    if ($username === $valid_username && $password === 'skidiy2024') {
+    $valid_username = $envReader('ADMIN_USERNAME');
+    $valid_password_hash = $envReader('ADMIN_PASSWORD_HASH');
+
+    if (!$valid_username || !$valid_password_hash) {
+        $error_message = '尚未設定 ADMIN_USERNAME / ADMIN_PASSWORD_HASH，請於部署環境變數設定後再登入。';
+    } elseif ($username === $valid_username && password_verify($password, $valid_password_hash)) {
         $_SESSION['admin_logged_in'] = true;
         $_SESSION['admin_username'] = $username;
         $_SESSION['login_time'] = time();
