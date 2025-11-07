@@ -1,12 +1,41 @@
+# SkiDIY SEO Optimization
+# Updated: 2025-11-08 - Added 301 redirects and security headers
+
 RewriteEngine On
+
+# ========================================
+# 301 Redirects - SEO URL Migration
+# ========================================
+# Note: article.php handles 301 redirects internally via PHP
+# Existing shortcut URLs are preserved below
+
+# Shortcut URLs (legacy, keep for backward compatibility)
 RewriteRule ^spring article.php?idx=1 [NC,L]
 RewriteRule ^insurance article.php?idx=16 [NC,L]
 RewriteRule ^tickets article.php?idx=34 [NC,L]
 RewriteRule ^biski article.php?idx=33 [NC,L]
 RewriteRule ^joinus article.php?idx=38 [NC,L]
 RewriteRule ^alpen5off alpen.php [NC,L]
+
+# ========================================
+# Protected Directories
+# ========================================
 RewriteRule ^bkInst/$ - [L]
 RewriteRule ^bkAdmin/$ - [L]
+
+# ========================================
+# Routing Rules
+# ========================================
 RewriteRule ^refer/(.+)?$ refer.php?target=$1 [NC,L]
 RewriteRule ^([A-Za-z0-9-]+)/?$ routing.php?target=$1 [NC,L]
 RewriteRule ^([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$ routing.php?target=$1&section=$2 [NC,L]
+
+# ========================================
+# Security Headers (via mod_headers)
+# ========================================
+<IfModule mod_headers.c>
+    # Prevent indexing of sensitive pages
+    <FilesMatch "(login\.php|post-cgi\.php|oquery\.php|instructor_form\.php|debug_.*\.php|import_.*\.php|check_.*\.php|generate_.*\.php|test_.*\.php)">
+        Header set X-Robots-Tag "noindex, nofollow"
+    </FilesMatch>
+</IfModule>

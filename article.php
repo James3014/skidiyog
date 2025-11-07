@@ -1,5 +1,20 @@
 <?php
-  require('includes/sdk.php'); 
+  // 301 Redirect to new SEO-friendly URLs
+  require_once __DIR__ . '/includes/article_mapping.php';
+
+  if (isset($_GET['idx'])) {
+      $idx = intval($_GET['idx']);
+      if (articleExists($idx)) {
+          $newUrl = getArticleNewUrl($idx);
+          if ($newUrl) {
+              header("HTTP/1.1 301 Moved Permanently");
+              header("Location: " . $newUrl);
+              exit();
+          }
+      }
+  }
+
+  require('includes/sdk.php');
       // load from routing.php
       // $target = $name = $section  and section_content[]
 
