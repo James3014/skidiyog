@@ -340,6 +340,12 @@ if($name=='iski'){$park_info['cname']='iSKI';}
                 var target = $(this.hash);
                 target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
                 if (target.length) {
+                  // Close mobile sidenav if open
+                  var sidenavInstance = M.Sidenav.getInstance($('#mobile-nav'));
+                  if (sidenavInstance && sidenavInstance.isOpen) {
+                    sidenavInstance.close();
+                  }
+
                   $('html,body').animate({
                     scrollTop: target.offset().top - 100 //offsets for fixed header
                   }, 500);

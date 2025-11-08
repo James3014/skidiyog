@@ -27,8 +27,8 @@
       </div>
 <?php
     // 雪場 ＆ 教練  手機選單個別處理
-    if(strstr($_SERVER['PHP_SELF'],'routing') ){
-      //$_SERVER['PHP_SELF'].$target; 
+    if(strstr($_SERVER['PHP_SELF'],'routing') || strstr($_SERVER['PHP_SELF'],'park') ){
+      //$_SERVER['PHP_SELF'].$target;
 ?>
       <ul class="sidenav" id="mobile-nav">
         <div class="row">
@@ -36,7 +36,7 @@
             <img src="/assets/images/logo-skidiy.png?v251026" alt=""  class="logo">
           </a>
         </div>
-        <li><?=ucfirst($name)?></li>
+        <li><?=isset($park_info['cname']) ? $park_info['cname'] : ucfirst($name)?></li>
         <li class="subnav">
         <!--
           <p><i class="material-icons">place</i></p>
@@ -46,17 +46,29 @@
           <?php
                 reset($SECTION_HEADER);
                 foreach($SECTION_HEADER as $key => $val){
-                  //echo $val;
-                  echo '<a href="https://'.domain_name.'/'.$name.'/'.$key.'" class="tab"><li>'.$val.'</li></a>';
+                  if($key == 'all') continue; // Skip "完整閱讀"
+                  // Use anchor links for park.php, route links for routing.php
+                  if(strstr($_SERVER['PHP_SELF'],'park')){
+                    echo '<a href="#' . $key . '" class="tab"><li>'.$val.'</li></a>';
+                  } else {
+                    echo '<a href="https://'.domain_name.'/'.$name.'/'.$key.'" class="tab"><li>'.$val.'</li></a>';
+                  }
                 }
           ?>
           </ul>
         </li>
 
+        <?php if(strstr($_SERVER['PHP_SELF'],'park')){ ?>
+        <li><a href="/">其他雪場</a></li>
+        <li><a href="/instructorList.php">教練團隊</a></li>
+        <li><a href="/articleList.php">相關文章</a></li>
+        <li><a href="/schedule.php">預訂課程</a></li>
+        <?php } else { ?>
         <li><a href="../">其他雪場</a></li>
         <li><a href="../instructorList.php">教練團隊</a></li>
         <li><a href="../articleList.php">相關文章</a></li>
         <li><a href="https://booking.diy.ski">預訂課程</a></li>
+        <?php } ?>
         <li><a href="https://faq.diy.ski" target="_blank">常見問題</a></li>
         <li><a href="mailto:service@diy.ski">聯絡我們</a></li>
       </ul>
