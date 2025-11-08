@@ -69,31 +69,61 @@
 
     /* Section content - set base font size and styling */
     .section-content {
-        font-size: 15px;
-        line-height: 1.6;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
+        font-size: 15px !important;
+        line-height: 1.6 !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        word-break: break-word !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+        white-space: normal !important;
+    }
+
+    /* Force all elements inside section-content to break properly */
+    .section-content * {
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Ensure links can break anywhere */
+    .section-content a {
+        word-break: break-all !important;
+        overflow-wrap: break-word !important;
+        display: inline-block;
         max-width: 100%;
     }
 
     /* Only style text elements */
     .section-content p {
-        font-size: 15px;
-        line-height: 1.6;
-        margin-bottom: 12px;
+        font-size: 15px !important;
+        line-height: 1.6 !important;
+        margin-bottom: 12px !important;
     }
 
     .section-content ul,
     .section-content ol {
-        font-size: 15px;
-        line-height: 1.6;
-        padding-left: 25px;
+        font-size: 15px !important;
+        line-height: 1.6 !important;
+        padding-left: 25px !important;
     }
 
     .section-content li {
-        font-size: 15px;
-        line-height: 1.6;
-        margin-bottom: 8px;
+        font-size: 15px !important;
+        line-height: 1.6 !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* Prevent tables and iframes from overflowing */
+    .section-content table {
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        display: block !important;
+    }
+
+    .section-content iframe {
+        max-width: 100% !important;
     }
 
     /* Heading size adjustments for mobile */

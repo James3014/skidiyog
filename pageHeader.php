@@ -13,14 +13,16 @@
 
 <!--  add by mj -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="/assets/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
     <!--Import custom.css-->
     <link rel="stylesheet" href="/assets/css/custom.min.css">
     <!--  add by mauji for over write some css style -->
     <link rel="stylesheet" href="/assets/css/workaround.css">
     <!--Import jQuery-->
-    <script src="/assets/js/jquery.min.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
 
 
 
