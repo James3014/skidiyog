@@ -1,18 +1,18 @@
 <?php
-  // 301 Redirect to new SEO-friendly URLs
-  require_once __DIR__ . '/includes/article_mapping.php';
-
-  if (isset($_GET['idx'])) {
-      $idx = intval($_GET['idx']);
-      if (articleExists($idx)) {
-          $newUrl = getArticleNewUrl($idx);
-          if ($newUrl) {
-              header("HTTP/1.1 301 Moved Permanently");
-              header("Location: " . $newUrl);
-              exit();
-          }
-      }
-  }
+  // 301 Redirect to new SEO-friendly URLs (DISABLED until .htaccess rewrite rules are configured)
+  // require_once __DIR__ . '/includes/article_mapping.php';
+  //
+  // if (isset($_GET['idx'])) {
+  //     $idx = intval($_GET['idx']);
+  //     if (articleExists($idx)) {
+  //         $newUrl = getArticleNewUrl($idx);
+  //         if ($newUrl) {
+  //             header("HTTP/1.1 301 Moved Permanently");
+  //             header("Location: " . $newUrl);
+  //             exit();
+  //         }
+  //     }
+  // }
 
   require('includes/sdk.php');
       // load from routing.php
@@ -95,13 +95,21 @@
       </div>
 
       <?php
-      // Add FAQ section
-      require_once __DIR__ . '/includes/faq_component.php';
-      $faqs = getArticleFAQs($article_id);
+      // Add FAQ section with proxy (connects to faq.diy.ski)
+      require_once __DIR__ . '/includes/faq_proxy.php';
+
+      // Option 1: Manual FAQ selection based on article topic
+      // $faqIds = ['faq.general.009', 'faq.general.010', 'faq.general.011'];
+      // renderFAQProxy($faqIds, 'zh');
+
+      // Option 2: Recommended FAQs by category
+      // Determine category based on article content or metadata
+      $category = 'general'; // Default category
+      if (isset($article_data['category'])) {
+          $category = $article_data['category']; // e.g., 'kids', 'gear', 'booking', 'instructor'
+      }
+      renderRecommendedFAQsProxy($category, 5, 'zh');
       ?>
-      <div class="container">
-        <?php renderFAQSection($faqs, '滑雪課程常見問題'); ?>
-      </div>
 
       <div style="margin: 0px auto;">
       <button class="btn btn-outline btn-outline-primary" onclick="history.back();"><i class="material-icons">keyboard_arrow_left</i> 回前一頁</button>
