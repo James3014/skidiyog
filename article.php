@@ -98,16 +98,38 @@
       // Add FAQ section with proxy (connects to faq.diy.ski)
       require_once __DIR__ . '/includes/faq_proxy.php';
 
-      // Option 1: Manual FAQ selection based on article topic
-      // $faqIds = ['faq.general.009', 'faq.general.010', 'faq.general.011'];
-      // renderFAQProxy($faqIds, 'zh');
+      // Auto-detect category from article title and content
+      $title = isset($article_data['title']) ? $article_data['title'] : '';
+      $content = isset($article_data['article']) ? $article_data['article'] : '';
+      $combinedText = $title . ' ' . $content;
 
-      // Option 2: Recommended FAQs by category
-      // Determine category based on article content or metadata
       $category = 'general'; // Default category
-      if (isset($article_data['category'])) {
-          $category = $article_data['category']; // e.g., 'kids', 'gear', 'booking', 'instructor'
+
+      // 關鍵字對應表（優先順序由上到下）
+      $categoryKeywords = [
+          'kids' => ['小朋友', '兒童', '親子', '家族', '小孩', '孩童', '幼兒', '寶寶', '幾歲'],
+          'gear' => ['裝備', '雪鏡', '雪板', '雪杖', '護具', '租借', '選購', '挑選', '雪衣', '雪褲', '手套'],
+          'instructor' => ['教練', '教學', '指導', '師資', '證照', '認證', '經驗'],
+          'safety' => ['保險', '安全', '意外', '受傷', '醫療', '理賠', '保障'],
+          'payment' => ['費用', '價格', '支付', '付款', '優惠', '折扣', '退費'],
+          'booking' => ['預約', '預訂', '報名', '取消', '變更', '修改', '確認'],
+          'itinerary' => ['行程', '住宿', '機票', '交通', '規劃', '安排'],
+          'course' => ['課程', '教學', '分級', '進度', '內容'],
+          'grouping' => ['團體', '私人', '一對一', '同班', '湊班'],
+          'transport' => ['集合', '地點', '交通', '怎麼去', '接駁'],
+      ];
+
+      // 根據關鍵字匹配分類
+      foreach ($categoryKeywords as $cat => $keywords) {
+          foreach ($keywords as $keyword) {
+              if (mb_strpos($combinedText, $keyword) !== false) {
+                  $category = $cat;
+                  break 2; // 找到第一個匹配就跳出
+              }
+          }
       }
+
+      // 渲染 FAQ（顯示 5 個）
       renderRecommendedFAQsProxy($category, 5, 'zh');
       ?>
 

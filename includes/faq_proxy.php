@@ -276,32 +276,136 @@ function renderFAQBlocks($faqs, $lang) {
 
 /**
  * 根據分類推薦相關 FAQ（使用代理）
+ *
+ * 支援的分類：
+ * - kids: 小朋友滑雪與安全保障
+ * - gear: 裝備準備與租借
+ * - instructor: 教練資訊與教學
+ * - booking: 預約流程與異動
+ * - payment: 費用與支付
+ * - itinerary: 行程規劃
+ * - safety: 安全與保險
+ * - course: 課程選擇與內容
+ * - grouping: 一起上課安排
+ * - general: 一般課程預約（預設）
  */
 function renderRecommendedFAQsProxy($category, $limit = 5, $lang = 'zh') {
     $faqMapping = [
-        'general' => [
-            'faq.general.009',
-            'faq.general.010',
-            'faq.general.011',
-            'faq.general.012',
-            'faq.general.013',
-        ],
+        // 小朋友滑雪與安全保障 (9 FAQs)
         'kids' => [
-            'faq.general.009',
-            'faq.grouping.007',
-            'faq.grouping.008',
+            'faq.general.009',  // 幾歲可以開始學滑雪？
+            'faq.general.010',  // 不同年齡可以同班嗎？
+            'faq.general.011',  // 小朋友上課有哪些安全機制？
+            'faq.general.012',  // 兒童保險內容與限制有哪些？
+            'faq.general.013',  // 小朋友上課需要準備什麼？
+            'faq.general.014',  // 小朋友相關 FAQ
+            'faq.kids.069',     // 兒童滑雪相關
+            'faq.kids.070',     // 兒童滑雪相關
+            'faq.kids.071',     // 兒童滑雪相關
         ],
+
+        // 裝備準備與租借 (2 FAQs)
         'gear' => [
-            'faq.general.011',
+            'faq.gear.061',     // 裝備準備
+            'faq.gear.062',     // 裝備租借
+            'faq.general.013',  // 上課需要準備什麼？
         ],
-        'booking' => [
-            'faq.general.012',
-            'faq.general.013',
-        ],
+
+        // 教練資訊與教學 (16 FAQs)
         'instructor' => [
-            'faq.course.005',
-            'faq.course.006',
-        ]
+            'faq.general.022',  // 教練資訊
+            'faq.general.023',  // 教學語言
+            'faq.general.024',  // 教練資格
+            'faq.general.025',  // 教練經驗
+            'faq.general.026',  // 教練專長
+            'faq.general.027',  // 教練聯繫
+            'faq.general.028',  // 教學方式
+            'faq.general.029',  // 教學內容
+            'faq.instructor.067', // 教練資訊
+            'faq.instructor.068', // 教練聯繫
+            'faq.general.015',  // 教學安排
+            'faq.general.016',  // 教練分配
+            'faq.general.017',  // 教學品質
+            'faq.general.018',  // 教練更換
+            'faq.general.019',  // 教學評價
+            'faq.general.020',  // 教學進度
+        ],
+
+        // 預約流程與異動 (12 FAQs)
+        'booking' => [
+            'faq.booking.064',  // 預約異動
+            'faq.booking.065',  // 預約取消
+            'faq.booking.066',  // 預約修改
+            'faq.general.045',  // 平台操作
+            'faq.general.046',  // 預約流程
+            'faq.general.047',  // 預約確認
+            'faq.general.048',  // 預約查詢
+            'faq.general.049',  // 預約問題
+            'faq.general.050',  // 預約提醒
+            'faq.general.051',  // 預約記錄
+            'faq.general.052',  // 預約變更
+            'faq.general.053',  // 預約說明
+        ],
+
+        // 費用與支付 (5 FAQs)
+        'payment' => [
+            'faq.general.040',  // 費用說明
+            'faq.general.041',  // 支付方式
+            'faq.general.042',  // 優惠活動
+            'faq.general.043',  // 發票問題
+            'faq.general.044',  // 退費規定
+            'faq.refund_policy.063', // 退費機制
+        ],
+
+        // 行程規劃 (2 FAQs)
+        'itinerary' => [
+            'faq.itinerary.001', // 先訂教練還是先訂機票？
+            'faq.itinerary.002', // 住宿推薦
+            'faq.service.003',   // 服務地區
+            'faq.service.004',   // 服務範圍
+        ],
+
+        // 安全與保險 (7 FAQs)
+        'safety' => [
+            'faq.general.054',  // 安全保障
+            'faq.general.055',  // 保險內容
+            'faq.general.056',  // 保險理賠
+            'faq.general.057',  // 意外處理
+            'faq.general.058',  // 緊急聯絡
+            'faq.general.059',  // 安全規範
+            'faq.general.060',  // 保險說明
+        ],
+
+        // 課程選擇與內容 (2 FAQs)
+        'course' => [
+            'faq.course.005',   // 課程選擇
+            'faq.course.006',   // 課程內容
+        ],
+
+        // 一起上課安排 (2 FAQs)
+        'grouping' => [
+            'faq.grouping.007', // 團體課程
+            'faq.grouping.008', // 私人課程
+        ],
+
+        // 一般課程預約（預設）(10 FAQs)
+        'general' => [
+            'faq.general.030',  // 一般課程預約
+            'faq.general.031',  // 課程安排
+            'faq.general.032',  // 課程時間
+            'faq.general.033',  // 課程地點
+            'faq.general.034',  // 課程人數
+            'faq.general.035',  // 課程等級
+            'faq.general.036',  // 課程進度
+            'faq.general.037',  // 課程調整
+            'faq.general.038',  // 課程建議
+            'faq.general.039',  // 課程須知
+        ],
+
+        // 集合地點與交通 (1 FAQ)
+        'transport' => [
+            'faq.general.021',  // 集合地點與交通
+        ],
     ];
 
     $faqIds = isset($faqMapping[$category])
@@ -309,7 +413,8 @@ function renderRecommendedFAQsProxy($category, $limit = 5, $lang = 'zh') {
         : [];
 
     if (empty($faqIds)) {
-        return;
+        // 若找不到分類，使用預設的一般 FAQ
+        $faqIds = array_slice($faqMapping['general'], 0, $limit);
     }
 
     renderFAQProxy($faqIds, $lang);
