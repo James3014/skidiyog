@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <style>
+    /* Left navigation styles */
+    .leftnav {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .leftnav .resort-name {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .leftnav .tabs {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .leftnav .tab {
+      display: block;
+      padding: 12px 15px;
+      color: #666;
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .leftnav .tab:hover,
+    .leftnav .tab.leftnav-active {
+      background-color: #f5f5f5;
+      border-left-color: #2196F3;
+      color: #2196F3;
+    }
+
+    .leftnav .tab li {
+      list-style: none;
+      margin: 0;
+    }
+
+    .leftnav.fixed {
+      position: fixed;
+      top: 100px;
+      width: calc(25% - 40px);
+    }
+
+    #return-to-top {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      background: #2196F3;
+      width: 50px;
+      height: 50px;
+      display: none;
+      text-decoration: none;
+      border-radius: 50%;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    #return-to-top i {
+      color: white;
+      margin: 0;
+      position: relative;
+      top: 13px;
+    }
+
+    .resort-info {
+      padding: 40px 0;
+    }
+
+    .resort-content {
+      padding: 20px;
+    }
+
+    .section-content {
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container resort-info">
+    <div class="row">
+      <!-- Left navigation -->
+      <div class="col l3 hide-on-med-and-down leftnav">
+        <p class="resort-name">測試雪場</p>
+        <ul class="tabs tabs-transparent">
+          <a href="#about" class="tab"><li>介紹</li></a>
+          <a href="#location_section" class="tab"><li>位置</li></a>
+          <a href="#access_section" class="tab"><li>交通</li></a>
+          <a href="#slope_section" class="tab"><li>雪道</li></a>
+        </ul>
+      </div>
+
+      <!-- Main content -->
+      <div class="col s12 l9 right resort-content">
+        <h3 id="about">介紹</h3>
+        <div class="section-content">
+          <p>這是介紹內容。這裡有很多文字來測試滾動效果。</p>
+          <p>內容1</p><p>內容2</p><p>內容3</p><p>內容4</p><p>內容5</p>
+        </div>
+
+        <h3 id="location_section">位置</h3>
+        <div class="section-content">
+          <p>這是位置內容。這裡有很多文字來測試滾動效果。</p>
+          <p>內容1</p><p>內容2</p><p>內容3</p><p>內容4</p><p>內容5</p>
+        </div>
+
+        <h3 id="access_section">交通</h3>
+        <div class="section-content">
+          <p>這是交通內容。這裡有很多文字來測試滾動效果。</p>
+          <p>內容1</p><p>內容2</p><p>內容3</p><p>內容4</p><p>內容5</p>
+        </div>
+
+        <h3 id="slope_section">雪道</h3>
+        <div class="section-content">
+          <p>這是雪道內容。這裡有很多文字來測試滾動效果。</p>
+          <p>內容1</p><p>內容2</p><p>內容3</p><p>內容4</p><p>內容5</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="javascript:" id="return-to-top" class="waves-effect waves-light">
+    <i class="material-icons">arrow_upward</i>
+  </a>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      console.log('Page loaded');
+      console.log('Leftnav exists:', $('.leftnav').length);
+
+      // Smooth scroll
+      $('.leftnav a').click(function (e) {
+        e.preventDefault();
+        console.log('Clicked:', $(this).attr('href'));
+
+        $('.leftnav a').removeClass('leftnav-active');
+        $(this).addClass('leftnav-active');
+
+        var target = $($(this).attr('href'));
+        console.log('Target found:', target.length);
+
+        if (target.length) {
+          $('html,body').animate({
+            scrollTop: target.offset().top - 100
+          }, 500);
+        }
+      });
+
+      // Fixed nav on scroll
+      if ($('.leftnav').length > 0) {
+        var top = $('.leftnav').offset().top - 40;
+
+        $(window).scroll(function () {
+          var y = $(this).scrollTop();
+          if (y >= top) {
+            $('.leftnav').addClass('fixed');
+            $('#return-to-top').fadeIn();
+          } else {
+            $('.leftnav').removeClass('fixed');
+            $('#return-to-top').fadeOut();
+          }
+        });
+      }
+
+      $('#return-to-top').click(function() {
+        $('body,html').animate({ scrollTop : 0 }, 500);
+      });
+    });
+  </script>
+</body>
+</html>
