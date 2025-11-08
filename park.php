@@ -148,50 +148,75 @@ if($name=='iski'){$park_info['cname']='iSKI';}
       });
     </script>
 
-    <body class="index-bg">
+    <body>
       <?php require('nav.inc.php');?>
+
+      <?php
+      // Define section display order and titles (matching original diy.ski)
+      $SECTION_HEADER = array(
+        'about'  => '介紹',
+        'photo' => '照片',
+        'location'  => '位置',
+        'slope'  => '雪道',
+        'ticket' => '雪票',
+        'time' => '開放時間',
+        'access' => '交通',
+        'live'  => '住宿',
+        'rental' => '租借',
+        'delivery'  => '宅配',
+        'luggage' => '行前裝備',
+        'workout'  => '體能',
+        'remind'  => '上課地點及事項',
+        'join'  => '約伴及討論',
+        'event'  => '優惠活動',
+        'all'  => '完整閱讀'
+      );
+
+      // Map to database column names
+      $field_mapping = array(
+        'about' => 'about',
+        'photo' => 'photo_section',
+        'location' => 'location_section',
+        'slope' => 'slope_section',
+        'ticket' => 'ticket_section',
+        'time' => 'time_section',
+        'access' => 'access_section',
+        'live' => 'live_section',
+        'rental' => 'rental_section',
+        'delivery' => 'delivery_section',
+        'luggage' => 'luggage_section',
+        'workout' => 'workout_section',
+        'remind' => 'remind_section',
+        'join' => 'join_section',
+        'event' => 'event_section'
+      );
+      ?>
 
       <div class="container-fuild">
         <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
-        <div class="row header-block-index">
+        <div class="row header-block-resort">
+            <div class="header-img-bottom"><img src="assets/images/header_img_bottom.png" alt=""></div>
+            <img src="https://diy.ski/photos/naeba/3.jpg?v3">
             <div class="col s10 push-s1  m6 push-m3  header-block-content">
-              <p class="text-center slogan-en"><?=$park_info['cname']?></p>
-              <p class="slogan-ch"><?=($name!='iski')?ucfirst($name):'滑雪俱樂部'?></p>
+              <p class="resort-name"><?=$park_info['cname']?>  <small><?=($name!='iski')?ucfirst($name):'滑雪俱樂部'?></small></p>
+              <p><?=$park_info['description']?></p>
               <button class="btn waves-effect waves-light btn-primary space-top-2" type="submit" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
             </div>
         </div>
       </div>
 
-      <?php
-      // Define section display order and titles
-      $sections = array(
-        'about' => '介紹',
-        'location_section' => '位置',
-        'access_section' => '交通',
-        'slope_section' => '雪道',
-        'ticket_section' => '雪票',
-        'time_section' => '開放時間',
-        'live_section' => '住宿',
-        'rental_section' => '租借',
-        'delivery_section' => '宅配',
-        'luggage_section' => '行前裝備',
-        'workout_section' => '體能',
-        'remind_section' => '上課地點及事項',
-        'join_section' => '約伴及討論',
-        'event_section' => '優惠活動'
-      );
-      ?>
-
       <div class="container resort-info">
         <div class="row">
           <!-- Left navigation for desktop -->
           <div class="col l3 hide-on-med-and-down leftnav">
-            <p class="resort-name"><?=$park_info['cname']?></p>
+            <p class="resort-name"><?=$park_info['cname']?> <span><?=($name!='iski')?ucfirst($name):''?></span></p>
             <ul class="tabs tabs-transparent">
               <?php
-              foreach($sections as $field => $title){
+              foreach($SECTION_HEADER as $key => $val){
+                if($key == 'all') continue; // Skip "完整閱讀"
+                $field = isset($field_mapping[$key]) ? $field_mapping[$key] : $key;
                 if(!empty($park_info[$field])){
-                  echo '<a href="#' . $field . '" class="tab"><li>' . $title . '</li></a>';
+                  echo '<a href="#' . $key . '" class="tab"><li>' . $val . '</li></a>';
                 }
               }
               ?>
@@ -202,10 +227,22 @@ if($name=='iski'){$park_info['cname']='iSKI';}
           <div class="col s12 l9 right resort-content">
             <?php
             $has_content = false;
-            foreach($sections as $field => $title){
+            foreach($SECTION_HEADER as $key => $val){
+              if($key == 'all') continue; // Skip "完整閱讀"
+
+              $field = isset($field_mapping[$key]) ? $field_mapping[$key] : $key;
+
               if(!empty($park_info[$field])){
-                echo '<h3 id="' . $field . '">' . $title . '</h3>';
-                echo '<div class="section-content">' . $park_info[$field] . '</div>';
+                echo '<h1 id="' . $key . '">' . $val . '</h1>';
+
+                // For naeba, karuizawa, appi: output HTML directly (TinyMCE format)
+                // For others: use <pre> tag
+                if(in_array($name, ['naeba', 'karuizawa', 'appi'])){
+                  echo $park_info[$field] . '<hr>';
+                } else {
+                  echo '<pre>' . $park_info[$field] . '</pre><hr>';
+                }
+
                 $has_content = true;
               }
             }
