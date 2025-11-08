@@ -74,6 +74,7 @@ if($name=='iski'){$park_info['cname']='iSKI';}
       <?php require('nav.inc.php');?>
 
       <div class="container-fuild">
+        <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
         <div class="row header-block-index">
             <div class="col s10 push-s1  m6 push-m3  header-block-content">
               <p class="text-center slogan-en"><?=$park_info['cname']?></p>
@@ -83,32 +84,49 @@ if($name=='iski'){$park_info['cname']='iSKI';}
         </div>
       </div>
 
-      <div class="container park-content">
-        <div class="row">
-          <div class="col s12">
-            <?php
-            // Define section display order and titles
-            $sections = array(
-              'about' => '介紹',
-              'location_section' => '位置',
-              'access_section' => '交通',
-              'slope_section' => '雪道',
-              'ticket_section' => '雪票',
-              'time_section' => '開放時間',
-              'live_section' => '住宿',
-              'rental_section' => '租借',
-              'delivery_section' => '宅配',
-              'luggage_section' => '行前裝備',
-              'workout_section' => '體能',
-              'remind_section' => '上課地點及事項',
-              'join_section' => '約伴及討論',
-              'event_section' => '優惠活動'
-            );
+      <?php
+      // Define section display order and titles
+      $sections = array(
+        'about' => '介紹',
+        'location_section' => '位置',
+        'access_section' => '交通',
+        'slope_section' => '雪道',
+        'ticket_section' => '雪票',
+        'time_section' => '開放時間',
+        'live_section' => '住宿',
+        'rental_section' => '租借',
+        'delivery_section' => '宅配',
+        'luggage_section' => '行前裝備',
+        'workout_section' => '體能',
+        'remind_section' => '上課地點及事項',
+        'join_section' => '約伴及討論',
+        'event_section' => '優惠活動'
+      );
+      ?>
 
+      <div class="container resort-info">
+        <div class="row">
+          <!-- Left navigation for desktop -->
+          <div class="col l3 hide-on-med-and-down leftnav">
+            <p class="resort-name"><?=$park_info['cname']?></p>
+            <ul class="tabs tabs-transparent">
+              <?php
+              foreach($sections as $field => $title){
+                if(!empty($park_info[$field])){
+                  echo '<a href="#' . $field . '" class="tab"><li>' . $title . '</li></a>';
+                }
+              }
+              ?>
+            </ul>
+          </div>
+
+          <!-- Main content -->
+          <div class="col s12 l9 right resort-content">
+            <?php
             $has_content = false;
             foreach($sections as $field => $title){
               if(!empty($park_info[$field])){
-                echo '<h3>' . $title . '</h3>';
+                echo '<h3 id="' . $field . '">' . $title . '</h3>';
                 echo '<div class="section-content">' . $park_info[$field] . '</div>';
                 $has_content = true;
               }
@@ -149,10 +167,70 @@ if($name=='iski'){$park_info['cname']='iSKI';}
 
       <!--JavaScript at end of body for optimized loading-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
-      <!--custom js-->
+
+      <!--materialize js Initialize-->
       <script>
-         $(document).ready(function(){
-            $('.sidenav').sidenav();
+        $('.sidenav').sidenav();
+        $('.materialboxed').materialbox();
+      </script>
+
+      <!--window scroll -->
+      <script>
+        $(document).ready(function () {
+          var top = $('.leftnav').offset().top - parseFloat($('.leftnav').css('marginTop').replace(/auto/, 40));
+
+          $(window).scroll(function () {
+            var y = $(this).scrollTop();
+            if (y >= top) {
+              $('.leftnav').addClass('fixed');
+              $('#return-to-top').fadeIn();
+            } else {
+              $('.leftnav').removeClass('fixed');
+              $('#return-to-top').fadeOut();
+            }
+            });
+
+            $('#return-to-top').click(function() {
+                $('body,html').animate({
+                    scrollTop : 0
+                }, 500);
+            });
+
+        });
+      </script>
+
+      <!--left nav & smooth scroll -->
+      <script>
+        $(function() {
+          $('.leftnav a').click(function () {
+              $('.leftnav a').removeClass('leftnav-active');
+              $(this).addClass('leftnav-active');
+           });
+
+          $('.leftnav a, .sidenav a').click(function() {
+            if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+          && location.hostname == this.hostname) {
+
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+                if (target.length) {
+                  $('html,body').animate({
+                    scrollTop: target.offset().top - 100 //offsets for fixed header
+                  }, 500);
+                  return false;
+                }
+              }
+            });
+            //Executed on page load with URL containing an anchor tag.
+            if($(location.href.split("#")[1])) {
+                var target = $('#'+location.href.split("#")[1]);
+                if (target.length) {
+                  $('html,body').animate({
+                    scrollTop: target.offset().top - 100 //offset height of header here too.
+                  }, 500);
+                  return false;
+                }
+              }
           });
       </script>
 
