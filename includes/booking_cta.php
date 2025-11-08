@@ -111,15 +111,38 @@ function renderBookingCTA($type = 'general', $params = []) {
         }
 
         @media (max-width: 768px) {
+            .booking-cta {
+                padding: 40px 15px;
+            }
             .booking-cta-title {
-                font-size: 24px;
+                font-size: 22px;
             }
             .booking-cta-subtitle {
-                font-size: 16px;
+                font-size: 15px;
+                margin-bottom: 25px;
             }
             .booking-cta-button {
-                padding: 15px 35px;
-                font-size: 18px;
+                padding: 14px 30px;
+                font-size: 16px;
+            }
+            .booking-cta-features {
+                margin-top: 30px;
+                gap: 20px;
+            }
+            .booking-cta-feature {
+                flex: 0 1 calc(50% - 10px);
+                max-width: 150px;
+            }
+            .booking-cta-feature i {
+                font-size: 32px;
+                margin-bottom: 8px;
+            }
+            .booking-cta-feature-title {
+                font-size: 14px;
+                margin-bottom: 3px;
+            }
+            .booking-cta-feature-desc {
+                font-size: 12px;
             }
         }
     </style>
