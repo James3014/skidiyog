@@ -96,19 +96,19 @@
 
       <?php
       // Add FAQ section with proxy (connects to faq.diy.ski)
-      require_once __DIR__ . '/includes/faq_proxy.php';
+      if (file_exists(__DIR__ . '/includes/faq_proxy.php')) {
+          require_once __DIR__ . '/includes/faq_proxy.php';
 
-      // Option 1: Manual FAQ selection based on article topic
-      // $faqIds = ['faq.general.009', 'faq.general.010', 'faq.general.011'];
-      // renderFAQProxy($faqIds, 'zh');
+          // Recommended FAQs by category (default: general)
+          $category = 'general';
+          if (isset($article_data['category']) && !empty($article_data['category'])) {
+              $category = $article_data['category'];
+          }
 
-      // Option 2: Recommended FAQs by category
-      // Determine category based on article content or metadata
-      $category = 'general'; // Default category
-      if (isset($article_data['category'])) {
-          $category = $article_data['category']; // e.g., 'kids', 'gear', 'booking', 'instructor'
+          if (function_exists('renderRecommendedFAQsProxy')) {
+              renderRecommendedFAQsProxy($category, 5, 'zh');
+          }
       }
-      renderRecommendedFAQsProxy($category, 5, 'zh');
       ?>
 
       <div style="margin: 0px auto;">

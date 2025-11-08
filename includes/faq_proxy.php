@@ -309,6 +309,12 @@ function renderRecommendedFAQsProxy($category, $limit = 5, $lang = 'zh') {
         : [];
 
     if (empty($faqIds)) {
+        // 使用 general 作為預設
+        $faqIds = array_slice($faqMapping['general'], 0, $limit);
+    }
+
+    if (empty($faqIds)) {
+        // 還是空的話，就不顯示
         return;
     }
 
