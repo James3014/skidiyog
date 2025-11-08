@@ -14,13 +14,13 @@
 <!--  add by mj -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://diy.ski/assets/css/materialize.min.css">
+    <link rel="stylesheet" href="/assets/css/materialize.min.css">
     <!--Import custom.css-->
-    <link rel="stylesheet" href="https://diy.ski/assets/css/custom.min.css">
+    <link rel="stylesheet" href="/assets/css/custom.min.css">
     <!--  add by mauji for over write some css style -->
-    <link rel="stylesheet" href="https://diy.ski/assets/css/workaround.css"> 
-    <!--Import jQuery-->    
-    <script src="https://diy.ski/assets/js/jquery.min.js"></script> 
+    <link rel="stylesheet" href="/assets/css/workaround.css">
+    <!--Import jQuery-->
+    <script src="/assets/js/jquery.min.js"></script> 
 
 
 
