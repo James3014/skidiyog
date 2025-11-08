@@ -74,9 +74,37 @@
         line-height: 1.6 !important;
     }
 
+    /* Section content - ensure all elements inside have proper styling */
+    .section-content,
+    .section-content * {
+        font-size: 15px !important;
+        line-height: 1.6 !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+
+    .section-content p {
+        font-size: 15px !important;
+        line-height: 1.6 !important;
+        margin-bottom: 12px !important;
+    }
+
+    .section-content ul,
+    .section-content ol {
+        font-size: 15px !important;
+        line-height: 1.6 !important;
+        padding-left: 25px !important;
+    }
+
+    .section-content li {
+        margin-bottom: 8px !important;
+        font-size: 15px !important;
+    }
+
     /* Heading size adjustments for mobile */
     .resort-content h1,
-    .park-content h1 {
+    .park-content h1,
+    .section-content h1 {
         font-size: 24px !important;
         margin-top: 20px !important;
         margin-bottom: 15px !important;
@@ -84,7 +112,8 @@
     }
 
     .resort-content h2,
-    .park-content h2 {
+    .park-content h2,
+    .section-content h2 {
         font-size: 21px !important;
         margin-top: 18px !important;
         margin-bottom: 12px !important;
@@ -92,7 +121,8 @@
     }
 
     .resort-content h3,
-    .park-content h3 {
+    .park-content h3,
+    .section-content h3 {
         font-size: 18px !important;
         margin-top: 16px !important;
         margin-bottom: 10px !important;
@@ -100,7 +130,8 @@
     }
 
     .resort-content h4,
-    .park-content h4 {
+    .park-content h4,
+    .section-content h4 {
         font-size: 16px !important;
         margin-top: 14px !important;
         margin-bottom: 8px !important;
