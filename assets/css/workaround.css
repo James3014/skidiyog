@@ -67,14 +67,16 @@
         padding: 15px !important;
     }
 
-    /* Section content - minimal styling to avoid breaking content */
+    /* Section content - set base font size and styling */
     .section-content {
+        font-size: 15px;
+        line-height: 1.6;
         word-wrap: break-word;
         overflow-wrap: break-word;
         max-width: 100%;
     }
 
-    /* Only style text elements, don't use !important to avoid breaking existing styles */
+    /* Only style text elements */
     .section-content p {
         font-size: 15px;
         line-height: 1.6;
