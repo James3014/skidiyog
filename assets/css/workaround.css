@@ -1,0 +1,47 @@
+/* Workaround styles for mobile responsiveness and layout fixes */
+
+/* Fix for article content with long links on mobile */
+.resort-content pre {
+    white-space: pre-wrap;       /* Preserve formatting but allow wrapping */
+    word-wrap: break-word;       /* Break long words */
+    overflow-wrap: break-word;   /* Modern property for word breaking */
+    word-break: break-word;      /* Break words when necessary */
+    max-width: 100%;             /* Prevent overflow */
+    overflow-x: auto;            /* Add horizontal scroll if still needed */
+}
+
+/* Ensure links inside pre tags can break */
+.resort-content pre a {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;       /* Allow breaking anywhere in URLs */
+    display: inline-block;
+    max-width: 100%;
+}
+
+/* General mobile responsiveness for resort content */
+.resort-content {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    max-width: 100%;
+}
+
+/* Ensure images don't overflow on mobile */
+.resort-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mobile-specific fixes */
+@media screen and (max-width: 768px) {
+    .resort-content pre {
+        font-size: 14px;         /* Slightly smaller font on mobile */
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .resort-content {
+        padding: 10px;
+        overflow-x: hidden;      /* Prevent horizontal scroll on container */
+    }
+}
