@@ -57,6 +57,84 @@ if($name=='iski'){$park_info['cname']='iSKI';}
           margin-top: 30px;
           color: #2196F3;
         }
+
+        /* Left navigation styles */
+        .leftnav {
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 4px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .leftnav .resort-name {
+          font-size: 1.5rem;
+          font-weight: 500;
+          margin-bottom: 20px;
+          color: #333;
+        }
+
+        .leftnav .tabs {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .leftnav .tab {
+          display: block;
+          padding: 12px 15px;
+          color: #666;
+          text-decoration: none;
+          border-left: 3px solid transparent;
+          transition: all 0.3s;
+        }
+
+        .leftnav .tab:hover,
+        .leftnav .tab.leftnav-active {
+          background-color: #f5f5f5;
+          border-left-color: #2196F3;
+          color: #2196F3;
+        }
+
+        .leftnav .tab li {
+          list-style: none;
+          margin: 0;
+        }
+
+        .leftnav.fixed {
+          position: fixed;
+          top: 100px;
+          width: calc(25% - 40px);
+        }
+
+        /* Return to top button */
+        #return-to-top {
+          position: fixed;
+          bottom: 40px;
+          right: 40px;
+          background: #2196F3;
+          width: 50px;
+          height: 50px;
+          display: none;
+          text-decoration: none;
+          border-radius: 50%;
+          z-index: 1000;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        #return-to-top i {
+          color: white;
+          margin: 0;
+          position: relative;
+          top: 13px;
+        }
+
+        #return-to-top:hover {
+          background: #1976D2;
+        }
+
+        /* Resort info container */
+        .resort-info {
+          padding: 40px 0;
+        }
       </style>
     </head>
 
@@ -177,25 +255,36 @@ if($name=='iski'){$park_info['cname']='iSKI';}
       <!--window scroll -->
       <script>
         $(document).ready(function () {
-          var top = $('.leftnav').offset().top - parseFloat($('.leftnav').css('marginTop').replace(/auto/, 40));
+          // Only enable fixed nav if leftnav exists (desktop only)
+          if ($('.leftnav').length > 0) {
+            var top = $('.leftnav').offset().top - parseFloat($('.leftnav').css('marginTop').replace(/auto/, 40));
 
-          $(window).scroll(function () {
-            var y = $(this).scrollTop();
-            if (y >= top) {
-              $('.leftnav').addClass('fixed');
-              $('#return-to-top').fadeIn();
-            } else {
-              $('.leftnav').removeClass('fixed');
-              $('#return-to-top').fadeOut();
-            }
+            $(window).scroll(function () {
+              var y = $(this).scrollTop();
+              if (y >= top) {
+                $('.leftnav').addClass('fixed');
+                $('#return-to-top').fadeIn();
+              } else {
+                $('.leftnav').removeClass('fixed');
+                $('#return-to-top').fadeOut();
+              }
             });
-
-            $('#return-to-top').click(function() {
-                $('body,html').animate({
-                    scrollTop : 0
-                }, 500);
+          } else {
+            // On mobile, just show/hide return to top button
+            $(window).scroll(function () {
+              if ($(this).scrollTop() > 300) {
+                $('#return-to-top').fadeIn();
+              } else {
+                $('#return-to-top').fadeOut();
+              }
             });
+          }
 
+          $('#return-to-top').click(function() {
+            $('body,html').animate({
+              scrollTop : 0
+            }, 500);
+          });
         });
       </script>
 
