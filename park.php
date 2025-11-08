@@ -41,6 +41,8 @@ if($name=='iski'){$park_info['cname']='iSKI';}
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
       <!--Import custom.css-->
       <link rel="stylesheet" href="assets/css/custom.min.css">
+      <!--Import workaround.css for mobile fixes-->
+      <link rel="stylesheet" href="assets/css/workaround.css">
       <!--Import jQuery-->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <style>
