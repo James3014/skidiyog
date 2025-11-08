@@ -67,41 +67,34 @@
         padding: 15px !important;
     }
 
-    .park-content .section-content {
+    /* Section content - minimal styling to avoid breaking content */
+    .section-content {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
+    }
+
+    /* Only style text elements, don't use !important to avoid breaking existing styles */
+    .section-content p {
         font-size: 15px;
         line-height: 1.6;
-    }
-
-    /* Section content - specific element styling (no wildcard) */
-    .section-content {
-        word-wrap: break-word !important;
-        overflow-wrap: break-word !important;
-    }
-
-    .section-content p,
-    .section-content div,
-    .section-content span {
-        font-size: 15px !important;
-        line-height: 1.6 !important;
-    }
-
-    .section-content p {
-        margin-bottom: 12px !important;
+        margin-bottom: 12px;
     }
 
     .section-content ul,
     .section-content ol {
-        font-size: 15px !important;
-        line-height: 1.6 !important;
-        padding-left: 25px !important;
+        font-size: 15px;
+        line-height: 1.6;
+        padding-left: 25px;
     }
 
     .section-content li {
-        margin-bottom: 8px !important;
-        font-size: 15px !important;
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 8px;
     }
 
-    /* Heading size adjustments for mobile - reduced size */
+    /* Heading size adjustments for mobile */
     .resort-content h1,
     .park-content h1,
     .section-content h1 {
