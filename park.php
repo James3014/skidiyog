@@ -149,10 +149,9 @@ if($name=='iski'){$park_info['cname']='iSKI';}
     </script>
 
     <body>
-      <?php require('nav.inc.php');?>
-
       <?php
       // Define section display order and titles (matching original diy.ski)
+      // MUST be defined BEFORE nav.inc.php is included
       $SECTION_HEADER = array(
         'about'  => '介紹',
         'photo' => '照片',
@@ -191,6 +190,8 @@ if($name=='iski'){$park_info['cname']='iSKI';}
         'event' => 'event_section'
       );
       ?>
+
+      <?php require('nav.inc.php');?>
 
       <div class="container-fuild">
         <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
