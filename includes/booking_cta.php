@@ -49,89 +49,95 @@ function renderBookingCTA($type = 'general', $params = []) {
     ?>
     <style>
         .booking-cta {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 60px 20px;
+            background: linear-gradient(135deg, #1f2c46 0%, #162037 100%);
+            padding: 52px 20px;
             margin: 60px 0 0 0;
             text-align: center;
-            color: white;
+            color: #f5f6fb;
+            border-radius: 28px;
+            box-shadow: 0 30px 70px rgba(3,8,20,0.5);
         }
         .booking-cta-title {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 12px;
         }
         .booking-cta-subtitle {
-            font-size: 18px;
-            margin-bottom: 30px;
-            opacity: 0.95;
+            font-size: 17px;
+            margin-bottom: 26px;
+            opacity: 0.8;
             line-height: 1.6;
         }
         .booking-cta-button {
-            display: inline-block;
-            padding: 18px 45px;
+            display: inline-flex;
+            padding: 14px 34px;
             background: white;
-            color: #667eea;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 50px;
+            color: #1e88e5;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 999px;
             text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            align-items: center;
+            gap: 8px;
         }
         .booking-cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            color: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+            color: #1565c0;
         }
         .booking-cta-features {
-            margin-top: 40px;
+            margin-top: 34px;
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 30px;
+            gap: 26px;
         }
         .booking-cta-feature {
             flex: 0 1 200px;
             text-align: center;
+            color: rgba(245,246,251,0.85);
         }
         .booking-cta-feature i {
-            font-size: 48px;
+            font-size: 42px;
             margin-bottom: 10px;
-            opacity: 0.9;
+            opacity: 0.85;
         }
         .booking-cta-feature-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 500;
             margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         .booking-cta-feature-desc {
-            font-size: 14px;
-            opacity: 0.85;
+            font-size: 13px;
+            opacity: 0.75;
         }
 
         @media (max-width: 768px) {
             .booking-cta {
-                padding: 40px 15px;
+                padding: 38px 18px;
             }
             .booking-cta-title {
                 font-size: 22px;
             }
             .booking-cta-subtitle {
                 font-size: 15px;
-                margin-bottom: 25px;
+                margin-bottom: 22px;
             }
             .booking-cta-button {
-                padding: 14px 30px;
+                padding: 12px 26px;
                 font-size: 16px;
             }
             .booking-cta-features {
-                margin-top: 30px;
-                gap: 20px;
+                margin-top: 26px;
+                gap: 16px;
             }
             .booking-cta-feature {
-                flex: 0 1 calc(50% - 10px);
-                max-width: 150px;
+                flex: 0 1 calc(50% - 8px);
+                max-width: 160px;
             }
             .booking-cta-feature i {
                 font-size: 32px;
