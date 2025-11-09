@@ -60,15 +60,20 @@
     <body>
       <?php require('nav.inc.php');?>
 
-      <div class="container-fuild">
-        <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></button></a>
-        <div class="row header-block-resort">
-            <div class="header-img-bottom"><img src="assets/images/header_img_bottom.png" alt=""></div>
-            <img src="https://diy.ski/photos/naeba/3.jpg?v3">
-            <div class="col s10 push-s1  m6 push-m3  header-block-content">              
-              <p class="resort-name"><?=$article_data['title']?></p>                          
-              <button class="btn waves-effect waves-light btn-primary space-top-2" type="submit" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
-            </div> 
+      <?php
+        $article_hero = 'https://diy.ski/assets/images/header_index_main_img.png';
+        if (!empty($article_data['hero_image'])) {
+          $article_hero = $article_data['hero_image'];
+        }
+      ?>
+      <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
+      <div class="site-hero site-hero--park" style="--hero-image:url('<?=$article_hero?>');">
+        <div class="site-hero__overlay"></div>
+        <div class="site-hero__content">
+          <span class="hero-pill">SKIDIY 精選</span>
+          <h1 class="hero-title"><?=$article_data['title']?></h1>
+          <p class="hero-subtitle">最新滑雪攻略與真實經驗分享</p>
+          <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
         </div>
       </div>
 
