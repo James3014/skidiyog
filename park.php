@@ -30,6 +30,115 @@ if($name=='moiwa'){$park_info['cname']='二世谷';}
 if($name=='gala'){$park_info['cname']='';}
 if($name=='iski'){$park_info['cname']='iSKI';}
 
+// Section definitions (mirrors diy.ski ordering)
+$SECTION_HEADER = array(
+  'about'  => '介紹',
+  'photo' => '照片',
+  'location'  => '位置',
+  'slope'  => '雪道',
+  'ticket' => '雪票',
+  'time' => '開放時間',
+  'access' => '交通',
+  'live'  => '住宿',
+  'rental' => '租借',
+  'delivery'  => '宅配',
+  'luggage' => '行前裝備',
+  'workout'  => '體能',
+  'remind'  => '上課地點及事項',
+  'join'  => '約伴及討論',
+  'event'  => '優惠活動',
+  'all'  => '完整閱讀'
+);
+
+// Map to database column names
+$field_mapping = array(
+  'about' => 'about',
+  'photo' => 'photo_section',
+  'location' => 'location_section',
+  'slope' => 'slope_section',
+  'ticket' => 'ticket_section',
+  'time' => 'time_section',
+  'access' => 'access_section',
+  'live' => 'live_section',
+  'rental' => 'rental_section',
+  'delivery' => 'delivery_section',
+  'luggage' => 'luggage_section',
+  'workout' => 'workout_section',
+  'remind' => 'remind_section',
+  'join' => 'join_section',
+  'event' => 'event_section'
+);
+
+// Predefined media overrides so重要區塊有預設圖
+$hero_overrides = array(
+  'karuizawa' => 'https://diy.ski/photos/karuizawa/course1.jpg',
+  'naeba' => 'https://diy.ski/photos/naeba/3.jpg?v3',
+  'appi' => 'https://diy.ski/photos/appi/appi.jpg'
+);
+
+$gallery_overrides = array(
+  'karuizawa' => array(
+    array(
+      'src' => 'https://diy.ski/photos/karuizawa/course1.jpg',
+      'caption' => '山頂纜車沿線視角'
+    ),
+    array(
+      'src' => 'https://diy.ski/photos/karuizawa/course02.jpg',
+      'caption' => '親子友善的綠線雪道'
+    ),
+    array(
+      'src' => 'https://diy.ski/photos/karuizawa/karuizawasite02b.jpg',
+      'caption' => '雪道與購物中心的連結'
+    ),
+    array(
+      'src' => 'https://diy.ski/photos/karuizawa/rental.jpg',
+      'caption' => '王子飯店租借中心'
+    )
+  )
+);
+
+// Helper to render fallback gallery
+function render_photo_gallery($photos, $resort_name){
+  if(empty($photos)){return '';}
+  ob_start(); ?>
+  <div class="photo-grid">
+    <?php foreach($photos as $idx => $photo):
+      $src = $photo['src'];
+      $caption = isset($photo['caption']) ? $photo['caption'] : '';
+      $alt = isset($photo['alt']) ? $photo['alt'] : $resort_name . ' 照片 ' . ($idx + 1);
+    ?>
+      <figure class="photo-grid-item">
+        <img src="<?=$src?>" alt="<?=htmlspecialchars($alt, ENT_QUOTES)?>">
+        <?php if(!empty($caption)){ ?><figcaption><?=$caption?></figcaption><?php } ?>
+      </figure>
+    <?php endforeach; ?>
+  </div>
+  <?php
+  return ob_get_clean();
+}
+
+if(empty($park_info['photo'])){
+  if(isset($hero_overrides[$name])){
+    $park_info['photo'] = $hero_overrides[$name];
+  }else{
+    $park_info['photo'] = 'https://diy.ski/photos/'.$name.'/3.jpg';
+  }
+}
+
+$section_contents = array();
+foreach($SECTION_HEADER as $key => $val){
+  if($key == 'all'){continue;}
+  $field = isset($field_mapping[$key]) ? $field_mapping[$key] : $key;
+  $content = isset($park_info[$field]) ? $park_info[$field] : '';
+
+  if($key === 'photo' && empty($content) && isset($gallery_overrides[$name])){
+    $content = render_photo_gallery($gallery_overrides[$name], $park_info['cname']);
+  }
+
+  $section_contents[$key] = $content;
+}
+
+$hero_image = $park_info['photo'];
 ?>
 <!DOCTYPE html>
   <html>
@@ -44,96 +153,255 @@ if($name=='iski'){$park_info['cname']='iSKI';}
       <!--Import jQuery-->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <style>
-        .park-content {
-          padding: 20px;
-          max-width: 1200px;
-          margin: 0 auto;
+        body {
+          background-color: #f8f9fb;
         }
-        .park-content img {
-          max-width: 100%;
-          height: auto;
+        .navbar-fixed nav {
+          background: linear-gradient(90deg,#f16f6f 0%,#f48b84 100%);
+          box-shadow: 0 4px 18px rgba(241,111,111,0.25);
         }
-        .park-content h3 {
-          margin-top: 30px;
-          color: #2196F3;
+        .nav-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 32px;
+          min-height: 72px;
         }
-
-        /* Left navigation styles */
+        .nav-header .logo {
+          height: 40px;
+          width: auto;
+        }
+        .nav-header ul {
+          display: flex;
+          gap: 20px;
+          margin: 0 48px 0 60px;
+        }
+        .nav-header ul li a {
+          color: #fff;
+          font-weight: 500;
+          text-transform: none;
+          letter-spacing: .3px;
+        }
+        .btn.btn-outline {
+          border: 1px solid rgba(255,255,255,0.85);
+          border-radius: 999px;
+          padding: 0 24px;
+          line-height: 36px;
+          height: 38px;
+          color: #fff;
+          font-weight: 600;
+          background: transparent;
+        }
+        .btn.btn-outline:hover {
+          background: rgba(255,255,255,0.15);
+        }
+        .header-block-resort {
+          position: relative;
+          min-height: 420px;
+          border-radius: 20px;
+          overflow: hidden;
+          margin: 40px auto 20px;
+          background-size: cover;
+          background-position: center;
+          display: flex;
+          align-items: center;
+        }
+        .header-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg,rgba(0,0,0,0.55),rgba(0,0,0,0.25));
+        }
+        .header-block-content {
+          position: relative;
+          z-index: 2;
+          padding: 40px;
+          color: #fff;
+        }
+        .resort-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 16px;
+          border-radius: 999px;
+          border: 1px solid rgba(255,255,255,0.4);
+          text-transform: uppercase;
+          font-size: 12px;
+          letter-spacing: 2px;
+          margin-bottom: 16px;
+        }
+        .resort-name {
+          font-size: 48px;
+          font-weight: 700;
+          line-height: 1.1;
+          margin: 0;
+        }
+        .resort-name span {
+          display: block;
+        }
+        .resort-name small {
+          display: block;
+          font-size: 18px;
+          letter-spacing: 4px;
+          text-transform: uppercase;
+          opacity: .9;
+          margin-top: 8px;
+        }
+        .resort-tagline {
+          font-size: 20px;
+          margin: 16px 0 30px;
+          opacity: .95;
+        }
+        .btn-primary {
+          background: #fff;
+          color: #f16f6f;
+          font-weight: 600;
+          border-radius: 999px;
+          padding: 14px 36px;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        .btn-primary i {
+          vertical-align: middle;
+        }
         .leftnav {
           background-color: #fff;
-          padding: 20px;
-          border-radius: 4px;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          padding: 24px;
+          border-radius: 18px;
+          box-shadow: 0 18px 45px rgba(15,23,42,0.08);
+          position: sticky;
+          top: 120px;
         }
-
+        .leftnav-brand {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 16px;
+        }
+        .leftnav-brand img {
+          width: 32px;
+        }
+        .leftnav-brand span {
+          font-weight: 700;
+          letter-spacing: 1px;
+          color: #ff665a;
+        }
         .leftnav .resort-name {
-          font-size: 1.5rem;
-          font-weight: 500;
-          margin-bottom: 20px;
-          color: #333;
+          font-size: 22px;
+          color: #0f172a;
+          margin-bottom: 12px;
         }
-
+        .leftnav .resort-name span {
+          font-size: 14px;
+          text-transform: uppercase;
+          color: #94a3b8;
+          letter-spacing: 3px;
+        }
         .leftnav .tabs {
           display: flex;
           flex-direction: column;
+          gap: 4px;
         }
-
         .leftnav .tab {
           display: block;
-          padding: 12px 15px;
-          color: #666;
+          padding: 12px 16px;
+          border-radius: 10px;
+          color: #475569;
           text-decoration: none;
-          border-left: 3px solid transparent;
-          transition: all 0.3s;
+          font-weight: 500;
         }
-
-        .leftnav .tab:hover,
-        .leftnav .tab.leftnav-active {
-          background-color: #f5f5f5;
-          border-left-color: #2196F3;
-          color: #2196F3;
-        }
-
         .leftnav .tab li {
           list-style: none;
-          margin: 0;
         }
-
-        .leftnav.fixed {
-          position: fixed;
-          top: 100px;
-          width: calc(25% - 40px);
+        .leftnav .tab:hover,
+        .leftnav .tab.leftnav-active {
+          background: #eef2ff;
+          color: #4338ca;
         }
-
-        /* Return to top button */
         #return-to-top {
           position: fixed;
           bottom: 40px;
           right: 40px;
-          background: #2196F3;
+          background: #4338ca;
           width: 50px;
           height: 50px;
           display: none;
-          text-decoration: none;
           border-radius: 50%;
-          z-index: 1000;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+          box-shadow: 0 12px 30px rgba(67,56,202,0.35);
         }
-
         #return-to-top i {
-          color: white;
-          margin: 0;
-          position: relative;
-          top: 13px;
+          color: #fff;
+          line-height: 50px;
         }
-
-        #return-to-top:hover {
-          background: #1976D2;
-        }
-
-        /* Resort info container */
         .resort-info {
-          padding: 40px 0;
+          padding: 40px 0 80px;
+        }
+        .resort-content {
+          background: #fff;
+          border-radius: 24px;
+          padding: 40px;
+          box-shadow: 0 25px 60px rgba(15,23,42,0.08);
+        }
+        .resort-content h1 {
+          font-size: 26px;
+          font-weight: 700;
+          color: #111827;
+          margin: 40px 0 16px;
+          position: relative;
+          padding-left: 18px;
+        }
+        .resort-content h1:first-of-type {
+          margin-top: 0;
+        }
+        .resort-content h1:before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 6px;
+          height: 100%;
+          background: linear-gradient(180deg,#ef4444,#f97316);
+          border-radius: 999px;
+        }
+        .photo-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+          gap: 16px;
+          margin: 20px 0 30px;
+        }
+        .photo-grid-item {
+          border-radius: 16px;
+          overflow: hidden;
+          background: #f8fafc;
+          box-shadow: inset 0 0 0 1px rgba(148,163,184,0.2);
+        }
+        .photo-grid-item img {
+          width: 100%;
+          height: 180px;
+          object-fit: cover;
+          display: block;
+        }
+        .photo-grid-item figcaption {
+          padding: 12px;
+          font-size: 14px;
+          color: #475569;
+        }
+        @media (max-width: 992px){
+          .nav-header {
+            padding: 0 16px;
+          }
+          .leftnav {
+            position: relative;
+            top: auto;
+            margin-bottom: 20px;
+          }
+          .resort-content {
+            padding: 24px;
+          }
+          .header-block-resort {
+            border-radius: 0;
+          }
+          .resort-name {
+            font-size: 36px;
+          }
         }
       </style>
     </head>
@@ -149,59 +417,20 @@ if($name=='iski'){$park_info['cname']='iSKI';}
     </script>
 
     <body>
-      <?php
-      // Define section display order and titles (matching original diy.ski)
-      // MUST be defined BEFORE nav.inc.php is included
-      $SECTION_HEADER = array(
-        'about'  => '介紹',
-        'photo' => '照片',
-        'location'  => '位置',
-        'slope'  => '雪道',
-        'ticket' => '雪票',
-        'time' => '開放時間',
-        'access' => '交通',
-        'live'  => '住宿',
-        'rental' => '租借',
-        'delivery'  => '宅配',
-        'luggage' => '行前裝備',
-        'workout'  => '體能',
-        'remind'  => '上課地點及事項',
-        'join'  => '約伴及討論',
-        'event'  => '優惠活動',
-        'all'  => '完整閱讀'
-      );
-
-      // Map to database column names
-      $field_mapping = array(
-        'about' => 'about',
-        'photo' => 'photo_section',
-        'location' => 'location_section',
-        'slope' => 'slope_section',
-        'ticket' => 'ticket_section',
-        'time' => 'time_section',
-        'access' => 'access_section',
-        'live' => 'live_section',
-        'rental' => 'rental_section',
-        'delivery' => 'delivery_section',
-        'luggage' => 'luggage_section',
-        'workout' => 'workout_section',
-        'remind' => 'remind_section',
-        'join' => 'join_section',
-        'event' => 'event_section'
-      );
-      ?>
-
       <?php require('nav.inc.php');?>
 
       <div class="container-fuild">
         <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
-        <div class="row header-block-resort">
-            <div class="header-img-bottom"><img src="assets/images/header_img_bottom.png" alt=""></div>
-            <img src="https://diy.ski/photos/naeba/3.jpg?v3">
-            <div class="col s10 push-s1  m6 push-m3  header-block-content">
-              <p class="resort-name"><?=$park_info['cname']?>  <small><?=($name!='iski')?ucfirst($name):'滑雪俱樂部'?></small></p>
-              <p><?=$park_info['description']?></p>
-              <button class="btn waves-effect waves-light btn-primary space-top-2" type="submit" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
+        <div class="row header-block-resort" style="background-image:url('<?=$hero_image?>');">
+            <div class="header-overlay"></div>
+            <div class="col s12 m10 push-m1 header-block-content" style="background-image:url('assets/images/header_img_bottom.png');background-size:contain;background-repeat:no-repeat;background-position:bottom right;width:100%;">
+              <div class="resort-pill">Snow Resort Guide</div>
+              <p class="resort-name">
+                <span><?=$park_info['cname']?></span>
+                <small><?=($name!='iski')?ucfirst($name):'滑雪俱樂部'?></small>
+              </p>
+              <p class="resort-tagline"><?=$park_info['description']?></p>
+              <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
             </div>
         </div>
       </div>
@@ -210,13 +439,16 @@ if($name=='iski'){$park_info['cname']='iSKI';}
         <div class="row">
           <!-- Left navigation for desktop -->
           <div class="col l3 hide-on-med-and-down leftnav">
+            <div class="leftnav-brand">
+              <img src="/assets/images/logo-skidiy.png?v20251026" alt="SKIDIY">
+              <span>SKIDIY</span>
+            </div>
             <p class="resort-name"><?=$park_info['cname']?> <span><?=($name!='iski')?ucfirst($name):''?></span></p>
             <ul class="tabs tabs-transparent">
               <?php
               foreach($SECTION_HEADER as $key => $val){
                 if($key == 'all') continue; // Skip "完整閱讀"
-                $field = isset($field_mapping[$key]) ? $field_mapping[$key] : $key;
-                if(!empty($park_info[$field])){
+                if(!empty($section_contents[$key])){
                   echo '<a href="#' . $key . '" class="tab"><li>' . $val . '</li></a>';
                 }
               }
@@ -230,18 +462,15 @@ if($name=='iski'){$park_info['cname']='iSKI';}
             $has_content = false;
             foreach($SECTION_HEADER as $key => $val){
               if($key == 'all') continue; // Skip "完整閱讀"
-
-              $field = isset($field_mapping[$key]) ? $field_mapping[$key] : $key;
-
-              if(!empty($park_info[$field])){
+              if(!empty($section_contents[$key])){
                 echo '<h1 id="' . $key . '">' . $val . '</h1>';
 
                 // For naeba, karuizawa, appi: output HTML directly (TinyMCE format)
                 // For others: use <pre> tag
                 if(in_array($name, ['naeba', 'karuizawa', 'appi'])){
-                  echo $park_info[$field] . '<hr>';
+                  echo $section_contents[$key] . '<hr>';
                 } else {
-                  echo '<pre>' . $park_info[$field] . '</pre><hr>';
+                  echo '<pre>' . $section_contents[$key] . '</pre><hr>';
                 }
 
                 $has_content = true;
