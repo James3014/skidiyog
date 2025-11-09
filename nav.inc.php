@@ -1,3 +1,4 @@
+<?php if(!isset($name)){$name=null;} ?>
       <div class="navbar-fixed">
         <nav>
           <div class="nav-wrapper nav-header">
@@ -36,7 +37,15 @@
             <img src="/assets/images/logo-skidiy.png?v251026" alt=""  class="logo">
           </a>
         </div>
-        <li><?=isset($park_info['cname']) ? $park_info['cname'] : ucfirst($name)?></li>
+        <?php
+          $nav_display_name = '';
+          if(isset($park_info['cname']) && $park_info['cname']!==''){
+            $nav_display_name = $park_info['cname'];
+          } elseif(!empty($name)) {
+            $nav_display_name = ucfirst($name);
+          }
+        ?>
+        <li><?=$nav_display_name?></li>
         <li class="subnav">
         <!--
           <p><i class="material-icons">place</i></p>
