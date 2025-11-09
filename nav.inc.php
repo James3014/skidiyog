@@ -44,14 +44,16 @@
           -->
           <ul id="childnav">
           <?php
-                reset($SECTION_HEADER);
-                foreach($SECTION_HEADER as $key => $val){
-                  if($key == 'all') continue; // Skip "完整閱讀"
-                  // Use anchor links for park.php, route links for routing.php
-                  if(strstr($_SERVER['PHP_SELF'],'park')){
-                    echo '<a href="#' . $key . '" class="tab"><li>'.$val.'</li></a>';
-                  } else {
-                    echo '<a href="https://'.domain_name.'/'.$name.'/'.$key.'" class="tab"><li>'.$val.'</li></a>';
+                if(isset($SECTION_HEADER) && is_array($SECTION_HEADER)){
+                  reset($SECTION_HEADER);
+                  foreach($SECTION_HEADER as $key => $val){
+                    if($key == 'all') continue; // Skip "完整閱讀"
+                    // Use anchor links for park.php, route links for routing.php
+                    if(strstr($_SERVER['PHP_SELF'],'park')){
+                      echo '<a href="#' . $key . '" class="tab"><li>'.$val.'</li></a>';
+                    } else {
+                      echo '<a href="https://'.domain_name.'/'.$name.'/'.$key.'" class="tab"><li>'.$val.'</li></a>';
+                    }
                   }
                 }
           ?>
