@@ -240,8 +240,8 @@ $hero_image = $park_info['photo'];
         <?php renderFAQSection($faqs, $park_info['cname'] . ' 常見問題'); ?>
       </div>
 
-      <div style="margin: 20px auto; text-align: center;">
-        <button class="btn btn-outline btn-outline-primary" onclick="history.back();"><i class="material-icons">keyboard_arrow_left</i> 回前一頁</button>
+      <div class="back-button-wrap">
+        <button class="btn btn-outline btn-outline-primary back-button" onclick="history.back();"><i class="material-icons">keyboard_arrow_left</i> 回前一頁</button>
       </div>
 
       <?php
