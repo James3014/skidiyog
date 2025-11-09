@@ -37,39 +37,35 @@ $parkList = $PARKS->listing();
     <body class="index-bg">
       <?php require('nav.inc.php');?>
 
-      <div class="container-fuild">
-        <div class="row header-block-index">
-            <div class="col s10 push-s1  m6 push-m3  header-block-content">
-              <p class="text-center slogan-en">Discover your SKI adventure</p>
-              <p class="slogan-ch">發掘適合各種旅程安排的滑雪場</p>
-              <button class="btn waves-effect waves-light btn-primary space-top-2" type="submit" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
-            </div>
-
+      <div class="site-hero" style="--hero-image:url('/assets/images/index-bg.jpg');">
+        <div class="site-hero__overlay"></div>
+        <div class="site-hero__content">
+          <span class="hero-pill">Snow Resort Guide</span>
+          <h1 class="hero-title">Discover your SKI adventure</h1>
+          <p class="hero-subtitle">發掘適合各種旅程安排的滑雪場</p>
+          <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
         </div>
       </div>
 
-      <div class="container resort-block">
-        <div class="row">
-<?php
-foreach($parkList as $n => $r){
-?>
-            <div class="col s6 m4 l3">
-              <div class="location-img">
-                <a href="/park.php?name=<?=$r['name'];?>" class="waves-effect waves-light">
-                  <img src="https://diy.ski/photos/<?=$r['name'];?>/3.jpg?v3" alt="<?=$r['cname'];?>" onerror="this.src='assets/images/index-bg.jpg'">
-                </a>
+      <section class="site-section">
+        <div class="card-grid">
+          <?php foreach($parkList as $n => $r){ 
+            $title = ($r['cname'])?$r['cname']:$r['name'];
+            $subtitle = ($r['name']=='iski') ? 'SKI CLUB' : ucfirst($r['name']);
+            $img = "https://diy.ski/photos/{$r['name']}/3.jpg?v3";
+          ?>
+            <a class="grid-card" href="/park.php?name=<?=$r['name'];?>">
+              <div class="grid-card__image">
+                <img src="<?=$img?>" alt="<?=$title?>" onerror="this.src='/assets/images/index-bg.jpg'">
               </div>
-              <a href="/park.php?name=<?=$r['name'];?>" class="waves-effect waves-light">
-                <p class="slogan"><?=($r['cname'])?$r['cname']:$r['name']; ?></p>
-              </a>
-            </div>
-
-<?php
-}
-?>
-
+              <div class="grid-card__body">
+                <p class="grid-card__title"><?=$title?></p>
+                <span class="grid-card__meta"><?=$subtitle?></span>
+              </div>
+            </a>
+          <?php } ?>
         </div>
-      </div>
+      </section>
 
       <div style="margin: 0px auto;">
       <button class="btn btn-outline btn-outline-primary" onclick="history.back();"><i class="material-icons">keyboard_arrow_left</i> 回前一頁</button>

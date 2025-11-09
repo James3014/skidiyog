@@ -31,19 +31,18 @@ $target = 'instructors';
     <body class="index-bg">
       <?php require('nav.inc.php');?>
 
-      <div class="container-fuild">
-        <div class="row header-block-index">
-            <div class="col s10 push-s1  m6 push-m3  header-block-content">
-              <p class="text-center slogan-en">Discover your SKI adventure</p>
-              <p class="slogan-ch">發掘適合各種旅程安排的滑雪場</p>
-              <button class="btn waves-effect waves-light btn-primary space-top-2" type="submit" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
-            </div>
-            
+      <div class="site-hero" style="--hero-image:url('/assets/images/index-bg.jpg');">
+        <div class="site-hero__overlay"></div>
+        <div class="site-hero__content">
+          <span class="hero-pill">Instructor Team</span>
+          <h1 class="hero-title">最專業的教練夥伴</h1>
+          <p class="hero-subtitle">擁有國際證照的教練團隊，為你客製化滑雪課程</p>
+          <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
         </div>
       </div>
 
-      <div class="container resort-block">
-        <div class="row">
+      <section class="site-section">
+        <div class="card-grid">
 <?php 
 //_v($instructorList);
 foreach($instructorList as $n => $r){
@@ -58,16 +57,15 @@ foreach($instructorList as $n => $r){
         $ver = 'v180615a';
         //$ver = time();
 ?>
-            <div class="col s6 m4 l3">
-              <div class="">
-                <a href="<?=$r['name']?>/" class="waves-effect waves-light"><img src="/photos/<?=$r['name'];?>/1.jpg?<?=$ver?>" alt=""></a>
+            <a class="grid-card" href="<?=$r['name']?>/">
+              <div class="grid-card__image">
+                <img src="/photos/<?=$r['name'];?>/1.jpg?<?=$ver?>" alt="<?=$r['cname']?>" onerror="this.src='/assets/images/index-bg.jpg'">
               </div>
-              <a href="<?=$r['name']?>/" class="waves-effect waves-light">
-              <p class="slogan"><?=($r['cname'])?$r['cname']:'n/a'; ?><?php  if( $r['jobType']=='support') echo ' <sub>(支援教練)</sub>';  ?> </p>
-              <p class="location"><?=$expertise;?> </p>
-              </a>
-              
-            </div>
+              <div class="grid-card__body">
+                <p class="grid-card__title"><?=($r['cname'])?$r['cname']:'n/a'; ?><?php  if( $r['jobType']=='support') echo ' <sub>(支援教練)</sub>';  ?></p>
+                <span class="grid-card__meta"><?=$expertise;?></span>
+              </div>
+            </a>
 
 <?php
     }else{
@@ -77,7 +75,7 @@ foreach($instructorList as $n => $r){
 ?>
 
         </div>
-      </div>
+      </section>
 
       <div style="margin: 0px auto;">
       <button class="btn btn-outline btn-outline-primary" onclick="history.back();"><i class="material-icons">keyboard_arrow_left</i> 回前一頁</button>

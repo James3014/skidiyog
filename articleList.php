@@ -38,38 +38,41 @@ $articleList = $ARTICLE->listing();
     <body class="index-bg">
       <?php require('nav.inc.php');?>
 
-      <div class="container-fuild">
-        <div class="row header-block-index">
-            <div class="col s10 push-s1  m6 push-m3  header-block-content">
-              <p class="text-center slogan-en">Discover your SKI adventure</p>
-              <p class="slogan-ch">發掘適合各種旅程安排的滑雪場</p>
-              <button class="btn waves-effect waves-light btn-primary space-top-2" type="submit" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
-            </div>
-            
+      <div class="site-hero" style="--hero-image:url('/assets/images/index-bg.jpg');">
+        <div class="site-hero__overlay"></div>
+        <div class="site-hero__content">
+          <span class="hero-pill">Insights</span>
+          <h1 class="hero-title">雪場攻略與最新文章</h1>
+          <p class="hero-subtitle">從裝備準備到雪場攻略，掌握所有滑雪靈感</p>
+          <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
         </div>
       </div>
 
-      <div class="container resort-block">
-        <div class="row">
+      <section class="site-section">
+        <div class="card-grid">
 <?php
 foreach($articleList as $n => $r){
  if(in_array($r['idx'], [24,25])) continue;
+ $img = "/photos/articles/{$r['idx']}/{$r['idx']}.jpg?v221008";
+ $title = ($r['title'])?$r['title']:'n/a';
+ $published = !empty($r['timestamp']) ? date('Y.m.d', strtotime($r['timestamp'])) : 'SKIDIY GUIDE';
 ?>
-            <div class="col s6 m4 l3">
-              <div class="location-img">
-                <a href="/article.php?idx=<?=$r['idx'];?>" class="waves-effect waves-light"><img src="/photos/articles/<?=$r['idx'];?>/<?=$r['idx'];?>.jpg?v221008" alt=""> </a>
+            <a class="grid-card" href="/article.php?idx=<?=$r['idx'];?>">
+              <div class="grid-card__image">
+                <img src="<?=$img?>" alt="<?=$title?>" onerror="this.src='/assets/images/index-bg.jpg'">
               </div>
-              <a href="/article.php?idx=<?=$r['idx'];?>" class="waves-effect waves-light"><p class="slogan"><?=($r['title'])?$r['title']:'n/a'; ?></p></a>
-              <!--<p class="location"> </p>-->
-              
-            </div>
+              <div class="grid-card__body">
+                <p class="grid-card__title"><?=$title?></p>
+                <span class="grid-card__meta"><?=$published?></span>
+              </div>
+            </a>
 
 <?php
 }
 ?>
 
         </div>
-      </div>
+      </section>
 
       <div style="margin: 0px auto;">
       <button class="btn btn-outline btn-outline-primary" onclick="history.back();"><i class="material-icons">keyboard_arrow_left</i> 回前一頁</button>

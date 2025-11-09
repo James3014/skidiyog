@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
     <!--Import custom.css-->
     <link rel="stylesheet" href="/assets/css/custom.min.css">
+    <link rel="stylesheet" href="/assets/css/theme.css">
     <!--  add by mauji for over write some css style -->
     <link rel="stylesheet" href="/assets/css/workaround.css">
     <!--Import jQuery-->
