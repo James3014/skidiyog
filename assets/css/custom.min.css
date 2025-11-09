@@ -1,5 +1,5 @@
 /* SKidiyog Custom Styles */
-:root{--brand-primary:#1f2c46;--brand-secondary:#273754;--accent-blue:#1e88e5;--accent-blue-dark:#1565c0;--text-dark:#f5f6fb;--text-muted:#c1c8d8;--card-bg:#1b2640;--surface:#0f1727;--surface-alt:#162036;--border-soft:#28334e}
+:root{--brand-primary:#1f2c46;--brand-secondary:#273754;--accent-blue:#1e88e5;--accent-blue-dark:#1565c0;--text-dark:#f5f6fb;--text-muted:#c1c8d8;--content-bg:#ffffff;--content-text:#1f2c46;--surface:#0f1727;--surface-alt:#162036;--border-soft:#28334e}
 body{font-family:-apple-system,"system-ui","Segoe UI",Roboto,"Helvetica Neue","Microsoft JhengHei",Arial,sans-serif;margin:0;padding:0;line-height:1.6;background-color:var(--surface);color:var(--text-dark)}
 body.index-bg{background-color:var(--surface-alt)}
 .container{max-width:1200px;margin:0 auto;padding:20px}
@@ -283,16 +283,17 @@ body.index-bg{background-color:var(--surface-alt)}
 }
 
 .resort-content {
-  background: #fff;
+  background: var(--content-bg);
   border-radius: 24px;
   padding: 40px;
   box-shadow: 0 25px 60px rgba(15, 23, 42, 0.08);
+  color: var(--content-text);
 }
 
 .resort-content h1 {
   font-size: 26px;
   font-weight: 700;
-  color: var(--text-dark);
+  color: var(--content-text);
   margin: 36px 0 16px;
   position: relative;
   padding-left: 18px;
@@ -311,6 +312,24 @@ body.index-bg{background-color:var(--surface-alt)}
   height: 100%;
   border-radius: 999px;
   background: linear-gradient(180deg, var(--brand-primary), var(--brand-secondary));
+}
+
+.resort-content pre,
+.resort-content p,
+.resort-content li {
+  color: var(--content-text);
+}
+
+.resort-content a {
+  color: var(--accent-blue);
+  text-decoration: underline;
+}
+
+.resort-content pre {
+  background: rgba(15,23,42,0.03);
+  padding: 16px;
+  border-radius: 12px;
+  overflow-x: auto;
 }
 
 .photo-grid {
