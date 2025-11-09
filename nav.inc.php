@@ -14,7 +14,7 @@ if(isset($park_info['cname']) && $park_info['cname']!==''){
         <nav>
           <div class="nav-wrapper nav-header">
             <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            <a href="/" class="brand-link"><img src="/assets/images/logo-skidiy.png?v20251026" alt="" class="logo"></a>
+            <a href="/" class="brand-link"><img src="https://diy.ski/assets/images/logo-skidiy.png" alt="SKIDIY" class="logo"></a>
             <ul class="hide-on-med-and-down">
               <li><a href="/">雪場資訊</a></li>
               <li><a href="/instructorList.php">教練團隊</a></li>
@@ -43,7 +43,7 @@ if(isset($park_info['cname']) && $park_info['cname']!==''){
       <ul class="sidenav" id="mobile-nav">
         <li class="sidenav-header">
           <a href="/" class="sidenav-close logo-link">
-            <img src="/assets/images/logo-skidiy.png?v251026" alt="SKIDIY" class="logo">
+            <img src="https://diy.ski/assets/images/logo-skidiy.png" alt="SKIDIY" class="logo">
           </a>
           <?php if(!empty($nav_display_name)){ ?>
             <p class="sidenav-resort"><?=$nav_display_name?></p>
