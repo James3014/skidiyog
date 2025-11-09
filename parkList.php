@@ -37,7 +37,7 @@ $parkList = $PARKS->listing();
     <body class="index-bg">
       <?php require('nav.inc.php');?>
 
-      <div class="site-hero" style="--hero-image:url('/assets/images/index-bg.jpg');">
+      <div class="site-hero" style="--hero-image:url('/assets/images/header_index_main_img.png');">
         <div class="site-hero__overlay"></div>
         <div class="site-hero__content">
           <span class="hero-pill">Snow Resort Guide</span>

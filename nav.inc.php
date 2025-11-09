@@ -3,7 +3,7 @@
         <nav>
           <div class="nav-wrapper nav-header">
             <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            <a href="/" ><img src="/assets/images/logo-skidiy.png?v20251026" alt="" class="logo"></a>
+            <a href="/" class="brand-link"><img src="/assets/images/logo-skidiy.png?v20251026" alt="" class="logo"></a>
             <ul class="hide-on-med-and-down">
               <li><a href="/">雪場資訊</a></li>
               <li><a href="/instructorList.php">教練團隊</a></li>
@@ -16,10 +16,10 @@
 <?php
             if(isset($_SESSION['user_idx'])){ 
               //echo '<a class=" waves-effect waves-light btn btn-outline" href="https://'.domain_name.'/index.php?act=logout" >登出 '.$_SESSION['name'].'</a>';
-              echo '<a class=" waves-effect waves-light btn btn-outline" href="https://'.domain_name.'/account_info.php" >帳號 </a>';
+              echo '<a class="waves-effect waves-light btn btn-outline header-login" href="https://'.domain_name.'/account_info.php" >帳號 </a>';
               //echo '<button data-target="logout" class="waves-effect waves-light btn-flat space-top-2 modal-trigger" type="submit" >登出 <i class="material-icons">help_outline</i></button>';
             }else{
-              echo '<a class=" waves-effect waves-light btn btn-outline" href="https://booking.diy.ski/schedule?action=login&redirect=/schedule" >登入</a>';
+              echo '<a class="waves-effect waves-light btn btn-outline header-login" href="https://booking.diy.ski/schedule?action=login&redirect=/schedule" >登入</a>';
             }
 ?>            
 
@@ -45,7 +45,7 @@
             $nav_display_name = ucfirst($name);
           }
         ?>
-        <li><?=$nav_display_name?></li>
+        <?php if(!empty($nav_display_name)){ ?><li><?=$nav_display_name?></li><?php } ?>
         <li class="subnav">
         <!--
           <p><i class="material-icons">place</i></p>
@@ -71,11 +71,13 @@
 
         <?php if(strstr($_SERVER['PHP_SELF'],'park')){ ?>
         <li><a href="/">其他雪場</a></li>
+        <li><a href="https://booking.diy.ski/schedule?action=login&redirect=/schedule">登入</a></li>
         <li><a href="/instructorList.php">教練團隊</a></li>
         <li><a href="/articleList.php">相關文章</a></li>
         <li><a href="/schedule.php">預訂課程</a></li>
         <?php } else { ?>
         <li><a href="../">其他雪場</a></li>
+        <li><a href="https://booking.diy.ski/schedule?action=login&redirect=/schedule">登入</a></li>
         <li><a href="../instructorList.php">教練團隊</a></li>
         <li><a href="../articleList.php">相關文章</a></li>
         <li><a href="https://booking.diy.ski">預訂課程</a></li>
