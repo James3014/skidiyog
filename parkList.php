@@ -56,7 +56,7 @@ $parkList = $PARKS->listing();
           ?>
             <a class="grid-card" href="/park.php?name=<?=$r['name'];?>">
               <div class="grid-card__image">
-                <img src="<?=$img?>" alt="<?=$title?>" onerror="this.src='/assets/images/index-bg.jpg'">
+                <img src="<?=$img?>" alt="<?=$title?>" onerror="this.onerror=null;this.src='https://diy.ski/assets/images/header_index_main_img.png';">
               </div>
               <div class="grid-card__body">
                 <p class="grid-card__title"><?=$title?></p>
