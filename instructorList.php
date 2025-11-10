@@ -53,24 +53,19 @@ foreach($instructorList as $n => $r){
     if($r['expertise']=='ski') $expertise = "Ski";
     if($r['expertise']=='both') $expertise = "Snowboard & Ski";
     $expertise = ($r['name']==='firsttrack') ? 'Snowboard & Ski' : $expertise;
-    if(file_exists('photos/'.$r['name'].'/1.jpg')){
-        $ver = 'v180615a';
-        //$ver = time();
+    $img = "https://diy.ski/photos/{$r['name']}/1.jpg";
 ?>
             <a class="grid-card" href="<?=$r['name']?>/">
               <div class="grid-card__image">
-                <img src="/photos/<?=$r['name'];?>/1.jpg?<?=$ver?>" alt="<?=$r['cname']?>" onerror="this.src='/assets/images/index-bg.jpg'">
+                <img src="<?=$img?>" alt="<?=$r['cname']?>" onerror="this.src='/assets/images/index-bg.jpg'">
               </div>
               <div class="grid-card__body">
-                <p class="grid-card__title"><?=($r['cname'])?$r['cname']:'n/a'; ?><?php  if( $r['jobType']=='support') echo ' <sub>(支援教練)</sub>';  ?></p>
+                <p class="grid-card__title"><?=($r['cname'])?$r['cname']:'n/a'; ?><?php  if( $r['jobType]=='support') echo ' <sub>(支援教練)</sub>';  ?></p>
                 <span class="grid-card__meta"><?=$expertise;?></span>
               </div>
             </a>
 
 <?php
-    }else{
-      //echo $r['name'];
-    }
 }
 ?>
 
