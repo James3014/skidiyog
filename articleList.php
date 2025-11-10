@@ -53,7 +53,7 @@ $articleList = $ARTICLE->listing();
 <?php
 foreach($articleList as $n => $r){
  if(in_array($r['idx'], [24,25])) continue;
- $img = "/photos/articles/{$r['idx']}/{$r['idx']}.jpg?v221008";
+ $img = "https://diy.ski/photos/articles/{$r['idx']}/{$r['idx']}.jpg?v221008";
  $title = ($r['title'])?$r['title']:'n/a';
  $published = !empty($r['timestamp']) ? date('Y.m.d', strtotime($r['timestamp'])) : 'SKIDIY GUIDE';
 ?>
