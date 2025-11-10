@@ -26,9 +26,9 @@ RewriteRule ^bkAdmin/$ - [L]
 # ========================================
 # Routing Rules
 # ========================================
-RewriteRule ^refer/(.+)?$ refer.php?target=$1 [NC,L]
-RewriteRule ^([A-Za-z0-9-]+)/?$ routing.php?target=$1 [NC,L]
-RewriteRule ^([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$ routing.php?target=$1&section=$2 [NC,L]
+RewriteRule ^refer/(.+)?$ refer.php?target=$1 [NC,L,QSA]
+RewriteRule ^([A-Za-z0-9-]+)/?$ routing.php?target=$1 [NC,L,QSA]
+RewriteRule ^([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$ routing.php?target=$1&section=$2 [NC,L,QSA]
 
 # ========================================
 # Security Headers (via mod_headers)
