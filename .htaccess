@@ -23,6 +23,9 @@ RewriteRule ^alpen5off alpen.php [NC,L,QSA]
 RewriteRule ^bkInst/$ - [L]
 RewriteRule ^bkAdmin/$ - [L]
 
+# Proxy photo assets to original diy.ski source
+RewriteRule ^photos/(.*)$ https://diy.ski/photos/$1 [NC,L,R=302,QSA]
+
 # ========================================
 # Routing Rules
 # ========================================
