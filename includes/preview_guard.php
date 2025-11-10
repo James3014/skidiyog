@@ -25,16 +25,21 @@ $enforcePreview = defined('SKID_PREVIEW_TOKEN_ENFORCED') ? SKID_PREVIEW_TOKEN_EN
 $allowedToken = defined('SKID_PREVIEW_TOKEN') ? SKID_PREVIEW_TOKEN : '';
 
 $hasPreviewAccess = false;
+$sessionToken = isset($_SESSION['preview_token']) ? $_SESSION['preview_token'] : null;
 if ($enforcePreview && $allowedToken !== '') {
     $incomingToken = isset($_GET['preview_token']) ? trim($_GET['preview_token']) : null;
     if ($incomingToken && hash_equals($allowedToken, $incomingToken)) {
         $hasPreviewAccess = true;
+        $_SESSION['preview_token'] = $allowedToken;
         // extend convenience via secure-ish cookie for navigation within preview site
         if (!isset($_COOKIE['preview_token']) || !hash_equals($_COOKIE['preview_token'], $allowedToken)) {
             setcookie('preview_token', $allowedToken, 0, '/', '', false, true);
         }
+    } elseif ($sessionToken && hash_equals($sessionToken, $allowedToken)) {
+        $hasPreviewAccess = true;
     } elseif (isset($_COOKIE['preview_token']) && hash_equals($_COOKIE['preview_token'], $allowedToken)) {
         $hasPreviewAccess = true;
+        $_SESSION['preview_token'] = $allowedToken;
     }
 
     if (!$hasPreviewAccess) {
