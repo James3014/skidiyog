@@ -53,7 +53,7 @@ $parkList = $PARKS->listing();
           <?php foreach($parkList as $n => $r){ 
             $title = ($r['cname'])?$r['cname']:$r['name'];
             $subtitle = ($r['name']=='iski') ? 'SKI CLUB' : ucfirst($r['name']);
-            $img = "https://diy.ski/photos/{$r['name']}/3.jpg?v3";
+            $img = "https://diy.ski/photos/{$r['name']}/{$r['name']}.jpg?v190707";
           ?>
             <a class="grid-card" href="/park.php?name=<?=$r['name'];?>">
               <div class="grid-card__image">
