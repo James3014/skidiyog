@@ -13,6 +13,9 @@
 
 <!--  add by mj -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+    <?php if(defined('SKID_PREVIEW_MODE') && SKID_PREVIEW_MODE){ ?>
+    <meta name="robots" content="noindex, nofollow">
+    <?php } ?>
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
@@ -124,6 +127,7 @@
 
 
 
+    <?php if(!defined('SKID_STATIC_RENDER_MODE') || !SKID_STATIC_RENDER_MODE){ ?>
     <!-- Google Analytics-->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -135,4 +139,5 @@
       ga('require','displayfeatures');
       ga('send', 'pageview');
     </script>
+    <?php } ?>
   
