@@ -139,6 +139,33 @@ foreach($SECTION_HEADER as $key => $val){
 }
 
 $hero_image = $park_info['photo'];
+
+$display_name = !empty($park_info['cname']) ? $park_info['cname'] : ucfirst($name);
+$seo_source_text = '';
+if(!empty($section_contents['about'])){
+  $seo_source_text = strip_tags(convert_media_urls($section_contents['about']));
+}elseif(!empty($park_info['description'])){
+  $seo_source_text = strip_tags($park_info['description']);
+}
+$seo_source_text = preg_replace('/\s+/', ' ', trim($seo_source_text));
+if(function_exists('mb_substr')){
+  $snippet = mb_substr($seo_source_text, 0, 120);
+  if(mb_strlen($seo_source_text) > 120){
+    $snippet .= '…';
+  }
+}else{
+  $snippet = substr($seo_source_text, 0, 120);
+  if(strlen($seo_source_text) > 120){
+    $snippet .= '…';
+  }
+}
+$SEO_TITLE = $display_name . ' 滑雪場攻略 - SKIDIY';
+$SEO_DESCRIPTION = !empty($snippet) ? $snippet : '探索 ' . $display_name . ' 的雪道、交通與預訂資訊。';
+$SEO_OG_IMAGE = $hero_image;
+
+$faq_keyword = $display_name;
+$faq_url = 'https://faq.diy.ski/?q=' . urlencode($faq_keyword);
+$booking_url = 'https://booking.diy.ski/schedule?park=' . urlencode($name);
 ?>
 <!DOCTYPE html>
   <html>
@@ -164,7 +191,7 @@ $hero_image = $park_info['photo'];
       });
     </script>
 
-    <body>
+    <body data-help-variant="general" data-help-park="<?=$faq_keyword?>" data-help-park-slug="<?=$name?>">
       <?php require('nav.inc.php');?>
 
       <div class="container-fuild">
@@ -230,6 +257,29 @@ $hero_image = $park_info['photo'];
           </div>
         </div>
       </div>
+
+      <section class="related-links" aria-labelledby="related-links-title">
+        <div class="related-links__inner">
+          <div class="related-links__header">
+            <p class="hero-pill">需要更多資訊？</p>
+            <h2 id="related-links-title"><?=$display_name?> FAQ 與預約</h2>
+          </div>
+          <div class="related-links__grid">
+            <a class="related-links__card" href="<?=$faq_url?>" target="_blank" rel="noopener">
+              <span class="related-links__eyebrow">FAQ</span>
+              <p class="related-links__title">查看 <?=$display_name?> 常見問題</p>
+              <p class="related-links__body">包含交通方式、雪票購買、課程安排與裝備如何選，快速找到常見疑問的解答。</p>
+              <span class="related-links__cta">開啟 FAQ</span>
+            </a>
+            <a class="related-links__card" href="<?=$booking_url?>" target="_blank" rel="noopener">
+              <span class="related-links__eyebrow">Booking</span>
+              <p class="related-links__title">立即預約 <?=$display_name?> 課程</p>
+              <p class="related-links__body">直接前往預約系統，依照日期、雪場與教練挑選最適合的課程或活動。</p>
+              <span class="related-links__cta">前往預約</span>
+            </a>
+          </div>
+        </div>
+      </section>
 
       <?php
       // Add FAQ section

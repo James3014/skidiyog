@@ -160,9 +160,21 @@ if(isset($park_info['cname']) && $park_info['cname']!==''){
         };
 
         const bodyVariant = document.body.dataset.helpVariant === 'kids' ? 'kids' : 'general';
+        const parkName = document.body.dataset.helpPark || '';
+        const parkSlug = document.body.dataset.helpParkSlug || '';
+        const encodedParkName = parkName ? encodeURIComponent(parkName) : '';
+        const bookingLinkBase = parkSlug ? `https://booking.diy.ski/schedule?park=${encodeURIComponent(parkSlug)}` : 'https://booking.diy.ski/schedule';
 
         function renderFaqItems(){
-          const items = FAQ_DATA[bodyVariant] || FAQ_DATA.general;
+          let items = (FAQ_DATA[bodyVariant] || FAQ_DATA.general).slice();
+          if(parkName){
+            items.unshift({
+              id: `faq.park.${parkSlug || parkName}`,
+              title: `${parkName} 常見問題`,
+              summary: `查看 ${parkName} 的交通、雪票與課程 QA`,
+              cta: { label: `開啟 ${parkName} FAQ`, link: `https://faq.diy.ski/?q=${encodedParkName}` }
+            });
+          }
           faqListEl.innerHTML = items.map(item => `
             <article class="help-faq" data-faq-id="${item.id}">
               <div>
@@ -175,7 +187,9 @@ if(isset($park_info['cname']) && $park_info['cname']!==''){
             </article>
           `).join('');
 
-          const defaultCta = items[0]?.cta || {label:'前往預約', link:'https://booking.diy.ski/schedule'};
+          const defaultCta = parkName
+            ? { label: `預約 ${parkName} 課程`, link: bookingLinkBase }
+            : (items[0]?.cta || {label:'前往預約', link:'https://booking.diy.ski/schedule'});
           ctaBtn.textContent = defaultCta.label;
           ctaBtn.href = defaultCta.link;
         }

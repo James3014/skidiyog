@@ -7,6 +7,9 @@
     if(empty($target)) $target = 'index';
     //$target = 'index';
     if(empty($SEO_OG_DESC)) $SEO_OG_DESC="最豐富的自助滑雪資訊，包含日本12個知名滑雪勝地的雪場資訊、交通方式、住宿地點等等⋯⋯。讓您輕輕鬆鬆日本滑雪去。" ;
+    $metaTitleOverride = isset($SEO_TITLE) ? trim($SEO_TITLE) : '';
+    $metaDescriptionOverride = isset($SEO_DESCRIPTION) ? trim($SEO_DESCRIPTION) : '';
+    $metaImageOverride = isset($SEO_OG_IMAGE) ? trim($SEO_OG_IMAGE) : '';
   ?>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -32,7 +35,9 @@
     <meta name="B-verify" content="69017dc01d91abdba660cee1095ced1e042497f9" />
     <link rel="shortcut icon" href="/assets/images/favicon_skidiy.png" type="image/png" />
 
-    <?php if(isset($name) && $name=='virtual'){ ?>
+    <?php if(!empty($metaTitleOverride)){ ?>
+        <title><?=htmlspecialchars($metaTitleOverride, ENT_QUOTES, 'UTF-8');?></title>
+    <?php }elseif(isset($name) && $name=='virtual'){ ?>
         <title>SKIDIY 自助滑雪 - 預約教練</title>
     <?php }elseif($target=='article'){ ?>
         <title>SKIDIY 自助滑雪 - 相關文章</title>        
@@ -51,78 +56,87 @@
         //$cname = $PARK_PROPERITY[$name]['cName'];
         $about = strip_tags($park->info($name, 'about'));
         $park_basic_info = $PARKS->getParkInfo_by_Name($name);
+        $defaultOgTitle = "SKIDIY 自助滑雪 - {$park_basic_info['cname']} (" . ucfirst($name) . ") - {$desc}";
+        $resolvedOgTitle = !empty($metaTitleOverride) ? $metaTitleOverride : $defaultOgTitle;
+        $defaultDescription = $about;
+        $resolvedDescription = !empty($metaDescriptionOverride) ? $metaDescriptionOverride : $defaultDescription;
+        $defaultImage = "https://diy.ski/photos/{$name}/{$name}.jpg";
+        $resolvedImage = !empty($metaImageOverride) ? $metaImageOverride : $defaultImage;
     ?>
         <meta property="og:url" content="https://diy.ski/<?=$name?>" />
-        <meta property="og:title" content="SKIDIY 自助滑雪 - <?=$park_basic_info['cname']?>(<?=ucfirst($name)?>) - <?=$desc?>" />
-        <meta property="og:image" content="https://diy.ski/photos/<?=$name?>/<?=$name?>.jpg" />
-        <meta property="og:description" content="<?=$about?>" />
+        <meta property="og:title" content="<?=$resolvedOgTitle?>" />
+        <meta property="og:image" content="<?=$resolvedImage?>" />
+        <meta property="og:description" content="<?=$resolvedDescription?>" />
         <meta property="fb:app_id" content="1475301989434574" />
         <meta property="og:type" content="website">
-        <meta name="description" content="<?=$about?>" />
+        <meta name="description" content="<?=$resolvedDescription?>" />
     <?php }else if($target=='instructor'){
         $instructor = new INSTRUCTORS();
         $about = strip_tags($instructor->info($name, 'about'));
+        $resolvedDescription = !empty($metaDescriptionOverride) ? $metaDescriptionOverride : substr($about, 0, 360);
+        $resolvedImage = !empty($metaImageOverride) ? $metaImageOverride : "https://diy.ski/photos/{$name}/{$name}.jpg";
+        $resolvedOgTitle = !empty($metaTitleOverride) ? $metaTitleOverride : "SKIDIY 自助滑雪 - ".ucfirst($name)." 教練";
     ?>
         <meta property="og:url" content="https://diy.ski/<?=$name?>" />
-        <meta property="og:title" content="SKIDIY 自助滑雪 - <?=ucfirst($name)?> 教練" />
-        <meta property="og:image" content="https://diy.ski/photos/<?=$name?>/<?=$name?>.jpg" />
+        <meta property="og:title" content="<?=$resolvedOgTitle?>" />
+        <meta property="og:image" content="<?=$resolvedImage?>" />
         <meta property="og:image:width" content="300">
         <meta property="og:image:height" content="300">
-        <meta property="og:description" content="<?=substr($about, 0, 360)?>" />
+        <meta property="og:description" content="<?=$resolvedDescription?>" />
         <meta property="fb:app_id" content="1475301989434574" />
         <meta property="og:type" content="website">
-        <meta name="description" content="<?=substr($about, 0, 360)?>" />
+        <meta name="description" content="<?=$resolvedDescription?>" />
     <?php }else if($target=='index'){ ?>
         <meta property="og:url" content="https://diy.ski/" />
-        <meta property="og:title" content="SKIDIY 自助滑雪" />
+        <meta property="og:title" content="<?=!empty($metaTitleOverride)?$metaTitleOverride:'SKIDIY 自助滑雪'?>" />
         <meta property="og:type" content="article"/>
-        <meta property="og:image" content="https://diy.ski/assets/images/skidiy_logo_share.jpg?v200919" />
-        <meta property="og:description" content="最豐富的自助滑雪資訊，包含日本12個知名滑雪勝地的雪場資訊、交通方式、住宿地點等等⋯⋯。讓您輕輕鬆鬆日本滑雪去。" />
+        <meta property="og:image" content="<?=!empty($metaImageOverride)?$metaImageOverride:'https://diy.ski/assets/images/skidiy_logo_share.jpg?v200919'?>" />
+        <meta property="og:description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:'最豐富的自助滑雪資訊，包含日本12個知名滑雪勝地的雪場資訊、交通方式、住宿地點等等⋯⋯。讓您輕輕鬆鬆日本滑雪去。'?>" />
         <meta property="fb:app_id" content="1475301989434574" />
-        <meta name="description" content="最豐富的自助滑雪資訊，包含日本12個知名滑雪勝地的雪場資訊、交通方式、住宿地點等等⋯⋯。讓您輕輕鬆鬆日本滑雪去。" />
+        <meta name="description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:'最豐富的自助滑雪資訊，包含日本12個知名滑雪勝地的雪場資訊、交通方式、住宿地點等等⋯⋯。讓您輕輕鬆鬆日本滑雪去。'?>" />
     <?php }else if($target=='instructors'){ ?>
         <meta property="og:url" content="https://diy.ski/instructorList.php" />
-        <meta property="og:title" content="SKIDIY 自助滑雪 - 教練團隊" />
+        <meta property="og:title" content="<?=!empty($metaTitleOverride)?$metaTitleOverride:'SKIDIY 自助滑雪 - 教練團隊'?>" />
         <meta property="og:type" content="article"/>
-        <meta property="og:image" content="https://diy.ski/assets/img/logo_256.png" />
-        <meta property="og:description" content="最專業的教練團隊，每位教練都具有國際CASI滑雪教練執照，有系統的上課方式讓學習滑雪更輕鬆有效率。" />
+        <meta property="og:image" content="<?=!empty($metaImageOverride)?$metaImageOverride:'https://diy.ski/assets/img/logo_256.png'?>" />
+        <meta property="og:description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:'最專業的教練團隊，每位教練都具有國際CASI滑雪教練執照，有系統的上課方式讓學習滑雪更輕鬆有效率。'?>" />
         <meta property="fb:app_id" content="1475301989434574" />
-        <meta name="description" content="最專業的教練團隊，每位教練都具有國際CASI滑雪教練執照，有系統的上課方式讓學習滑雪更輕鬆有效率。" />
+        <meta name="description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:'最專業的教練團隊，每位教練都具有國際CASI滑雪教練執照，有系統的上課方式讓學習滑雪更輕鬆有效率。'?>" />
     <?php }else if($target=='article'){ ?>
         <!--<meta property="og:url" content="https://diy.ski/articleList.php" />-->
-        <meta property="og:title" content="SKIDIY 自助滑雪 - 相關文章" />
-        <meta property="og:image" content="https://diy.ski/photos/naeba/3.jpg?v3" />
-        <meta property="og:description" content="<?=$SEO_OG_DESC;?>" />
+        <meta property="og:title" content="<?=!empty($metaTitleOverride)?$metaTitleOverride:'SKIDIY 自助滑雪 - 相關文章'?>" />
+        <meta property="og:image" content="<?=!empty($metaImageOverride)?$metaImageOverride:'https://diy.ski/photos/naeba/3.jpg?v3'?>" />
+        <meta property="og:description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:$SEO_OG_DESC;?>" />
         <meta property="fb:app_id" content="1475301989434574" />
-        <meta name="description" content="<?=$SEO_OG_DESC;?>" /> 
+        <meta name="description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:$SEO_OG_DESC;?>" /> 
     <?php }else if($target=='schedule'){ ?>
         <meta property="og:url" content="https://diy.ski/schedule.php" />
-        <meta property="og:title" content="SKIDIY 自助滑雪 - 預定課程" />
-        <meta property="og:image" content="https://diy.ski/assets/images/logo-skidiy.png" />
-        <meta property="og:description" content="<?=$SEO_OG_DESC;?>" />
+        <meta property="og:title" content="<?=!empty($metaTitleOverride)?$metaTitleOverride:'SKIDIY 自助滑雪 - 預定課程'?>" />
+        <meta property="og:image" content="<?=!empty($metaImageOverride)?$metaImageOverride:'https://diy.ski/assets/images/logo-skidiy.png'?>" />
+        <meta property="og:description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:$SEO_OG_DESC;?>" />
         <meta property="fb:app_id" content="1475301989434574" />
-        <meta name="description" content="最豐富的自助滑雪資訊，包含日本12個知名滑雪勝地的雪場資訊、交通方式、住宿地點等等⋯⋯。讓您輕輕鬆鬆日本滑雪去。" />              
+        <meta name="description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:'最豐富的自助滑雪資訊，包含日本12個知名滑雪勝地的雪場資訊、交通方式、住宿地點等等⋯⋯。讓您輕輕鬆鬆日本滑雪去。'?>" />              
     <?php }else if($target=='booking'){ ?>
         <meta property="og:url" content="https://diy.ski/schedule.php" />
-        <meta property="og:title" content="SKIDIY 自助滑雪 - 預定課程" />
-        <meta property="og:image" content="https://diy.ski/assets/images/logo-skidiy.png" />
-        <meta property="og:description" content="<?=$SEO_OG_DESC;?>" />
+        <meta property="og:title" content="<?=!empty($metaTitleOverride)?$metaTitleOverride:'SKIDIY 自助滑雪 - 預定課程'?>" />
+        <meta property="og:image" content="<?=!empty($metaImageOverride)?$metaImageOverride:'https://diy.ski/assets/images/logo-skidiy.png'?>" />
+        <meta property="og:description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:$SEO_OG_DESC;?>" />
         <meta property="fb:app_id" content="1475301989434574" />
-        <meta name="description" content="最豐富的自助滑雪資訊，包含日本12個知名滑雪勝地的雪場資訊、交通方式、住宿地點等等⋯⋯。讓您輕輕鬆鬆日本滑雪去。" /> 
+        <meta name="description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:'最豐富的自助滑雪資訊，包含日本12個知名滑雪勝地的雪場資訊、交通方式、住宿地點等等⋯⋯。讓您輕輕鬆鬆日本滑雪去。'?>" /> 
     <?php }else if($target=='payment'){ ?>
         <meta property="og:url" content="https://diy.ski/schedule.php" />
-        <meta property="og:title" content="SKIDIY 自助滑雪 - 預定課程" />
-        <meta property="og:image" content="https://diy.ski/assets/images/logo-skidiy.png" />
-        <meta property="og:description" content="<?=$SEO_OG_DESC;?>" />
+        <meta property="og:title" content="<?=!empty($metaTitleOverride)?$metaTitleOverride:'SKIDIY 自助滑雪 - 預定課程'?>" />
+        <meta property="og:image" content="<?=!empty($metaImageOverride)?$metaImageOverride:'https://diy.ski/assets/images/logo-skidiy.png'?>" />
+        <meta property="og:description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:$SEO_OG_DESC;?>" />
         <meta property="fb:app_id" content="1475301989434574" />
-        <meta name="description" content="最豐富的自助滑雪資訊，包含日本12個知名滑雪勝地的雪場資訊、交通方式、住宿地點等等⋯⋯。讓您輕輕鬆鬆日本滑雪去。" />                 
+        <meta name="description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:'最豐富的自助滑雪資訊，包含日本12個知名滑雪勝地的雪場資訊、交通方式、住宿地點等等⋯⋯。讓您輕輕鬆鬆日本滑雪去。'?>" />                 
     <?php }else if($target=='reservation'){ ?>
         <meta property="og:url" content="https://diy.ski/reservation" />
-        <meta property="og:title" content="SKIDIY 自助滑雪 - 預約教練" />
-        <meta property="og:image" content="https://diy.ski/assets/img/logo_256.png" />
-        <meta property="og:description" content="最專業的教練團隊，每位教練都具有國際CASI滑雪教練執照，有系統的上課方式讓學習滑雪更輕鬆有效率。" />
+        <meta property="og:title" content="<?=!empty($metaTitleOverride)?$metaTitleOverride:'SKIDIY 自助滑雪 - 預約教練'?>" />
+        <meta property="og:image" content="<?=!empty($metaImageOverride)?$metaImageOverride:'https://diy.ski/assets/img/logo_256.png'?>" />
+        <meta property="og:description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:'最專業的教練團隊，每位教練都具有國際CASI滑雪教練執照，有系統的上課方式讓學習滑雪更輕鬆有效率。'?>" />
         <meta property="fb:app_id" content="1475301989434574" />
-        <meta name="description" content="最專業的教練團隊，每位教練都具有國際CASI滑雪教練執照，有系統的上課方式讓學習滑雪更輕鬆有效率。" />
+        <meta name="description" content="<?=!empty($metaDescriptionOverride)?$metaDescriptionOverride:'最專業的教練團隊，每位教練都具有國際CASI滑雪教練執照，有系統的上課方式讓學習滑雪更輕鬆有效率。'?>" />
     <?php } ?>
 
 
