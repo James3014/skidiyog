@@ -60,14 +60,13 @@
     <body>
       <?php require('nav.inc.php');?>
 
-      <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
-
       <?php
         $article_hero = 'https://diy.ski/assets/images/header_index_main_img.png';
         if (!empty($article_data['hero_image'])) {
-          $article_hero = $article_data['hero_image'];
+            $article_hero = $article_data['hero_image'];
         }
       ?>
+      <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
       <div class="site-hero site-hero--park" style="--hero-image:url('<?=$article_hero?>');">
         <div class="site-hero__overlay"></div>
         <div class="site-hero__content">
@@ -241,6 +240,24 @@
                 }
               }
           });
+      </script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function(){
+          var backTop = document.getElementById('return-to-top');
+          if(!backTop){ return; }
+          var toggle = function(){
+            if(window.scrollY > 300){
+              backTop.style.display = 'flex';
+            }else{
+              backTop.style.display = 'none';
+            }
+          };
+          toggle();
+          window.addEventListener('scroll', toggle);
+          backTop.addEventListener('click', function(){
+            window.scrollTo({top:0, behavior:'smooth'});
+          });
+        });
       </script>
 
       <?php renderGA4Events(); ?>

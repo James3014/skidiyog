@@ -94,6 +94,24 @@ foreach($articleList as $n => $r){
             $('.sidenav').sidenav();
           });
       </script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function(){
+          var backTop = document.getElementById('return-to-top');
+          if(!backTop){ return; }
+          var toggle = function(){
+            if(window.scrollY > 300){
+              backTop.style.display = 'flex';
+            }else{
+              backTop.style.display = 'none';
+            }
+          };
+          toggle();
+          window.addEventListener('scroll', toggle);
+          backTop.addEventListener('click', function(){
+            window.scrollTo({top:0, behavior:'smooth'});
+          });
+        });
+      </script>
 
       
     </body>
