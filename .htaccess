@@ -10,12 +10,12 @@ RewriteEngine On
 # Existing shortcut URLs are preserved below
 
 # Shortcut URLs (legacy, keep for backward compatibility)
-RewriteRule ^spring article.php?idx=1 [NC,L]
-RewriteRule ^insurance article.php?idx=16 [NC,L]
-RewriteRule ^tickets article.php?idx=34 [NC,L]
-RewriteRule ^biski article.php?idx=33 [NC,L]
-RewriteRule ^joinus article.php?idx=38 [NC,L]
-RewriteRule ^alpen5off alpen.php [NC,L]
+RewriteRule ^spring article.php?idx=1 [NC,L,QSA]
+RewriteRule ^insurance article.php?idx=16 [NC,L,QSA]
+RewriteRule ^tickets article.php?idx=34 [NC,L,QSA]
+RewriteRule ^biski article.php?idx=33 [NC,L,QSA]
+RewriteRule ^joinus article.php?idx=38 [NC,L,QSA]
+RewriteRule ^alpen5off alpen.php [NC,L,QSA]
 
 # ========================================
 # Protected Directories
