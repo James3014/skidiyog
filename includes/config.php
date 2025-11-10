@@ -7,7 +7,8 @@
 
 // Preview/crawl protection (can be overridden via environment variables)
 define('SKID_PREVIEW_TOKEN', getenv('SKID_PREVIEW_TOKEN') ?: 'f58c7d4b-0e68-4965-97d1-6e9d8b6a4c39');
-define('SKID_PREVIEW_TOKEN_ENFORCED', getenv('SKID_PREVIEW_TOKEN_ENFORCED') !== '0');
+$previewTokenToggle = getenv('SKID_PREVIEW_TOKEN_ENFORCED');
+define('SKID_PREVIEW_TOKEN_ENFORCED', $previewTokenToggle === '1');
 define('SKID_PREVIEW_RENDER_PARAM', getenv('SKID_PREVIEW_RENDER_PARAM') ?: 'render');
 define('SKID_PREVIEW_RENDER_VALUE', getenv('SKID_PREVIEW_RENDER_VALUE') ?: 'static');
 
