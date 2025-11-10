@@ -32,6 +32,7 @@ if(isset($park_info['cname']) && $park_info['cname']!==''){
             }else{
               echo '<a class="waves-effect waves-light btn btn-outline header-login" href="https://booking.diy.ski/schedule?action=login&redirect=/schedule" >登入</a>';
             }
+            echo '<button class="help-entry-btn" type="button" data-help-entry>需要幫忙？</button>';
 ?>            
 
           </div>
@@ -82,4 +83,157 @@ if(isset($park_info['cname']) && $park_info['cname']!==''){
         <li><a class="sidenav-link" href="mailto:service@diy.ski">聯絡我們</a></li>
       </ul>
 
+
+      <button class="help-entry-fab" type="button" data-help-entry aria-label="需要幫忙？">
+        <span>?</span>
+      </button>
+
+      <div class="help-drawer" aria-hidden="true" role="dialog" aria-label="常見問題">
+        <div class="help-drawer__overlay" data-help-close></div>
+        <div class="help-drawer__panel">
+          <button class="help-drawer__close" type="button" data-help-close aria-label="關閉">&times;</button>
+          <div class="help-drawer__header">
+            <p class="helper-pill">Need help?</p>
+            <h3>常見問題</h3>
+            <p class="helper-subtitle">快速瞭解流程、費用與挑教練方式</p>
+          </div>
+          <div class="help-drawer__list" data-help-faq-list></div>
+          <div class="help-drawer__cta">
+            <a href="https://booking.diy.ski/schedule" class="btn btn-primary" data-help-cta target="_blank" rel="noopener">前往預約</a>
+          </div>
+        </div>
+      </div>
+
+      <script>
+      (function(){
+        const ENTRY_ATTR = '[data-help-entry]';
+        const helpButtons = document.querySelectorAll(ENTRY_ATTR);
+        const drawer = document.querySelector('.help-drawer');
+        if(!drawer || helpButtons.length === 0) return;
+
+        const faqListEl = drawer.querySelector('[data-help-faq-list]');
+        const ctaBtn = drawer.querySelector('[data-help-cta]');
+        const overlayElements = drawer.querySelectorAll('[data-help-close]');
+        let helpOpened = false;
+
+        const FAQ_DATA = {
+          general: [
+            {
+              id: 'faq.general.048',
+              title: '預約流程幾步？',
+              summary: '線上填表 ➜ 收信確認 ➜ 付款 ➜ 教練聯繫，4 步就能排課。',
+              cta: { label: '開始預約', link: 'https://booking.diy.ski/schedule' }
+            },
+            {
+              id: 'faq.general.040',
+              title: '費用包含哪些服務？',
+              summary: '含教練費、集合與課程通知，可加購雪票/裝備與保險。',
+              cta: { label: '了解費用', link: 'https://booking.diy.ski/schedule' }
+            },
+            {
+              id: 'faq.instructor.067',
+              title: '可以指定教練嗎？',
+              summary: '預約時在備註指名，或先到教練列表挑選，時間允許就能安排。',
+              cta: { label: '查看教練', link: 'https://diy.ski/instructorList.php' }
+            }
+          ],
+          kids: [
+            {
+              id: 'faq.general.048',
+              title: '預約流程幾步？',
+              summary: '線上填表 ➜ 收信確認 ➜ 付款 ➜ 教練聯繫，4 步就能排課。',
+              cta: { label: '開始預約', link: 'https://booking.diy.ski/schedule' }
+            },
+            {
+              id: 'faq.kids.071',
+              title: '兒童上課如何保障安全？',
+              summary: '專用裝備＋緩坡教學，全程安全帽並有家長陪視區。',
+              cta: { label: '預約親子課', link: 'https://booking.diy.ski/schedule' }
+            },
+            {
+              id: 'faq.kids.insurance',
+              title: '兒童保險要怎麼加購？',
+              summary: '課程含基本保險，可在開課前 24 小時內加購兒童專屬保險。',
+              cta: { label: '瞭解保險', link: 'https://booking.diy.ski/schedule' }
+            }
+          ]
+        };
+
+        const bodyVariant = document.body.dataset.helpVariant === 'kids' ? 'kids' : 'general';
+
+        function renderFaqItems(){
+          const items = FAQ_DATA[bodyVariant] || FAQ_DATA.general;
+          faqListEl.innerHTML = items.map(item => `
+            <article class="help-faq" data-faq-id="${item.id}">
+              <div>
+                <p class="help-faq__title">${item.title}</p>
+                <p class="help-faq__summary">${item.summary}</p>
+              </div>
+              <a href="${item.cta.link}" class="help-faq__cta" target="_blank" rel="noopener" data-help-faq-link>
+                ${item.cta.label}
+              </a>
+            </article>
+          `).join('');
+
+          const defaultCta = items[0]?.cta || {label:'前往預約', link:'https://booking.diy.ski/schedule'};
+          ctaBtn.textContent = defaultCta.label;
+          ctaBtn.href = defaultCta.link;
+        }
+
+        function openDrawer(){
+          renderFaqItems();
+          drawer.setAttribute('aria-hidden', 'false');
+          document.body.classList.add('help-drawer-open');
+          helpOpened = true;
+          if(window.gtag){
+            gtag('event','help_open',{source:'home',variant:bodyVariant});
+          }
+        }
+
+        function closeDrawer(){
+          drawer.setAttribute('aria-hidden', 'true');
+          document.body.classList.remove('help-drawer-open');
+        }
+
+        helpButtons.forEach(btn => {
+          btn.addEventListener('click', openDrawer);
+        });
+
+        overlayElements.forEach(el => el.addEventListener('click', closeDrawer));
+
+        drawer.addEventListener('click', function(evt){
+          if(evt.target.matches('[data-help-faq-link]')){
+            const faqId = evt.target.closest('.help-faq').dataset.faqId;
+            if(window.gtag){
+              gtag('event','faq_link_click',{faq_id:faqId,source:'home',position:'drawer'});
+            }
+          }
+        });
+
+        ctaBtn.addEventListener('click', function(){
+          if(window.gtag){
+            gtag('event','help_to_book',{source:'home',variant:bodyVariant});
+          }
+        });
+
+        document.addEventListener('keydown', function(evt){
+          if(evt.key === 'Escape' && drawer.getAttribute('aria-hidden') === 'false'){
+            closeDrawer();
+          }
+        });
+
+        let highlightTimer = setTimeout(function(){
+          if(helpOpened) return;
+          helpButtons.forEach(btn => btn.classList.add('help-entry-btn--highlight'));
+          setTimeout(() => helpButtons.forEach(btn => btn.classList.remove('help-entry-btn--highlight')), 1500);
+        }, 12000);
+
+        window.addEventListener('scroll', function(){
+          if(highlightTimer){
+            clearTimeout(highlightTimer);
+            highlightTimer = null;
+          }
+        }, { once: true });
+      })();
+      </script>
 

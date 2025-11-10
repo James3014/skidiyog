@@ -396,3 +396,28 @@ body.index-bg{background-color:var(--surface-alt)}
 .back-button-wrap{margin:20px auto;text-align:center}
 .back-button{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;border-radius:999px;border:1px solid rgba(255,255,255,0.35);color:#f5f6fb;background:transparent}
 .back-button i{font-size:18px;line-height:1}
+.help-entry-btn{margin-left:12px;background:transparent;border:none;color:rgba(245,246,251,0.8);font-size:15px;cursor:pointer;padding:0 4px;transition:color .2s ease}
+.help-entry-btn:hover,.help-entry-btn:focus{color:#fff}
+.help-entry-btn--highlight{color:#1e88e5 !important}
+.help-entry-fab{position:fixed;bottom:90px;right:22px;width:48px;height:48px;border-radius:50%;background:#1e88e5;color:#fff;border:none;box-shadow:0 12px 30px rgba(33,150,243,.35);display:none;align-items:center;justify-content:center;font-weight:600;z-index:900}
+.help-entry-fab span{font-size:20px}
+.help-drawer{position:fixed;top:0;right:0;bottom:0;width:100%;pointer-events:none;opacity:0;transition:opacity .2s ease;z-index:1200}
+.help-drawer[aria-hidden="false"]{opacity:1;pointer-events:auto}
+.help-drawer__overlay{position:absolute;inset:0;background:rgba(5,8,15,.65)}
+.help-drawer__panel{position:absolute;top:0;right:0;width:360px;max-width:90%;height:100%;background:#0f1727;color:#f5f6fb;padding:32px 28px;box-shadow:-20px 0 60px rgba(0,0,0,.4);overflow-y:auto}
+.help-drawer__close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:#fff;font-size:26px;cursor:pointer}
+.help-drawer__header{text-align:left;margin-bottom:20px}
+.helper-pill{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,246,251,.7);margin:0 0 6px}
+.helper-subtitle{margin:6px 0 0;color:rgba(245,246,251,.7)}
+.help-drawer__list{display:flex;flex-direction:column;gap:16px}
+.help-faq{padding:16px;border-radius:16px;background:rgba(255,255,255,.04);display:flex;flex-direction:column;gap:8px}
+.help-faq__title{margin:0;font-weight:600;color:#fff}
+.help-faq__summary{margin:0;color:rgba(245,246,251,.75)}
+.help-faq__cta{align-self:flex-start;font-size:14px;font-weight:600;color:#1e88e5;text-decoration:none;border-bottom:1px solid transparent}
+.help-faq__cta:hover{border-color:#1e88e5}
+.help-drawer__cta{margin-top:24px;text-align:center}
+.help-drawer__cta .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:12px 32px}
+@media(max-width:768px){
+  .help-entry-fab{display:flex}
+  .help-drawer__panel{width:100%;max-width:none;border-radius:20px 20px 0 0;bottom:0;top:auto}
+}
