@@ -62,6 +62,35 @@
       $SEO_DESCRIPTION = !empty($article_snippet) ? $article_snippet : 'SKIDIY 滑雪專欄：雪場攻略、教練分享與裝備建議。';
       $SEO_OG_IMAGE = $article_hero;
       $SEO_OG_DESC = $SEO_DESCRIPTION;
+      $articleSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Article',
+        'headline' => $article_title,
+        'description' => $SEO_DESCRIPTION,
+        'inLanguage' => 'zh-TW',
+        'image' => [$article_hero],
+        'mainEntityOfPage' => [
+          '@type' => 'WebPage',
+          '@id' => 'https://'.domain_name.$_SERVER['REQUEST_URI']
+        ],
+        'author' => [
+          '@type' => 'Organization',
+          'name' => 'SKIDIY 自助滑雪'
+        ],
+        'publisher' => [
+          '@type' => 'Organization',
+          'name' => 'SKIDIY 自助滑雪',
+          'logo' => [
+            '@type' => 'ImageObject',
+            'url' => 'https://diy.ski/assets/images/logo-skidiy.png'
+          ]
+        ]
+      ];
+      if(!empty($article_data['timestamp'])){
+        $published = date(DATE_ATOM, strtotime($article_data['timestamp']));
+        $articleSchema['datePublished'] = $published;
+        $articleSchema['dateModified'] = $published;
+      }
       //var_dump($article_data);
  
 ?>
@@ -71,6 +100,9 @@
     <head>
       <?php require('pageHeader.php'); ?>
       <?php require_once __DIR__ . '/includes/ga4_tracking.php'; renderGA4Head(); ?>
+      <script type="application/ld+json">
+        <?=json_encode($articleSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);?>
+      </script>
 
       <!--swiper-->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css">
