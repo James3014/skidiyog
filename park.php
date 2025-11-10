@@ -166,12 +166,62 @@ $SEO_OG_IMAGE = $hero_image;
 $faq_keyword = $display_name;
 $faq_url = 'https://faq.diy.ski/?q=' . urlencode($faq_keyword);
 $booking_url = 'https://booking.diy.ski/schedule?park=' . urlencode($name);
+
+$parkSchema = [
+  '@context' => 'https://schema.org',
+  '@type' => 'SkiResort',
+  'name' => $display_name,
+  'description' => $SEO_DESCRIPTION,
+  'url' => 'https://' . domain_name . $_SERVER['REQUEST_URI'],
+  'image' => [$hero_image],
+  'touristType' => 'Skiers',
+  'provider' => [
+    '@type' => 'Organization',
+    'name' => 'SKIDIY 自助滑雪'
+  ]
+];
+
+if (!empty($park_info['location'])) {
+  $parkSchema['areaServed'] = strip_tags($park_info['location']);
+}
+
+if (!empty($park_info['address'])) {
+  $parkSchema['address'] = [
+    '@type' => 'PostalAddress',
+    'streetAddress' => $park_info['address'],
+    'addressCountry' => 'JP'
+  ];
+} elseif (!empty($park_info['location'])) {
+  $parkSchema['address'] = [
+    '@type' => 'PostalAddress',
+    'addressCountry' => 'JP',
+    'addressRegion' => strip_tags($park_info['location'])
+  ];
+}
+
+if (!empty($park_info['time_section'])) {
+  $parkSchema['openingHoursSpecification'] = [
+    '@type' => 'OpeningHoursSpecification',
+    'description' => strip_tags($park_info['time_section'])
+  ];
+}
+
+if (!empty($park_info['ticket_section'])) {
+  $parkSchema['priceRange'] = strip_tags($park_info['ticket_section']);
+}
+
+if (!empty($park_info['access_section'])) {
+  $parkSchema['hasMap'] = strip_tags($park_info['access_section']);
+}
 ?>
 <!DOCTYPE html>
   <html>
     <head>
       <?php require('pageHeader.php'); ?>
       <?php require_once __DIR__ . '/includes/ga4_tracking.php'; renderGA4Head(); ?>
+      <script type="application/ld+json">
+        <?=json_encode($parkSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);?>
+      </script>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
       <!--Import materialize.css-->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
