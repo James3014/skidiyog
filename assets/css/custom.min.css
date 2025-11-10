@@ -263,8 +263,8 @@ body.index-bg{background-color:var(--surface-alt)}
 
 #return-to-top {
   position: fixed;
-  bottom: 40px;
-  right: 40px;
+  bottom: 36px;
+  right: 22px;
   background: var(--accent-blue);
   width: 48px;
   height: 48px;
@@ -399,6 +399,9 @@ body.index-bg{background-color:var(--surface-alt)}
 .help-entry-btn{margin-left:12px;background:transparent;border:none;color:rgba(245,246,251,0.8);font-size:15px;cursor:pointer;padding:0 4px;transition:color .2s ease}
 .help-entry-btn:hover,.help-entry-btn:focus{color:#fff}
 .help-entry-btn--highlight{color:#1e88e5 !important}
+@media(max-width:768px){
+  .help-entry-btn{display:none}
+}
 .help-entry-fab{position:fixed;bottom:90px;right:22px;width:48px;height:48px;border-radius:50%;background:#1e88e5;color:#fff;border:none;box-shadow:0 12px 30px rgba(33,150,243,.35);display:none;align-items:center;justify-content:center;font-weight:600;z-index:900}
 .help-entry-fab span{font-size:20px}
 .help-drawer{position:fixed;top:0;right:0;bottom:0;width:100%;pointer-events:none;opacity:0;transition:opacity .2s ease;z-index:1200}
