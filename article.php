@@ -32,7 +32,36 @@
       //$article_id = $_REQUEST['idx'];
       $article_id = $ID;
       $article_data = $ARTICLE->readByIdx($article_id);
-      $SEO_OG_DESC = $article_data['title'];
+      $article_title = isset($article_data['title']) ? trim($article_data['title']) : 'SKIDIY 滑雪專欄';
+      $article_plain = '';
+      if(!empty($article_data['article'])){
+        $article_plain = strip_tags(convert_media_urls($article_data['article']));
+        $article_plain = preg_replace('/\s+/', ' ', $article_plain);
+      }
+      if(function_exists('mb_substr')){
+        $article_snippet = mb_substr($article_plain, 0, 150);
+        if(mb_strlen($article_plain) > 150){
+          $article_snippet .= '…';
+        }
+      }else{
+        $article_snippet = substr($article_plain, 0, 150);
+        if(strlen($article_plain) > 150){
+          $article_snippet .= '…';
+        }
+      }
+      $article_hero = '';
+      if (!empty($article_data['hero_image'])) {
+        $article_hero = $article_data['hero_image'];
+      } elseif(!empty($article_id)) {
+        $article_hero = "https://diy.ski/photos/articles/{$article_id}/{$article_id}.jpg?v221008";
+      }
+      if(empty($article_hero)){
+        $article_hero = 'https://diy.ski/assets/images/header_index_main_img.png';
+      }
+      $SEO_TITLE = $article_title . ' - SKIDIY 滑雪攻略';
+      $SEO_DESCRIPTION = !empty($article_snippet) ? $article_snippet : 'SKIDIY 滑雪專欄：雪場攻略、教練分享與裝備建議。';
+      $SEO_OG_IMAGE = $article_hero;
+      $SEO_OG_DESC = $SEO_DESCRIPTION;
       //var_dump($article_data);
  
 ?>
@@ -60,12 +89,6 @@
     <body>
       <?php require('nav.inc.php');?>
 
-      <?php
-        $article_hero = 'https://diy.ski/assets/images/header_index_main_img.png';
-        if (!empty($article_data['hero_image'])) {
-            $article_hero = $article_data['hero_image'];
-        }
-      ?>
       <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
       <div class="site-hero site-hero--park" style="--hero-image:url('<?=$article_hero?>');">
         <div class="site-hero__overlay"></div>
