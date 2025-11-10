@@ -90,7 +90,7 @@
               <?php 
 
                 //echo '<h1 id="intro">'.$article_data['title'].'</h1>';
-                echo '<pre>'.$article_data['article'].'</pre><hr>';
+                echo '<pre>'.convert_media_urls($article_data['article']).'</pre><hr>';
 
               ?>
 

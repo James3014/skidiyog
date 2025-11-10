@@ -121,19 +121,19 @@ if(isset($park_info['cname']) && $park_info['cname']!==''){
             {
               id: 'faq.general.048',
               title: '預約流程幾步？',
-              summary: '線上填表 ➜ 收信確認 ➜ 付款 ➜ 教練聯繫，4 步就能排課。',
+              summary: '線上填表 ➜ 確認細節 ➜ 付款 ➜ 教練聯繫，4 步就能排課。',
               cta: { label: '開始預約', link: 'https://booking.diy.ski/schedule' }
             },
             {
               id: 'faq.general.040',
               title: '費用包含哪些服務？',
-              summary: '含教練費、集合與課程通知，可加購雪票/裝備與保險。',
+              summary: '含教練費、保險、集合與課程通知，需自行加購雪票/裝備。',
               cta: { label: '了解費用', link: 'https://booking.diy.ski/schedule' }
             },
             {
               id: 'faq.instructor.067',
               title: '可以指定教練嗎？',
-              summary: '預約時在備註指名，或先到教練列表挑選，時間允許就能安排。',
+              summary: '一般訂課可直接在課表挑選，若申請開課需教練回覆同意。',
               cta: { label: '查看教練', link: 'https://diy.ski/instructorList.php' }
             }
           ],

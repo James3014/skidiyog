@@ -35,3 +35,24 @@ function _msg($msg){
 		return "<script> alert('".$SYSMSG[$msg]."') </script>";
 	}
 }
+
+function convert_media_urls($content){
+	if(empty($content)) return $content;
+	$search = array(
+		'src="/photos/',
+		"src='/photos/",
+		'href="/photos/',
+		"href='/photos/",
+		'data-src="/photos/',
+		"data-src='/photos/"
+	);
+	$replace = array(
+		'src="https://diy.ski/photos/',
+		"src='https://diy.ski/photos/",
+		'href="https://diy.ski/photos/',
+		"href='https://diy.ski/photos/",
+		'data-src="https://diy.ski/photos/',
+		"data-src='https://diy.ski/photos/'"
+	);
+	return str_replace($search, $replace, $content);
+}

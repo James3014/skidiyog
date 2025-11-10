@@ -214,9 +214,9 @@ $hero_image = $park_info['photo'];
                 // For naeba, karuizawa, appi: output HTML directly (TinyMCE format)
                 // For others: use <pre> tag
                 if(in_array($name, ['naeba', 'karuizawa', 'appi'])){
-                  echo $section_contents[$key] . '<hr>';
+                  echo convert_media_urls($section_contents[$key]) . '<hr>';
                 } else {
-                  echo '<pre>' . $section_contents[$key] . '</pre><hr>';
+                  echo '<pre>' . convert_media_urls($section_contents[$key]) . '</pre><hr>';
                 }
 
                 $has_content = true;
