@@ -145,7 +145,7 @@
               <?php 
 
                 //echo '<h1 id="intro">'.$article_data['title'].'</h1>';
-                echo '<pre>'.convert_media_urls($article_data['article']).'</pre><hr>';
+                echo '<div class="section-content section-content--pre"><pre>'.convert_media_urls($article_data['article']).'</pre></div><hr>';
 
               ?>
 

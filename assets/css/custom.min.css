@@ -429,6 +429,37 @@ body.index-bg{background-color:var(--surface-alt)}
   overflow-x: auto;
 }
 
+.section-content{
+  font-size:16px;
+  line-height:1.8;
+  color:var(--content-text);
+}
+.section-content h1,
+.section-content h2,
+.section-content h3,
+.section-content h4,
+.section-content h5,
+.section-content h6{
+  font-size:1.35em;
+  line-height:1.4;
+  margin:1.2em 0 0.6em;
+  color:var(--content-text);
+}
+.section-content h1{font-size:1.45em}
+.section-content--pre pre{
+  margin:0;
+}
+.section-content--pre pre h1,
+.section-content--pre pre h2,
+.section-content--pre pre h3,
+.section-content--pre pre h4,
+.section-content--pre pre h5,
+.section-content--pre pre h6{
+  font-size:1.25em;
+  line-height:1.4;
+  margin:1em 0 .5em;
+}
+
 .photo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

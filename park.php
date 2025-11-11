@@ -291,9 +291,9 @@ if (!empty($park_info['access_section'])) {
                 // For naeba, karuizawa, appi: output HTML directly (TinyMCE format)
                 // For others: use <pre> tag
                 if(in_array($name, ['naeba', 'karuizawa', 'appi'])){
-                  echo convert_media_urls($section_contents[$key]) . '<hr>';
+                  echo '<div class="section-content section-content--rich">' . convert_media_urls($section_contents[$key]) . '</div><hr>';
                 } else {
-                  echo '<pre>' . convert_media_urls($section_contents[$key]) . '</pre><hr>';
+                  echo '<div class="section-content section-content--pre"><pre>' . convert_media_urls($section_contents[$key]) . '</pre></div><hr>';
                 }
 
                 $has_content = true;
