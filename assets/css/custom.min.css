@@ -303,7 +303,10 @@ body.index-bg{background-color:var(--surface-alt)}
   display: flex;
   flex-direction: column;
   gap: 6px;
+  height: auto !important;
+  overflow: visible !important;
 }
+.leftnav .tabs .indicator{display:none}
 
 .leftnav .tab {
   display: block;
