@@ -77,5 +77,10 @@ function normalize_rich_text($content){
 		return 'style='.$quote.implode('; ', $filtered).$quote;
 	}, $content);
 	$content = preg_replace('/<\/?font\b[^>]*>/i', '', $content);
+	$content = preg_replace_callback('/<h([1-6])([^>]*)>/i', function($matches){
+		$level = intval($matches[1]);
+		return '<p class="section-heading section-heading-'.$level.'">';
+	}, $content);
+	$content = preg_replace('/<\/h[1-6]>/', '</p>', $content);
 	return $content;
 }

@@ -451,6 +451,17 @@ body.index-bg{background-color:var(--surface-alt)}
 .section-content h4{font-size:18px !important;}
 .section-content h5,
 .section-content h6{font-size:17px !important;}
+.section-heading{
+  font-size:18px;
+  font-weight:600;
+  margin:1rem 0 .5rem;
+}
+.section-heading.section-heading-1{font-size:24px;}
+.section-heading.section-heading-2{font-size:22px;}
+.section-heading.section-heading-3{font-size:20px;}
+.section-heading.section-heading-4{font-size:18px;}
+.section-heading.section-heading-5{font-size:17px;}
+.section-heading.section-heading-6{font-size:17px;}
 .section-content h1 *,
 .section-content h2 *,
 .section-content h3 *,
