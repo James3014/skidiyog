@@ -460,6 +460,10 @@ body.index-bg{background-color:var(--surface-alt)}
   font-size:inherit !important;
   line-height:inherit !important;
 }
+.section-content [style*="font-size"]{
+  font-size:inherit !important;
+  line-height:inherit !important;
+}
 .section-content--pre pre{
   margin:0;
 }
