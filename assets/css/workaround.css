@@ -23,7 +23,7 @@
 }
 
 /* Force break on any text content in resort-content */
-.resort-content * {
+.resort-content > * {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
     max-width: 100% !important;

@@ -406,6 +406,17 @@ body.index-bg{background-color:var(--surface-alt)}
   color: var(--content-text);
 }
 
+.resort-content pre h1,
+.resort-content pre h2,
+.resort-content pre h3,
+.resort-content pre h4,
+.resort-content pre h5,
+.resort-content pre h6 {
+  font-size: 1.15em;
+  line-height: 1.4;
+  margin: 1em 0 0.5em;
+}
+
 .resort-content a {
   color: var(--accent-blue);
   text-decoration: underline;
