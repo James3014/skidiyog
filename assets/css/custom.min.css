@@ -441,16 +441,16 @@ body.index-bg{background-color:var(--surface-alt)}
 .section-content h5,
 .section-content h6{
   line-height:1.4;
-  margin:1.2em 0 0.6em;
+  margin:1rem 0 0.5rem;
   color:var(--content-text);
   font-weight:600;
 }
-.section-content h1{font-size:1.3rem !important;}
-.section-content h2{font-size:1.2rem !important;}
-.section-content h3{font-size:1.1rem !important;}
-.section-content h4,
+.section-content h1{font-size:24px !important;}
+.section-content h2{font-size:22px !important;}
+.section-content h3{font-size:20px !important;}
+.section-content h4{font-size:18px !important;}
 .section-content h5,
-.section-content h6{font-size:1rem !important;}
+.section-content h6{font-size:17px !important;}
 .section-content h1 *,
 .section-content h2 *,
 .section-content h3 *,
