@@ -134,6 +134,11 @@ foreach($SECTION_HEADER as $key => $val){
   if($key === 'photo' && empty($content) && isset($gallery_overrides[$name])){
     $content = render_photo_gallery($gallery_overrides[$name], $park_info['cname']);
   }
+  if($key !== 'photo'){
+    $content = normalize_rich_text($content);
+  }else{
+    $content = convert_media_urls($content);
+  }
 
   $section_contents[$key] = $content;
 }

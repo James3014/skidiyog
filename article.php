@@ -34,8 +34,10 @@
       $article_data = $ARTICLE->readByIdx($article_id);
       $article_title = isset($article_data['title']) ? trim($article_data['title']) : 'SKIDIY 滑雪專欄';
       $article_plain = '';
+      $article_content_html = '';
       if(!empty($article_data['article'])){
-        $article_plain = strip_tags(convert_media_urls($article_data['article']));
+        $article_content_html = normalize_rich_text($article_data['article']);
+        $article_plain = strip_tags($article_content_html);
         $article_plain = preg_replace('/\s+/', ' ', $article_plain);
       }
       if(function_exists('mb_substr')){
@@ -145,7 +147,7 @@
               <?php 
 
                 //echo '<h1 id="intro">'.$article_data['title'].'</h1>';
-                echo '<div class="section-content section-content--pre"><pre>'.convert_media_urls($article_data['article']).'</pre></div><hr>';
+                echo '<div class="section-content section-content--pre"><pre>'.$article_content_html.'</pre></div><hr>';
 
               ?>
 

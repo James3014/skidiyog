@@ -57,3 +57,25 @@ function convert_media_urls($content){
 	);
 	return str_replace($search, $replace, $content);
 }
+
+function normalize_rich_text($content){
+	if(empty($content)) return $content;
+	$content = convert_media_urls($content);
+	$content = preg_replace_callback('/style=(["\'])([^"\']*)\1/i', function($matches){
+		$quote = $matches[1];
+		$styles = preg_split('/\s*;\s*/', $matches[2]);
+		$filtered = [];
+		foreach($styles as $rule){
+			if($rule === '' || stripos($rule, 'font-size') !== false){
+				continue;
+			}
+			$filtered[] = $rule;
+		}
+		if(empty($filtered)){
+			return '';
+		}
+		return 'style='.$quote.implode('; ', $filtered).$quote;
+	}, $content);
+	$content = preg_replace('/<\/?font\b[^>]*>/i', '', $content);
+	return $content;
+}
