@@ -268,7 +268,7 @@ if (!empty($park_info['access_section'])) {
           <!-- Left navigation for desktop -->
           <div class="col l3 hide-on-med-and-down leftnav">
             <div class="leftnav-brand">
-              <img src="/assets/images/logo-skidiy.png?v20251026" alt="SKIDIY">
+              <img src="https://diy.ski/assets/images/logo-skidiy.png" alt="SKIDIY">
               <span>SKIDIY</span>
             </div>
             <p class="resort-name"><?=$park_info['cname']?> <span><?=($name!='iski')?ucfirst($name):''?></span></p>
@@ -296,9 +296,9 @@ if (!empty($park_info['access_section'])) {
                 // For naeba, karuizawa, appi: output HTML directly (TinyMCE format)
                 // For others: use <pre> tag
                 if(in_array($name, ['naeba', 'karuizawa', 'appi'])){
-                  echo '<div class="section-content section-content--rich">' . convert_media_urls($section_contents[$key]) . '</div><hr>';
+                  echo '<div class="section-content section-content--rich">' . $section_contents[$key] . '</div><hr>';
                 } else {
-                  echo '<div class="section-content section-content--pre"><pre>' . convert_media_urls($section_contents[$key]) . '</pre></div><hr>';
+                  echo '<div class="section-content section-content--pre"><pre>' . $section_contents[$key] . '</pre></div><hr>';
                 }
 
                 $has_content = true;
