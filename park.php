@@ -153,20 +153,7 @@ if (!empty($park_info['access_section'])) {
           <!-- Main content -->
           <div class="col s12 l9 right resort-content">
             <?php
-            $has_content = false;
-            foreach($parkData['sections'] as $section){
-              echo '<h1 id="' . $section['key'] . '">' . $section['title'] . '</h1>';
-              if($section['render_mode'] === 'rich'){
-                echo '<div class="section-content section-content--rich">' . normalize_rich_text($section['content']) . '</div><hr>';
-              } else {
-                echo '<div class="section-content section-content--pre"><pre>' . convert_media_urls($section['content']) . '</pre></div><hr>';
-              }
-              $has_content = true;
-            }
-
-            if(!$has_content){
-              echo '<p>暫無雪場詳細資訊</p>';
-            }
+            renderSectionList($parkData['sections']);
             ?>
           </div>
         </div>
