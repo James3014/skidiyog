@@ -1,8 +1,6 @@
 <?php
 // Compatibility wrapper so legacy pages can still include nav.inc.php
-if (!function_exists('renderNav')) {
-    require_once __DIR__ . '/includes/sdk.php';
-}
+require_once __DIR__ . '/includes/sdk.php';
 
 $nav_display_name = '';
 if (isset($parkData['display_name'])) {
