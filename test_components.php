@@ -7,7 +7,7 @@
  */
 
 // Include the components
-require_once 'includes/faq_component.php';
+require_once 'includes/sdk.php';
 require_once 'includes/booking_cta.php';
 
 ?>
