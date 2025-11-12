@@ -36,18 +36,27 @@ $articleList = $ARTICLE->listing();
 
 
     <body class="index-bg">
-      <?php require('nav.inc.php');?>
+      <?php
+        renderNav(array(
+          'is_park_context' => false
+        ));
+      ?>
 
       <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
-      <div class="site-hero" style="--hero-image:url('/assets/images/header_index_main_img.png');">
-        <div class="site-hero__overlay"></div>
-        <div class="site-hero__content">
-          <span class="hero-pill">Insights</span>
-          <h1 class="hero-title">雪場攻略與最新文章</h1>
-          <p class="hero-subtitle">從裝備準備到雪場攻略，掌握所有滑雪靈感</p>
-          <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
-        </div>
-      </div>
+      <?php
+        renderHero(array(
+          'image' => '/assets/images/header_index_main_img.png',
+          'pill' => 'Insights',
+          'title' => '雪場攻略與最新文章',
+          'subtitle' => '從裝備準備到雪場攻略，掌握所有滑雪靈感',
+          'cta' => array(
+            'label' => '現在就預訂',
+            'target' => 'schedule.php?f=al',
+            'id' => 'ordernow',
+            'name' => 'ordernow'
+          )
+        ));
+      ?>
 
       <section class="site-section">
         <div class="card-grid">
