@@ -144,23 +144,11 @@ if (!empty($park_info['access_section'])) {
       <div class="container resort-info">
         <div class="row">
           <!-- Left navigation for desktop -->
-          <div class="col l3 hide-on-med-and-down leftnav">
-            <div class="leftnav-brand">
-              <img src="https://diy.ski/assets/images/logo-skidiy.png" alt="SKIDIY">
-              <span>SKIDIY</span>
-            </div>
-            <p class="resort-name"><?=$display_name?> <span><?=($name!='iski')?ucfirst($name):''?></span></p>
-            <ul class="tabs tabs-transparent">
-              <?php
-              foreach($SECTION_HEADER as $key => $val){
-                if($key == 'all') continue; // Skip "完整閱讀"
-                if(!empty($section_contents[$key])){
-                  echo '<a href="#' . $key . '" class="tab"><li>' . $val . '</li></a>';
-                }
-              }
-              ?>
-            </ul>
-          </div>
+          <?php renderLeftnav(array(
+            'display_name' => $display_name,
+            'slug' => $name,
+            'sections' => $parkData['sections']
+          )); ?>
 
           <!-- Main content -->
           <div class="col s12 l9 right resort-content">

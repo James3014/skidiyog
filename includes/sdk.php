@@ -32,6 +32,7 @@ require_once(__DIR__.'/content_repository.php');
 require_once(__DIR__.'/preview_guard.php');
 require_once(__DIR__.'/components/hero.php');
 require_once(__DIR__.'/components/nav.php');
+require_once(__DIR__.'/components/leftnav.php');
 
 function _msg($msg){
 	global $SYSMSG;
