@@ -34,6 +34,7 @@ require_once(__DIR__.'/components/hero.php');
 require_once(__DIR__.'/components/nav.php');
 require_once(__DIR__.'/components/leftnav.php');
 require_once(__DIR__.'/components/page_sections.php');
+require_once(__DIR__.'/components/faq.php');
 
 function _msg($msg){
 	global $SYSMSG;
