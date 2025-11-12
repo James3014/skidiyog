@@ -442,6 +442,38 @@ body.index-bg{background-color:var(--surface-alt)}
 .section-content ol{
   margin:0 0 0.8rem 1.2rem;
 }
+
+.faq-section{margin:40px 0;padding:30px;border-radius:12px;background:rgba(15,23,42,0.25);border:1px solid rgba(255,255,255,0.08)}
+.faq-section h3{color:#f5f6fb;font-size:26px;margin-bottom:20px;border-bottom:2px solid rgba(255,255,255,0.1);padding-bottom:12px}
+.faq-item{margin-bottom:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.08);background:rgba(5,10,25,0.6);overflow:hidden}
+.faq-question{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;color:#f5f6fb;font-weight:600;cursor:pointer}
+.faq-question::before{content:"Q";display:inline-flex;justify-content:center;align-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent-blue);color:#fff;margin-right:14px;font-weight:700}
+.faq-answer{max-height:0;overflow:hidden;padding:0 20px;transition:max-height .3s ease,padding .3s ease;color:rgba(245,246,251,0.85)}
+.faq-item.active .faq-answer{max-height:800px;padding:0 20px 18px 20px}
+.faq-icon{transition:transform .3s ease}
+.faq-item.active .faq-icon{transform:rotate(180deg)}
+
+.booking-cta{background:linear-gradient(135deg,#1f2c46 0%,#162037 100%);padding:52px 20px;margin:60px 0 0;text-align:center;color:#f5f6fb;border-radius:28px;box-shadow:0 30px 70px rgba(3,8,20,0.5)}
+.booking-cta-title{font-size:30px;font-weight:600;margin-bottom:12px}
+.booking-cta-subtitle{font-size:17px;margin-bottom:26px;opacity:.8;line-height:1.6}
+.booking-cta-button{display:inline-flex;padding:14px 34px;background:#fff;color:#1e88e5;font-size:18px;font-weight:600;border-radius:999px;text-decoration:none;transition:all .3s ease;box-shadow:0 6px 20px rgba(0,0,0,0.25);align-items:center;gap:8px}
+.booking-cta-button:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,0.35);color:#1565c0}
+.booking-cta-features{margin-top:34px;display:flex;justify-content:center;flex-wrap:wrap;gap:26px}
+.booking-cta-feature{flex:0 1 200px;text-align:center;color:rgba(245,246,251,0.85)}
+.booking-cta-feature i{font-size:42px;margin-bottom:10px;opacity:.85}
+.booking-cta-feature-title{font-size:15px;font-weight:500;margin-bottom:5px;text-transform:uppercase;letter-spacing:1px}
+.booking-cta-feature-desc{font-size:13px;opacity:.75}
+@media (max-width:768px){
+  .booking-cta{padding:38px 18px}
+  .booking-cta-title{font-size:22px}
+  .booking-cta-subtitle{font-size:15px;margin-bottom:22px}
+  .booking-cta-button{padding:12px 26px;font-size:16px}
+  .booking-cta-features{margin-top:26px;gap:16px}
+  .booking-cta-feature{flex:0 1 calc(50% - 8px);max-width:160px}
+  .booking-cta-feature i{font-size:32px;margin-bottom:8px}
+  .booking-cta-feature-title{font-size:14px;margin-bottom:3px}
+  .booking-cta-feature-desc{font-size:12px}
+}
 .section-content h1,
 .section-content h2,
 .section-content h3,
