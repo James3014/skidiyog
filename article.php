@@ -87,7 +87,12 @@
       });  
     </script>
     <body>
-      <?php require('nav.inc.php');?>
+      <?php
+        renderNav(array(
+          'display_name' => $article_title,
+          'is_park_context' => false
+        ));
+      ?>
 
       <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
       <?php
