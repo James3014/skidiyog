@@ -44,11 +44,17 @@ class ContentRepository
         'niseko' => 'https://diy.ski',
         'taipei' => 'https://diy.ski/iski'
     );
+    private static $hiddenArticleIds = array(24, 25);
 
     public static function getParkRedirect($name)
     {
         $slug = strtolower($name);
         return isset(self::$parkRedirects[$slug]) ? self::$parkRedirects[$slug] : null;
+    }
+
+    public static function shouldHideArticle($idx)
+    {
+        return in_array(intval($idx), self::$hiddenArticleIds, true);
     }
 
     public static function getParkSectionsDefinition()
