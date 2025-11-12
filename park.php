@@ -23,11 +23,6 @@ if(empty($parkData)){
   exit();
 }
 $park_info = $parkData['raw'];
-$SECTION_HEADER = ContentRepository::getParkSectionsDefinition();
-$section_contents = array();
-foreach($parkData['sections'] as $section){
-  $section_contents[$section['key']] = $section['content'];
-}
 $hero_image = $parkData['hero_image'];
 $display_name = $parkData['display_name'];
 $SEO_TITLE = $parkData['seo']['title'];

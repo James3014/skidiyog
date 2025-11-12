@@ -35,18 +35,27 @@ $parkList = $PARKS->listing();
 
 
     <body class="index-bg">
-      <?php require('nav.inc.php');?>
+      <?php
+        renderNav(array(
+          'is_park_context' => false
+        ));
+      ?>
 
       <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
-      <div class="site-hero" style="--hero-image:url('/assets/images/header_index_main_img.png');">
-        <div class="site-hero__overlay"></div>
-        <div class="site-hero__content">
-          <span class="hero-pill">Snow Resort Guide</span>
-          <h1 class="hero-title">Discover your SKI adventure</h1>
-          <p class="hero-subtitle">發掘適合各種旅程安排的滑雪場</p>
-          <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
-        </div>
-      </div>
+      <?php
+        renderHero(array(
+          'image' => '/assets/images/header_index_main_img.png',
+          'pill' => 'Snow Resort Guide',
+          'title' => 'Discover your SKI adventure',
+          'subtitle' => '發掘適合各種旅程安排的滑雪場',
+          'cta' => array(
+            'label' => '現在就預訂',
+            'target' => 'schedule.php?f=pl',
+            'id' => 'ordernow',
+            'name' => 'ordernow'
+          )
+        ));
+      ?>
 
       <section class="site-section">
         <div class="card-grid">
