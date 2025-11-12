@@ -111,7 +111,14 @@ if (!empty($park_info['access_section'])) {
     </script>
 
     <body data-help-variant="general" data-help-park="<?=$faq_keyword?>" data-help-park-slug="<?=$name?>">
-      <?php require('nav.inc.php');?>
+      <?php
+        renderNav(array(
+          'display_name' => $display_name,
+          'name' => $name,
+          'is_park_context' => true,
+          'sections' => $parkData['sections']
+        ));
+      ?>
 
       <div class="container-fuild">
         <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
