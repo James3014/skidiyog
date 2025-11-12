@@ -15,54 +15,20 @@
   // }
 
   require('includes/sdk.php');
-      // load from routing.php
-      // $target = $name = $section  and section_content[]
 
-      $SECTION_HEADER = array(
-        'about'  => '自我介紹',
-        'photo' => '教練照片',
-        'certificate'  => '滑雪證照',
-        'remind'  => '選課注意事項',
-        'cloth' => '教練本季辨識服裝',    
-      );
-
-      $ARTICLE = new ARTICLE();
-      //$article_id = mysql_real_escape_string($_REQUEST['idx']);
-      $ID=str_replace('\'','', $_REQUEST['idx']); // Workaround for anti-sql-injection
-      //$article_id = $_REQUEST['idx'];
-      $article_id = $ID;
-      $article_data = $ARTICLE->readByIdx($article_id);
-      $article_title = isset($article_data['title']) ? trim($article_data['title']) : 'SKIDIY 滑雪專欄';
-      $article_plain = '';
-      $article_content_html = '';
-      if(!empty($article_data['article'])){
-        $article_content_html = normalize_rich_text($article_data['article']);
-        $article_plain = strip_tags($article_content_html);
-        $article_plain = preg_replace('/\s+/', ' ', $article_plain);
+      $article_id = isset($_REQUEST['idx']) ? str_replace('\'','', $_REQUEST['idx']) : null;
+      $articleData = ContentRepository::getArticleData($article_id);
+      if(empty($articleData)){
+        header('Location: /articleList.php');
+        exit();
       }
-      if(function_exists('mb_substr')){
-        $article_snippet = mb_substr($article_plain, 0, 150);
-        if(mb_strlen($article_plain) > 150){
-          $article_snippet .= '…';
-        }
-      }else{
-        $article_snippet = substr($article_plain, 0, 150);
-        if(strlen($article_plain) > 150){
-          $article_snippet .= '…';
-        }
-      }
-      $article_hero = '';
-      if (!empty($article_data['hero_image'])) {
-        $article_hero = $article_data['hero_image'];
-      } elseif(!empty($article_id)) {
-        $article_hero = "https://diy.ski/photos/articles/{$article_id}/{$article_id}.jpg?v221008";
-      }
-      if(empty($article_hero)){
-        $article_hero = 'https://diy.ski/assets/images/header_index_main_img.png';
-      }
-      $SEO_TITLE = $article_title . ' - SKIDIY 滑雪攻略';
-      $SEO_DESCRIPTION = !empty($article_snippet) ? $article_snippet : 'SKIDIY 滑雪專欄：雪場攻略、教練分享與裝備建議。';
-      $SEO_OG_IMAGE = $article_hero;
+      $article_raw = $articleData['raw'];
+      $article_title = $articleData['title'];
+      $article_content_html = $articleData['content'];
+      $article_hero = $articleData['hero_image'];
+      $SEO_TITLE = $articleData['seo']['title'];
+      $SEO_DESCRIPTION = $articleData['seo']['description'];
+      $SEO_OG_IMAGE = $articleData['seo']['image'];
       $SEO_OG_DESC = $SEO_DESCRIPTION;
       $articleSchema = [
         '@context' => 'https://schema.org',
@@ -88,8 +54,8 @@
           ]
         ]
       ];
-      if(!empty($article_data['timestamp'])){
-        $published = date(DATE_ATOM, strtotime($article_data['timestamp']));
+      if(!empty($article_raw['timestamp'])){
+        $published = date(DATE_ATOM, strtotime($article_raw['timestamp']));
         $articleSchema['datePublished'] = $published;
         $articleSchema['dateModified'] = $published;
       }
@@ -115,7 +81,7 @@
       $(document).ready(function(){
         $(function(){          
                $('#ordernow').on('click', function(e){         
-                    window.location.replace('../schedule.php?f=a') 
+                    window.location.replace('<?=$articleData['cta']['target']?>') 
                }); 
         });
       });  
@@ -128,9 +94,9 @@
         <div class="site-hero__overlay"></div>
         <div class="site-hero__content">
           <span class="hero-pill">SKIDIY 精選</span>
-          <h1 class="hero-title"><?=$article_data['title']?></h1>
+          <h1 class="hero-title"><?=$article_title?></h1>
           <p class="hero-subtitle">最新滑雪攻略與真實經驗分享</p>
-          <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
+          <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow"><?=$articleData['cta']['label']?> <i class="material-icons">arrow_forward</i></button>
         </div>
       </div>
 
@@ -146,7 +112,6 @@
               
               <?php 
 
-                //echo '<h1 id="intro">'.$article_data['title'].'</h1>';
                 echo '<div class="section-content section-content--pre"><pre>'.$article_content_html.'</pre></div><hr>';
 
               ?>
@@ -163,8 +128,8 @@
 
           // Recommended FAQs by category (default: general)
           $category = 'general';
-          if (isset($article_data['category']) && !empty($article_data['category'])) {
-              $category = $article_data['category'];
+          if (isset($article_raw['category']) && !empty($article_raw['category'])) {
+              $category = $article_raw['category'];
           }
 
           if (function_exists('renderRecommendedFAQsProxy')) {

@@ -17,160 +17,24 @@ if(in_array($name,['taipei'])){
   header('Location: https://diy.ski/iski');exit();
 }
 
-$PARKS = new PARKS();
-$park_info = $PARKS->getParkInfo_by_Name($name);
-
-if(empty($park_info)){
+$parkData = ContentRepository::getParkData($name);
+if(empty($parkData)){
   header('Location: /parkList.php');
   exit();
 }
-
-// Special name mappings
-if($name=='moiwa'){$park_info['cname']='二世谷';}
-if($name=='gala'){$park_info['cname']='';}
-if($name=='iski'){$park_info['cname']='iSKI';}
-
-// Section definitions (mirrors diy.ski ordering)
-$SECTION_HEADER = array(
-  'about'  => '介紹',
-  'photo' => '照片',
-  'location'  => '位置',
-  'slope'  => '雪道',
-  'ticket' => '雪票',
-  'time' => '開放時間',
-  'access' => '交通',
-  'live'  => '住宿',
-  'rental' => '租借',
-  'delivery'  => '宅配',
-  'luggage' => '行前裝備',
-  'workout'  => '體能',
-  'remind'  => '上課地點及事項',
-  'join'  => '約伴及討論',
-  'event'  => '優惠活動',
-  'all'  => '完整閱讀'
-);
-
-// Map to database column names
-$field_mapping = array(
-  'about' => 'about',
-  'photo' => 'photo_section',
-  'location' => 'location_section',
-  'slope' => 'slope_section',
-  'ticket' => 'ticket_section',
-  'time' => 'time_section',
-  'access' => 'access_section',
-  'live' => 'live_section',
-  'rental' => 'rental_section',
-  'delivery' => 'delivery_section',
-  'luggage' => 'luggage_section',
-  'workout' => 'workout_section',
-  'remind' => 'remind_section',
-  'join' => 'join_section',
-  'event' => 'event_section'
-);
-
-// Predefined media overrides so重要區塊有預設圖
-$hero_overrides = array(
-  'karuizawa' => 'https://diy.ski/photos/karuizawa/course1.jpg',
-  'naeba' => 'https://diy.ski/photos/naeba/3.jpg?v3',
-  'appi' => 'https://diy.ski/photos/appi/appi.jpg'
-);
-
-$gallery_overrides = array(
-  'karuizawa' => array(
-    array(
-      'src' => 'https://diy.ski/photos/karuizawa/course1.jpg',
-      'caption' => '山頂纜車沿線視角'
-    ),
-    array(
-      'src' => 'https://diy.ski/photos/karuizawa/course02.jpg',
-      'caption' => '親子友善的綠線雪道'
-    ),
-    array(
-      'src' => 'https://diy.ski/photos/karuizawa/karuizawasite02b.jpg',
-      'caption' => '雪道與購物中心的連結'
-    ),
-    array(
-      'src' => 'https://diy.ski/photos/karuizawa/rental.jpg',
-      'caption' => '王子飯店租借中心'
-    )
-  )
-);
-
-// Helper to render fallback gallery
-function render_photo_gallery($photos, $resort_name){
-  if(empty($photos)){return '';}
-  ob_start(); ?>
-  <div class="photo-grid">
-    <?php foreach($photos as $idx => $photo):
-      $src = $photo['src'];
-      $caption = isset($photo['caption']) ? $photo['caption'] : '';
-      $alt = isset($photo['alt']) ? $photo['alt'] : $resort_name . ' 照片 ' . ($idx + 1);
-    ?>
-      <figure class="photo-grid-item">
-        <img src="<?=$src?>" alt="<?=htmlspecialchars($alt, ENT_QUOTES)?>">
-        <?php if(!empty($caption)){ ?><figcaption><?=$caption?></figcaption><?php } ?>
-      </figure>
-    <?php endforeach; ?>
-  </div>
-  <?php
-  return ob_get_clean();
-}
-
-if(empty($park_info['photo'])){
-  if(isset($hero_overrides[$name])){
-    $park_info['photo'] = $hero_overrides[$name];
-  }else{
-    $park_info['photo'] = 'https://diy.ski/photos/'.$name.'/3.jpg';
-  }
-}
-
+$park_info = $parkData['raw'];
+$SECTION_HEADER = ContentRepository::getParkSectionsDefinition();
 $section_contents = array();
-foreach($SECTION_HEADER as $key => $val){
-  if($key == 'all'){continue;}
-  $field = isset($field_mapping[$key]) ? $field_mapping[$key] : $key;
-  $content = isset($park_info[$field]) ? $park_info[$field] : '';
-
-  if($key === 'photo' && empty($content) && isset($gallery_overrides[$name])){
-    $content = render_photo_gallery($gallery_overrides[$name], $park_info['cname']);
-  }
-  if($key !== 'photo'){
-    $content = normalize_rich_text($content);
-  }else{
-    $content = convert_media_urls($content);
-  }
-
-  $section_contents[$key] = $content;
+foreach($parkData['sections'] as $section){
+  $section_contents[$section['key']] = $section['content'];
 }
-
-$hero_image = $park_info['photo'];
-
-$display_name = !empty($park_info['cname']) ? $park_info['cname'] : ucfirst($name);
-$seo_source_text = '';
-if(!empty($section_contents['about'])){
-  $seo_source_text = strip_tags(convert_media_urls($section_contents['about']));
-}elseif(!empty($park_info['description'])){
-  $seo_source_text = strip_tags($park_info['description']);
-}
-$seo_source_text = preg_replace('/\s+/', ' ', trim($seo_source_text));
-if(function_exists('mb_substr')){
-  $snippet = mb_substr($seo_source_text, 0, 120);
-  if(mb_strlen($seo_source_text) > 120){
-    $snippet .= '…';
-  }
-}else{
-  $snippet = substr($seo_source_text, 0, 120);
-  if(strlen($seo_source_text) > 120){
-    $snippet .= '…';
-  }
-}
-$SEO_TITLE = $display_name . ' 滑雪場攻略 - SKIDIY';
-$SEO_DESCRIPTION = !empty($snippet) ? $snippet : '探索 ' . $display_name . ' 的雪道、交通與預訂資訊。';
-$SEO_OG_IMAGE = $hero_image;
-
-$faq_keyword = $display_name;
-$faq_url = 'https://faq.diy.ski/?q=' . urlencode($faq_keyword);
-$booking_url = 'https://booking.diy.ski/schedule?park=' . urlencode($name);
+$hero_image = $parkData['hero_image'];
+$display_name = $parkData['display_name'];
+$SEO_TITLE = $parkData['seo']['title'];
+$SEO_DESCRIPTION = $parkData['seo']['description'];
+$SEO_OG_IMAGE = $parkData['seo']['image'];
+$faq_keyword = $parkData['faq_keyword'];
+$related_links = $parkData['related_links'];
 
 $parkSchema = [
   '@context' => 'https://schema.org',
@@ -240,7 +104,7 @@ if (!empty($park_info['access_section'])) {
       $(document).ready(function(){
         $(function(){
                $('#ordernow').on('click', function(e){
-                    window.location.replace('schedule.php?f=p&p=<?=$name?>')
+                    window.location.replace('<?=$parkData['cta']['target']?>')
                });
         });
       });
@@ -257,9 +121,9 @@ if (!empty($park_info['access_section'])) {
         <div class="site-hero__overlay"></div>
         <div class="site-hero__content">
           <span class="hero-pill">Snow Resort Guide</span>
-          <h1 class="hero-title"><?=$park_info['cname']?><span><?=($name!='iski')?ucfirst($name):'滑雪俱樂部'?></span></h1>
-          <p class="hero-subtitle"><?=$park_info['description']?></p>
-          <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow">現在就預訂 <i class="material-icons">arrow_forward</i></button>
+          <h1 class="hero-title"><?=$display_name?><span><?=($name!='iski')?ucfirst($name):'滑雪俱樂部'?></span></h1>
+          <p class="hero-subtitle"><?=$parkData['description']?></p>
+          <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow"><?=$parkData['cta']['label']?> <i class="material-icons">arrow_forward</i></button>
         </div>
       </div>
 
@@ -271,7 +135,7 @@ if (!empty($park_info['access_section'])) {
               <img src="https://diy.ski/assets/images/logo-skidiy.png" alt="SKIDIY">
               <span>SKIDIY</span>
             </div>
-            <p class="resort-name"><?=$park_info['cname']?> <span><?=($name!='iski')?ucfirst($name):''?></span></p>
+            <p class="resort-name"><?=$display_name?> <span><?=($name!='iski')?ucfirst($name):''?></span></p>
             <ul class="tabs tabs-transparent">
               <?php
               foreach($SECTION_HEADER as $key => $val){
@@ -288,21 +152,14 @@ if (!empty($park_info['access_section'])) {
           <div class="col s12 l9 right resort-content">
             <?php
             $has_content = false;
-            foreach($SECTION_HEADER as $key => $val){
-              if($key == 'all') continue; // Skip "完整閱讀"
-              if(!empty($section_contents[$key])){
-                echo '<h1 id="' . $key . '">' . $val . '</h1>';
-
-                // For naeba, karuizawa, appi: output HTML directly (TinyMCE format)
-                // For others: use <pre> tag
-                if(in_array($name, ['naeba', 'karuizawa', 'appi'])){
-                  echo '<div class="section-content section-content--rich">' . $section_contents[$key] . '</div><hr>';
-                } else {
-                  echo '<div class="section-content section-content--pre"><pre>' . $section_contents[$key] . '</pre></div><hr>';
-                }
-
-                $has_content = true;
+            foreach($parkData['sections'] as $section){
+              echo '<h1 id="' . $section['key'] . '">' . $section['title'] . '</h1>';
+              if($section['render_mode'] === 'rich'){
+                echo '<div class="section-content section-content--rich">' . normalize_rich_text($section['content']) . '</div><hr>';
+              } else {
+                echo '<div class="section-content section-content--pre"><pre>' . convert_media_urls($section['content']) . '</pre></div><hr>';
               }
+              $has_content = true;
             }
 
             if(!$has_content){
@@ -320,13 +177,13 @@ if (!empty($park_info['access_section'])) {
             <h2 id="related-links-title"><?=$display_name?> FAQ 與預約</h2>
           </div>
           <div class="related-links__grid">
-            <a class="related-links__card" href="<?=$faq_url?>" target="_blank" rel="noopener">
+            <a class="related-links__card" href="<?=$related_links['faq_url']?>" target="_blank" rel="noopener">
               <span class="related-links__eyebrow">FAQ</span>
               <p class="related-links__title">查看 <?=$display_name?> 常見問題</p>
               <p class="related-links__body">包含交通方式、雪票購買、課程安排與裝備如何選，快速找到常見疑問的解答。</p>
               <span class="related-links__cta">開啟 FAQ</span>
             </a>
-            <a class="related-links__card" href="<?=$booking_url?>" target="_blank" rel="noopener">
+            <a class="related-links__card" href="<?=$related_links['booking_url']?>" target="_blank" rel="noopener">
               <span class="related-links__eyebrow">Booking</span>
               <p class="related-links__title">立即預約 <?=$display_name?> 課程</p>
               <p class="related-links__body">直接前往預約系統，依照日期、雪場與教練挑選最適合的課程或活動。</p>
@@ -342,7 +199,7 @@ if (!empty($park_info['access_section'])) {
       $faqs = getParkFAQs($name);
       ?>
       <div class="container">
-        <?php renderFAQSection($faqs, $park_info['cname'] . ' 常見問題'); ?>
+        <?php renderFAQSection($faqs, $display_name . ' 常見問題'); ?>
       </div>
 
       <div class="back-button-wrap">
@@ -352,7 +209,7 @@ if (!empty($park_info['access_section'])) {
       <?php
       // Add Booking CTA
       require_once __DIR__ . '/includes/booking_cta.php';
-      renderBookingCTA('park', ['park_name' => $name, 'park_cname' => $park_info['cname']]);
+      renderBookingCTA('park', ['park_name' => $name, 'park_cname' => $display_name]);
       ?>
 
       <footer class="footer-copyright">
