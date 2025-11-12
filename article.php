@@ -120,14 +120,12 @@
 
             <div class="col s12 l19 right resort-content">                 
 
-              
-              <?php 
-
-                echo '<div class="section-content section-content--pre"><pre>'.$article_content_html.'</pre></div><hr>';
-
-              ?>
-
-
+              <?php renderSectionList(array(array(
+                'key' => 'article-body',
+                'title' => $article_title,
+                'content' => $article_raw['article'],
+                'render_mode' => 'pre'
+              ))); ?>
             </div>
         </div>
       </div>
