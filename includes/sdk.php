@@ -28,6 +28,7 @@ require('mj.class.php');
 require('crypto.class.php');
 require('payment.class.php');
 require('config.php');
+require_once(__DIR__.'/content_repository.php');
 require_once(__DIR__.'/preview_guard.php');
 
 function _msg($msg){
