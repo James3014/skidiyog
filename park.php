@@ -117,15 +117,22 @@ if (!empty($park_info['access_section'])) {
         <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
       </div>
 
-      <div class="site-hero site-hero--park" style="--hero-image:url('<?=$hero_image?>');">
-        <div class="site-hero__overlay"></div>
-        <div class="site-hero__content">
-          <span class="hero-pill">Snow Resort Guide</span>
-          <h1 class="hero-title"><?=$display_name?><span><?=($name!='iski')?ucfirst($name):'滑雪俱樂部'?></span></h1>
-          <p class="hero-subtitle"><?=$parkData['description']?></p>
-          <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow"><?=$parkData['cta']['label']?> <i class="material-icons">arrow_forward</i></button>
-        </div>
-      </div>
+      <?php
+        renderHero(array(
+          'modifier' => 'site-hero--park',
+          'image' => $hero_image,
+          'pill' => $parkData['hero_pill'],
+          'title' => $display_name,
+          'title_suffix' => ($name!='iski')?ucfirst($name):'滑雪俱樂部',
+          'subtitle' => $parkData['description'],
+          'cta' => array(
+            'label' => $parkData['cta']['label'],
+            'target' => $parkData['cta']['target'],
+            'id' => 'ordernow',
+            'name' => 'ordernow'
+          )
+        ));
+      ?>
 
       <div class="container resort-info">
         <div class="row">

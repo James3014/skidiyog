@@ -30,6 +30,7 @@ require('payment.class.php');
 require('config.php');
 require_once(__DIR__.'/content_repository.php');
 require_once(__DIR__.'/preview_guard.php');
+require_once(__DIR__.'/components/hero.php');
 
 function _msg($msg){
 	global $SYSMSG;
