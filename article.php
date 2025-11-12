@@ -90,15 +90,21 @@
       <?php require('nav.inc.php');?>
 
       <a href="javascript:" id="return-to-top" class="waves-effect waves-light"><i class="material-icons">arrow_upward</i></a>
-      <div class="site-hero site-hero--park" style="--hero-image:url('<?=$article_hero?>');">
-        <div class="site-hero__overlay"></div>
-        <div class="site-hero__content">
-          <span class="hero-pill">SKIDIY 精選</span>
-          <h1 class="hero-title"><?=$article_title?></h1>
-          <p class="hero-subtitle">最新滑雪攻略與真實經驗分享</p>
-          <button class="btn waves-effect waves-light btn-primary space-top-2" type="button" id="ordernow" name="ordernow"><?=$articleData['cta']['label']?> <i class="material-icons">arrow_forward</i></button>
-        </div>
-      </div>
+      <?php
+        renderHero(array(
+          'modifier' => 'site-hero--park',
+          'image' => $article_hero,
+          'pill' => 'SKIDIY 精選',
+          'title' => $article_title,
+          'subtitle' => '最新滑雪攻略與真實經驗分享',
+          'cta' => array(
+            'label' => $articleData['cta']['label'],
+            'target' => $articleData['cta']['target'],
+            'id' => 'ordernow',
+            'name' => 'ordernow'
+          )
+        ));
+      ?>
 
       <div class="container resort-info">
         <div class="row">
