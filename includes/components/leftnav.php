@@ -6,7 +6,7 @@ function renderLeftnav($config = array())
     $slug = !empty($config['slug']) ? $config['slug'] : '';
     $sections = !empty($config['sections']) && is_array($config['sections']) ? $config['sections'] : array();
     ?>
-    <div class="col l3 hide-on-med-and-down leftnav">
+    <div class="col l3 leftnav leftnav--desktop hide-on-med-and-down">
       <div class="leftnav-brand">
         <img src="https://diy.ski/assets/images/logo-skidiy.png" alt="SKIDIY">
         <span>SKIDIY</span>
@@ -23,6 +23,15 @@ function renderLeftnav($config = array())
           <?php } ?>
         </ul>
       <?php } ?>
+    </div>
+    <div class="col s12 leftnav-mobile hide-on-large-only">
+      <div class="leftnav-mobile__scroll">
+        <?php if(!empty($sections)){ foreach($sections as $section){
+          if(empty($section['key']) || empty($section['title'])) continue;
+        ?>
+          <a class="leftnav-mobile__chip" href="#<?=$section['key']?>"><?=$section['title']?></a>
+        <?php }} ?>
+      </div>
     </div>
     <?php
 }
