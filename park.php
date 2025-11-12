@@ -9,20 +9,16 @@ if(empty($name)){
   exit();
 }
 
-// Redirect to main site for specific parks
-if(in_array($name,['niseko'])){
-  header('Location: https://diy.ski');exit();
-}
-if(in_array($name,['taipei'])){
-  header('Location: https://diy.ski/iski');exit();
-}
-
 $parkData = ContentRepository::getParkData($name);
 if(empty($parkData)){
   header('Location: /parkList.php');
   exit();
 }
-$park_info = $parkData['raw'];
+$park_info = isset($parkData['raw']) ? $parkData['raw'] : array();
+if(isset($parkData['redirect_to'])){
+  header('Location: ' . $parkData['redirect_to']);
+  exit();
+}
 $hero_image = $parkData['hero_image'];
 $display_name = $parkData['display_name'];
 $SEO_TITLE = $parkData['seo']['title'];

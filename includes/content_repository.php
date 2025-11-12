@@ -40,6 +40,16 @@ class ContentRepository
     );
 
     private static $richRenderResorts = array('naeba', 'karuizawa', 'appi');
+    private static $parkRedirects = array(
+        'niseko' => 'https://diy.ski',
+        'taipei' => 'https://diy.ski/iski'
+    );
+
+    public static function getParkRedirect($name)
+    {
+        $slug = strtolower($name);
+        return isset(self::$parkRedirects[$slug]) ? self::$parkRedirects[$slug] : null;
+    }
 
     public static function getParkSectionsDefinition()
     {
@@ -48,6 +58,11 @@ class ContentRepository
 
     public static function getParkData($name)
     {
+        $redirect = self::getParkRedirect($name);
+        if ($redirect) {
+            return array('redirect_to' => $redirect);
+        }
+
         $PARKS = new PARKS();
         $park_info = $PARKS->getParkInfo_by_Name($name);
         if (empty($park_info)) {
