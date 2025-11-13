@@ -244,7 +244,8 @@ class ContentRepository
 
         $content = normalize_rich_text($article_data['article']);
         $heroImage = self::resolveArticleHero($idx, $article_data);
-        $snippet = self::truncateText(strip_tags($content), 180);
+        // Optimized for Google SERP: 120-155 characters
+        $snippet = self::truncateText(strip_tags($content), 155);
 
         return array(
             'idx' => $idx,
@@ -306,17 +307,34 @@ class ContentRepository
         }
 
         $plain = strip_tags(normalize_rich_text($source));
-        return self::truncateText($plain, 140);
+        // Optimized for Google SERP: 120-155 characters (for CJK languages like Chinese)
+        // Google typically shows 155-160 chars on desktop, 120 on mobile
+        return self::truncateText($plain, 155);
     }
 
+    /**
+     * Truncate text to specified length while preserving word boundaries
+     * Optimized for multi-byte characters (UTF-8, CJK)
+     * @param string $text Text to truncate
+     * @param int $limit Character limit (for CJK: each character counts as 1)
+     * @return string Truncated text with ellipsis if exceeded
+     */
     private static function truncateText($text, $limit)
     {
         $text = trim(preg_replace('/\s+/', ' ', $text));
         if (function_exists('mb_strlen')) {
-            if (mb_strlen($text) <= $limit) {
+            $length = mb_strlen($text);
+            if ($length <= $limit) {
                 return $text;
             }
-            return mb_substr($text, 0, $limit) . '…';
+            // Truncate and add ellipsis
+            $truncated = mb_substr($text, 0, $limit);
+            // Try to cut at word boundary (space) within last 10 chars
+            $lastSpace = mb_strrpos($truncated, ' ');
+            if ($lastSpace !== false && $lastSpace > $limit - 10) {
+                $truncated = mb_substr($truncated, 0, $lastSpace);
+            }
+            return trim($truncated) . '…';
         } else {
             if (strlen($text) <= $limit) {
                 return $text;

@@ -18,6 +18,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
     <?php if(defined('SKID_PREVIEW_MODE') && SKID_PREVIEW_MODE){ ?>
     <meta name="robots" content="noindex, nofollow">
+    <?php }else{ ?>
+    <!-- AI Search Optimization: Allow AI crawlers to index and use content -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <!-- Allow popular AI models to use content for training/indexing -->
+    <meta name="allow-ai" content="true">
     <?php } ?>
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
