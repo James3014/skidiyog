@@ -173,7 +173,7 @@ if (!empty($park_info['access_section'])) {
         </div>
       </section>
 
-      <?php $faqs = getParkFAQs($name); ?>
+      <?php $faqs = ContentRepository::getParkFAQs($name); ?>
       <div class="container">
         <?php renderFAQSection($faqs, $display_name . ' 常見問題'); ?>
       </div>
