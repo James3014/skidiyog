@@ -41,6 +41,14 @@ $parkSchema = [
   ]
 ];
 
+// Generate Breadcrumb schema for SEO
+$breadcrumbs = [
+  ['name' => 'SKIDIY 自助滑雪', 'url' => 'https://' . domain_name . '/'],
+  ['name' => '雪場介紹', 'url' => 'https://' . domain_name . '/parkList.php'],
+  ['name' => $display_name, 'url' => 'https://' . domain_name . $_SERVER['REQUEST_URI']]
+];
+$breadcrumbSchema = ContentRepository::generateBreadcrumbSchema($breadcrumbs);
+
 if (!empty($park_info['location'])) {
   $parkSchema['areaServed'] = strip_tags($park_info['location']);
 }
@@ -81,6 +89,9 @@ if (!empty($park_info['access_section'])) {
       <?php require_once __DIR__ . '/includes/ga4_tracking.php'; renderGA4Head(); ?>
       <script type="application/ld+json">
         <?=json_encode($parkSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);?>
+      </script>
+      <script type="application/ld+json">
+        <?=json_encode($breadcrumbSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);?>
       </script>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
       <!--Import materialize.css-->

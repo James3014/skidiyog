@@ -140,6 +140,34 @@ class ContentRepository
         return json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
     }
 
+    /**
+     * Generate BreadcrumbList schema.org JSON-LD for navigation breadcrumbs
+     * @param array $breadcrumbs Array of breadcrumb items with 'name' and 'url' keys
+     * @return array Schema.org BreadcrumbList structure
+     */
+    public static function generateBreadcrumbSchema($breadcrumbs)
+    {
+        if (empty($breadcrumbs)) {
+            return null;
+        }
+
+        $itemListElement = array();
+        foreach ($breadcrumbs as $index => $crumb) {
+            $itemListElement[] = array(
+                '@type' => 'ListItem',
+                'position' => $index + 1,
+                'name' => $crumb['name'],
+                'item' => $crumb['url']
+            );
+        }
+
+        return array(
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => $itemListElement
+        );
+    }
+
     public static function getParkSectionsDefinition()
     {
         return self::$sectionLabels;
