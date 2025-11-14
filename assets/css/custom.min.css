@@ -288,10 +288,22 @@ body.index-bg{background-color:var(--surface-alt)}
   .leftnav--desktop {
     display: none !important;
   }
-  /* When sidebar is hidden, make content full width */
+  /* When sidebar is hidden, force content to full width and override all Materialize grid */
   .resort-content {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     width: 100% !important;
+    max-width: 100% !important;
     margin-left: 0 !important;
+    margin-right: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    position: relative !important;
+    flex: 0 0 100% !important;
+  }
+  .resort-info .row {
+    display: block !important;
   }
 }
 
