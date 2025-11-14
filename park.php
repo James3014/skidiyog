@@ -187,33 +187,17 @@ $parkSchema['knowsAbout'] = [
         ));
       ?>
 
-      <!-- Mobile/Tablet navigation: OUTSIDE grid, shown only < 993px via CSS media query -->
-      <?php
-        $sections = $parkData['sections'] ?? array();
-        if(!empty($sections)):
-      ?>
-      <div class="leftnav-mobile">
-        <div class="leftnav-mobile__scroll">
-          <?php foreach($sections as $section){
-            if(empty($section['key']) || empty($section['title'])) continue;
-          ?>
-            <a class="leftnav-mobile__chip" href="#<?=$section['key']?>"><?=$section['title']?></a>
-          <?php } ?>
-        </div>
-      </div>
-      <?php endif; ?>
-
       <div class="container resort-info">
         <div class="row">
-          <!-- Left navigation: 25% width on desktop (col l3), hidden on tablet/mobile -->
+          <!-- Left navigation for desktop -->
           <?php renderLeftnav(array(
             'display_name' => $display_name,
             'slug' => $name,
             'sections' => $parkData['sections']
           )); ?>
 
-          <!-- Main content: 100% on mobile/tablet, 75% on desktop -->
-          <div class="col s12 m12 l9 resort-content">
+          <!-- Main content -->
+          <div class="col s12 l9 resort-content">
             <?php
             renderSectionList($parkData['sections']);
             ?>
