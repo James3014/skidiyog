@@ -289,6 +289,7 @@ class ContentRepository
         // 解析文章 tags（支援多種格式）
         $articleTags = self::parseTags($tagsString);
         if (empty($articleTags)) {
+            error_log('[ContentRepository] No article tags parsed from: ' . $tagsString);
             return array();
         }
 
@@ -296,12 +297,16 @@ class ContentRepository
             // 調用 FAQ API 取得所有 FAQ 資料
             $faqData = self::fetchFAQData();
             if (empty($faqData) || empty($faqData['items'])) {
+                error_log('[ContentRepository] No FAQ data or items found');
                 return array();
             }
+
+            error_log('[ContentRepository] Parsed article tags: ' . json_encode($articleTags));
 
             $relatedFAQs = array();
 
             // 過濾：找出相關 FAQ
+            $matchCount = 0;
             foreach ($faqData['items'] as $faq) {
                 $faqTags = isset($faq['metadata']['crm_tags']) ? $faq['metadata']['crm_tags'] : array();
 
@@ -315,6 +320,7 @@ class ContentRepository
 
                         if (strcasecmp($articleTagClean, $faqTagClean) === 0) {
                             $hasMatch = true;
+                            $matchCount++;
                             break 2;
                         }
                     }
@@ -336,6 +342,7 @@ class ContentRepository
                 }
             }
 
+            error_log('[ContentRepository] Found ' . count($relatedFAQs) . ' related FAQs for tags: ' . json_encode($articleTags));
             return $relatedFAQs;
 
         } catch (Exception $e) {
