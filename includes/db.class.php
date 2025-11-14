@@ -63,6 +63,9 @@ class DB{/* DBv16.09.03 By Ko - Modified for SQLite */
 			// Auto-create tables if they don't exist
 			$this->createTablesIfNotExist();
 
+			// Auto-seed parks data if parks table is empty
+			$this->seedParksIfEmpty();
+
 			// Final permission check after table creation
 			if (file_exists(DB_FILE) && !is_writable(DB_FILE)) {
 				@chmod(DB_FILE, 0666);
@@ -171,6 +174,76 @@ class DB{/* DBv16.09.03 By Ko - Modified for SQLite */
 			");
 		} catch (Exception $e) {
 			error_log("Error creating tables: " . $e->getMessage());
+		}
+	}
+
+	private function seedParksIfEmpty() {
+		if (!$this->pdo) {
+			return;
+		}
+
+		try {
+			// Check if parks table has any data
+			$stmt = $this->pdo->query("SELECT COUNT(*) as cnt FROM parks");
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			if ($result && $result['cnt'] > 0) {
+				// Parks table already has data, skip seeding
+				return;
+			}
+
+			// Parks table is empty, load from parks.json
+			$parks_file = __DIR__ . '/../database/parks.json';
+			if (!file_exists($parks_file)) {
+				error_log("parks.json not found at: " . $parks_file);
+				return;
+			}
+
+			$parks_json = file_get_contents($parks_file);
+			$parks_data = json_decode($parks_json, true);
+
+			if (!$parks_data || !is_array($parks_data)) {
+				error_log("Failed to decode parks.json");
+				return;
+			}
+
+			// Group parks data by name (each park has multiple sections in parks.json)
+			$parks_by_name = array();
+			foreach ($parks_data as $record) {
+				$name = $record['name'] ?? '';
+				if ($name && !isset($parks_by_name[$name])) {
+					$parks_by_name[$name] = array(
+						'idx' => $record['idx'] ?? 0,
+						'name' => $name,
+						'cname' => $record['cname'] ?? $name,
+						'description' => '',
+						'location' => ''
+					);
+				}
+			}
+
+			// Insert parks into database
+			$insert_stmt = $this->pdo->prepare("INSERT INTO parks (idx, name, cname, description, location) VALUES (?, ?, ?, ?, ?)");
+
+			foreach ($parks_by_name as $park) {
+				if (!empty($park['name'])) {
+					try {
+						$insert_stmt->execute([
+							(int)$park['idx'],
+							$park['name'],
+							$park['cname'],
+							$park['description'],
+							$park['location']
+						]);
+					} catch (Exception $e) {
+						// Silently skip duplicates
+					}
+				}
+			}
+
+			error_log("Parks table seeded with " . count($parks_by_name) . " entries");
+		} catch (Exception $e) {
+			error_log("Error seeding parks table: " . $e->getMessage());
 		}
 	}
 	

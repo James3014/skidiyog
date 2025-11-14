@@ -101,38 +101,58 @@ if (file_exists(__DIR__ . '/../database/instructors.json')) {
     }
 }
 
-// Seed parks table with known ski resorts
-echo "Initializing parks table...\n";
-$known_parks = array(
-    1 => array('name' => 'Niseko', 'cname' => '二世古', 'location' => '北海道', 'description' => 'Hokkaido\'s largest ski resort'),
-    2 => array('name' => 'Hakuba', 'cname' => '白馬', 'location' => '長野', 'description' => 'Famous Nagano ski resort'),
-    3 => array('name' => 'Naeba', 'cname' => '苗場', 'location' => '新潟', 'description' => 'Popular Niigata resort'),
-    4 => array('name' => 'Nozawa', 'cname' => '野澤溫泉', 'location' => '長野', 'description' => 'Hot spring ski resort'),
-    5 => array('name' => 'Zao', 'cname' => '藏王溫泉', 'location' => '宮城', 'description' => 'Famous ice monsters'),
-    6 => array('name' => 'Furano', 'cname' => '富良野', 'location' => '北海道', 'description' => 'Hokkaido powder paradise'),
-);
+// Seed parks table from database/parks.json
+echo "Initializing parks table from parks.json...\n";
+if (file_exists(__DIR__ . '/../database/parks.json')) {
+    $parks_json = file_get_contents(__DIR__ . '/../database/parks.json');
+    $parks_data = json_decode($parks_json, true);
 
-$park_count = 0;
-foreach ($known_parks as $idx => $park) {
-    $data = array(
-        'idx' => $idx,
-        'name' => $park['name'],
-        'cname' => $park['cname'],
-        'location' => $park['location'],
-        'description' => $park['description']
-    );
-
-    try {
-        $result = $DB->INSERT('parks', $data);
-        if ($result !== null) {
-            $park_count++;
-            echo "  ✓ Park: " . $park['cname'] . "\n";
+    if ($parks_data && is_array($parks_data)) {
+        // Group parks data by name (each park has multiple sections)
+        $parks_by_name = array();
+        foreach ($parks_data as $record) {
+            $name = $record['name'] ?? '';
+            if ($name && !isset($parks_by_name[$name])) {
+                $parks_by_name[$name] = array(
+                    'idx' => $record['idx'] ?? 0,
+                    'name' => $name,
+                    'cname' => $record['cname'] ?? $name,
+                    'description' => '',
+                    'location' => ''
+                );
+            }
         }
-    } catch (Exception $e) {
-        // Silently skip duplicates
+
+        $park_count = 0;
+        foreach ($parks_by_name as $park) {
+            if (!empty($park['name'])) {
+                $data = array(
+                    'idx' => (int)$park['idx'],
+                    'name' => $park['name'],
+                    'cname' => $park['cname'],
+                    'location' => $park['location'],
+                    'description' => $park['description']
+                );
+
+                try {
+                    $result = $DB->INSERT('parks', $data);
+                    if ($result !== null) {
+                        $park_count++;
+                        echo "  ✓ Park: " . $park['cname'] . " ({$park['name']})\n";
+                    }
+                } catch (Exception $e) {
+                    // Silently skip duplicates or errors
+                    // echo "    ⚠ " . $park['name'] . ": " . $e->getMessage() . "\n";
+                }
+            }
+        }
+        echo "Total parks initialized: $park_count\n\n";
+    } else {
+        echo "  ❌ Failed to decode parks.json\n\n";
     }
+} else {
+    echo "  ❌ parks.json not found\n\n";
 }
-echo "Total parks initialized: $park_count\n\n";
 
 echo "=== Seeding Complete ===\n";
 echo "Database location: " . DB_FILE . "\n";
