@@ -187,13 +187,12 @@ $parkSchema['knowsAbout'] = [
         ));
       ?>
 
-      <!-- Mobile/Tablet navigation: shown only on small/medium screens, OUTSIDE grid -->
+      <!-- Mobile/Tablet navigation: OUTSIDE grid, shown only < 993px via CSS media query -->
       <?php
-        // Check if we need to show mobile nav (not using col-based grid)
         $sections = $parkData['sections'] ?? array();
         if(!empty($sections)):
       ?>
-      <div class="leftnav-mobile hide-on-large-only">
+      <div class="leftnav-mobile">
         <div class="leftnav-mobile__scroll">
           <?php foreach($sections as $section){
             if(empty($section['key']) || empty($section['title'])) continue;
