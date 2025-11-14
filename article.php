@@ -143,6 +143,10 @@
 
       <?php
       // 【新增】顯示根據文章 tags 自動抓取的相關 FAQ
+      // DEBUG
+      echo '<!-- DEBUG: articleData["raw"]["tags"] = ' . htmlspecialchars($articleData['raw']['tags'] ?? 'EMPTY') . ' -->';
+      echo '<!-- DEBUG: count(related_faqs) = ' . count($articleData['related_faqs'] ?? array()) . ' -->';
+
       if (!empty($articleData['related_faqs']) && is_array($articleData['related_faqs'])) {
           echo '<div class="container related-faqs-section" style="margin-top: 40px; margin-bottom: 40px;">';
           echo '<h2 style="font-size: 1.5rem; margin-bottom: 20px; color: #333;">相關常見問題</h2>';
