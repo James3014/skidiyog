@@ -288,6 +288,11 @@ body.index-bg{background-color:var(--surface-alt)}
   .leftnav--desktop {
     display: none !important;
   }
+  /* When sidebar is hidden, make content full width */
+  .resort-content {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
 }
 
 .leftnav-brand{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;margin-bottom:18px}

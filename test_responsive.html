@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+  <link rel="stylesheet" href="assets/css/custom.min.css">
+  <style>
+    /* Debug borders */
+    .debug-border { border: 2px solid red !important; }
+    .debug-info {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: yellow;
+      padding: 10px;
+      z-index: 9999;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body style="background: #0f1727;">
+
+  <div class="debug-info">
+    Width: <span id="width"></span>px
+  </div>
+
+  <!-- Mobile Navigation (should hide on desktop) -->
+  <div class="leftnav-mobile debug-border">
+    <div class="leftnav-mobile__scroll">
+      <a class="leftnav-mobile__chip" href="#">介紹</a>
+      <a class="leftnav-mobile__chip" href="#">照片</a>
+      <a class="leftnav-mobile__chip" href="#">位置</a>
+    </div>
+  </div>
+
+  <div class="container resort-info">
+    <div class="row">
+
+      <!-- Desktop Sidebar (should hide on mobile/tablet) -->
+      <div class="col l3 leftnav leftnav--desktop debug-border">
+        <div class="leftnav-brand">
+          <img src="https://diy.ski/assets/images/logo-skidiy.png" alt="SKIDIY" style="width:40px">
+          <span>SKIDIY</span>
+        </div>
+        <p class="resort-name">苗場 <span>NAEBA</span></p>
+        <ul class="tabs tabs-transparent">
+          <a href="#" class="tab"><li>介紹</li></a>
+          <a href="#" class="tab"><li>照片</li></a>
+          <a href="#" class="tab"><li>位置</li></a>
+        </ul>
+      </div>
+
+      <!-- Content (responsive width) -->
+      <div class="col s12 m12 l9 resort-content debug-border" style="min-height: 500px;">
+        <h1>測試內容區域</h1>
+        <p>如果你看到這段文字，表示內容區域正常顯示。</p>
+        <p>寬度應該是：</p>
+        <ul>
+          <li>手機 (&lt; 600px): 100% 寬度</li>
+          <li>平板 (600-992px): 100% 寬度</li>
+          <li>桌面 (≥ 993px): 75% 寬度 (旁邊有 25% 側邊欄)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function updateWidth() {
+      document.getElementById('width').textContent = window.innerWidth;
+    }
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+
+    // Log computed styles
+    console.log('=== Responsive Debug Info ===');
+    console.log('Window width:', window.innerWidth);
+
+    const mobileNav = document.querySelector('.leftnav-mobile');
+    const desktopNav = document.querySelector('.leftnav--desktop');
+    const content = document.querySelector('.resort-content');
+
+    console.log('Mobile nav display:', window.getComputedStyle(mobileNav).display);
+    console.log('Desktop nav display:', window.getComputedStyle(desktopNav).display);
+    console.log('Content display:', window.getComputedStyle(content).display);
+    console.log('Content width:', content.offsetWidth + 'px');
+  </script>
+</body>
+</html>
