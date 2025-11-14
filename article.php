@@ -142,19 +142,29 @@
       </div>
 
       <?php
-      // Add FAQ section with proxy (connects to faq.diy.ski)
-      if (file_exists(__DIR__ . '/includes/faq_proxy.php')) {
-          require_once __DIR__ . '/includes/faq_proxy.php';
+      // 【新增】顯示根據文章 tags 自動抓取的相關 FAQ
+      if (!empty($articleData['related_faqs']) && is_array($articleData['related_faqs'])) {
+          echo '<div class="container related-faqs-section" style="margin-top: 40px; margin-bottom: 40px;">';
+          echo '<h2 style="font-size: 1.5rem; margin-bottom: 20px; color: #333;">相關常見問題</h2>';
+          echo '<div class="row">';
 
-          // Recommended FAQs by category (default: general)
-          $category = 'general';
-          if (isset($article_raw['category']) && !empty($article_raw['category'])) {
-              $category = $article_raw['category'];
+          foreach ($articleData['related_faqs'] as $faq) {
+              echo '<div class="col s12 m6 l4" style="margin-bottom: 20px;">';
+              echo '<div class="card" style="border-left: 4px solid #0066cc; margin: 0;">';
+              echo '<div class="card-content">';
+              echo '<span class="card-title" style="font-size: 1rem; color: #0066cc;">' . htmlspecialchars($faq['question']) . '</span>';
+              echo '<p style="font-size: 0.9rem; color: #666; line-height: 1.5; margin: 10px 0;">'
+                   . htmlspecialchars(substr($faq['answer_preview'], 0, 100)) . '...</p>';
+              echo '</div>';
+              echo '<div class="card-action" style="padding: 10px 16px;">';
+              echo '<a href="https://faq.diy.ski/?q=' . urlencode($faq['question']) . '" target="_blank" style="color: #0066cc; text-decoration: none; font-weight: bold;">查看完整答案 →</a>';
+              echo '</div>';
+              echo '</div>';
+              echo '</div>';
           }
 
-          if (function_exists('renderRecommendedFAQsProxy')) {
-              renderRecommendedFAQsProxy($category, 5, 'zh');
-          }
+          echo '</div>';
+          echo '</div>';
       }
       ?>
 
