@@ -283,6 +283,23 @@ body.index-bg{background-color:var(--surface-alt)}
   top: 80px;
   height: fit-content;
   align-self: start;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.25) transparent;
+}
+
+.leftnav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.leftnav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.leftnav::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.25);
+  border-radius: 999px;
 }
 
 .leftnav-brand{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;margin-bottom:18px}
@@ -621,7 +638,7 @@ body.index-bg{background-color:var(--surface-alt)}
   .site-hero{border-radius:0;padding:44px 20px}
   .site-hero__content{max-width:100%}
   .hero-title{font-size:32px}
-  .leftnav{position:relative;top:auto;margin-bottom:20px}
+  .leftnav{position:relative;top:auto;margin-bottom:20px;max-height:none;overflow:visible}
   .resort-content{padding:24px}
   .card-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
 }
