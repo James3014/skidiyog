@@ -24,6 +24,16 @@ function renderLeftnav($config = array())
         </ul>
       <?php } ?>
     </div>
+    <!-- Tablet navigation (medium screens) - Hide sidebar, show mobile nav instead -->
+    <div class="col s12 leftnav-mobile hide-on-small-only hide-on-large-only">
+      <div class="leftnav-mobile__scroll">
+        <?php if(!empty($sections)){ foreach($sections as $section){
+          if(empty($section['key']) || empty($section['title'])) continue;
+        ?>
+          <a class="leftnav-mobile__chip" href="#<?=$section['key']?>"><?=$section['title']?></a>
+        <?php }} ?>
+      </div>
+    </div>
     <div class="col s12 leftnav-mobile hide-on-large-only">
       <div class="leftnav-mobile__scroll">
         <?php if(!empty($sections)){ foreach($sections as $section){

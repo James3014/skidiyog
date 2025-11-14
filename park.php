@@ -196,8 +196,8 @@ $parkSchema['knowsAbout'] = [
             'sections' => $parkData['sections']
           )); ?>
 
-          <!-- Main content -->
-          <div class="col s12 l9 resort-content">
+          <!-- Main content: full width on mobile/tablet, 75% on desktop -->
+          <div class="col s12 m12 l9 resort-content">
             <?php
             renderSectionList($parkData['sections']);
             ?>
