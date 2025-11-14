@@ -6,6 +6,8 @@ function renderLeftnav($config = array())
     $slug = !empty($config['slug']) ? $config['slug'] : '';
     $sections = !empty($config['sections']) && is_array($config['sections']) ? $config['sections'] : array();
     ?>
+    <!-- Desktop sidebar: 25% width (col l3), hidden on tablet/mobile -->
+    <!-- Only rendered on large screens; mobile nav is in park.php OUTSIDE grid -->
     <div class="col l3 leftnav leftnav--desktop hide-on-med-and-down">
       <div class="leftnav-brand">
         <img src="https://diy.ski/assets/images/logo-skidiy.png" alt="SKIDIY">
@@ -23,25 +25,6 @@ function renderLeftnav($config = array())
           <?php } ?>
         </ul>
       <?php } ?>
-    </div>
-    <!-- Tablet navigation (medium screens) - Hide sidebar, show mobile nav instead -->
-    <div class="col s12 leftnav-mobile hide-on-small-only hide-on-large-only">
-      <div class="leftnav-mobile__scroll">
-        <?php if(!empty($sections)){ foreach($sections as $section){
-          if(empty($section['key']) || empty($section['title'])) continue;
-        ?>
-          <a class="leftnav-mobile__chip" href="#<?=$section['key']?>"><?=$section['title']?></a>
-        <?php }} ?>
-      </div>
-    </div>
-    <div class="col s12 leftnav-mobile hide-on-large-only">
-      <div class="leftnav-mobile__scroll">
-        <?php if(!empty($sections)){ foreach($sections as $section){
-          if(empty($section['key']) || empty($section['title'])) continue;
-        ?>
-          <a class="leftnav-mobile__chip" href="#<?=$section['key']?>"><?=$section['title']?></a>
-        <?php }} ?>
-      </div>
     </div>
     <?php
 }
