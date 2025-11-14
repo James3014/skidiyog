@@ -197,7 +197,7 @@ $parkSchema['knowsAbout'] = [
           )); ?>
 
           <!-- Main content -->
-          <div class="col s12 l9 right resort-content">
+          <div class="col s12 l9 resort-content">
             <?php
             renderSectionList($parkData['sections']);
             ?>
