@@ -238,4 +238,20 @@
       ga('send', 'pageview');
     </script>
     <?php } ?>
+
+    <!-- Help Button Handler -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const helpBtn = document.querySelector('[data-help-entry]');
+        if (helpBtn) {
+          helpBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // 打開 FAQ 頁面
+            window.open('https://faq.diy.ski', '_blank');
+          });
+          // 移除禁用樣式（如果有的話），讓按鈕看起來可點擊
+          helpBtn.style.cursor = 'pointer';
+        }
+      });
+    </script>
   
