@@ -247,11 +247,18 @@ class ContentRepository
         // Optimized for Google SERP: 120-155 characters
         $snippet = self::truncateText(strip_tags($content), 155);
 
+        // 【新增】根據文章 tags 自動抓取相關 FAQ
+        $relatedFAQs = array();
+        if (!empty($article_data['tags'])) {
+            $relatedFAQs = self::getRelatedFAQsByTags($article_data['tags']);
+        }
+
         return array(
             'idx' => $idx,
             'title' => $article_data['title'],
             'content' => $content,
             'hero_image' => $heroImage,
+            'related_faqs' => $relatedFAQs,  // 【新增】相關 FAQ 清單
             'seo' => array(
                 'title' => $article_data['title'] . ' - SKIDIY 滑雪攻略',
                 'description' => $snippet,
@@ -263,6 +270,163 @@ class ContentRepository
             ),
             'raw' => $article_data
         );
+    }
+
+    /**
+     * 【新增】根據文章的 tags 查詢相關 FAQ
+     *
+     * @param string $tagsString 文章 tags（逗號或#分隔）
+     * @return array 相關 FAQ 項目清單
+     *
+     * 實現邏輯：
+     * 1. 解析文章 tags（支援 #tag 和 tag 格式）
+     * 2. 呼叫 FAQ API 取得所有 FAQ
+     * 3. 過濾：找出 crm_tags 與文章 tags 有交集的 FAQ
+     * 4. 最多回傳 5 個相關 FAQ
+     */
+    private static function getRelatedFAQsByTags($tagsString)
+    {
+        // 解析文章 tags（支援多種格式）
+        $articleTags = self::parseTags($tagsString);
+        if (empty($articleTags)) {
+            return array();
+        }
+
+        try {
+            // 調用 FAQ API 取得所有 FAQ 資料
+            $faqData = self::fetchFAQData();
+            if (empty($faqData) || empty($faqData['items'])) {
+                return array();
+            }
+
+            $relatedFAQs = array();
+
+            // 過濾：找出相關 FAQ
+            foreach ($faqData['items'] as $faq) {
+                $faqTags = isset($faq['metadata']['crm_tags']) ? $faq['metadata']['crm_tags'] : array();
+
+                // 檢查是否有標籤交集
+                $hasMatch = false;
+                foreach ($articleTags as $articleTag) {
+                    foreach ($faqTags as $faqTag) {
+                        // 移除 # 符號做比較
+                        $articleTagClean = str_replace('#', '', $articleTag);
+                        $faqTagClean = str_replace('#', '', $faqTag);
+
+                        if (strcasecmp($articleTagClean, $faqTagClean) === 0) {
+                            $hasMatch = true;
+                            break 2;
+                        }
+                    }
+                }
+
+                if ($hasMatch) {
+                    $relatedFAQs[] = array(
+                        'id' => isset($faq['id']) ? $faq['id'] : '',
+                        'question' => isset($faq['content']['question']) ? $faq['content']['question'] : '',
+                        'answer_preview' => isset($faq['content']['answer']) ? self::truncateText($faq['content']['answer'], 150) : '',
+                        'intent' => isset($faq['metadata']['intent']) ? $faq['metadata']['intent'] : '',
+                        'tags' => isset($faq['metadata']['crm_tags']) ? $faq['metadata']['crm_tags'] : array()
+                    );
+                }
+
+                // 最多 5 個相關 FAQ
+                if (count($relatedFAQs) >= 5) {
+                    break;
+                }
+            }
+
+            return $relatedFAQs;
+
+        } catch (Exception $e) {
+            error_log('[ContentRepository] Failed to fetch related FAQs: ' . $e->getMessage());
+            return array();
+        }
+    }
+
+    /**
+     * 【新增】解析文章 tags 字串
+     *
+     * 支援格式：
+     * - "#tag1,#tag2,#tag3" (帶 # 符號)
+     * - "tag1,tag2,tag3" (不帶 # 符號)
+     * - "tag1 tag2 tag3" (空格分隔)
+     *
+     * @param string $tagsString 原始 tags 字串
+     * @return array 清理後的 tags 陣列
+     */
+    private static function parseTags($tagsString)
+    {
+        if (empty($tagsString)) {
+            return array();
+        }
+
+        // 支援多種分隔符：逗號、空格、句號
+        $tags = preg_split('/[,\s\|]+/', $tagsString, -1, PREG_SPLIT_NO_EMPTY);
+
+        // 清理每個 tag：移除空白、轉換為小寫、保留 #
+        $cleanTags = array();
+        foreach ($tags as $tag) {
+            $tag = trim($tag);
+            if (!empty($tag)) {
+                // 確保都有 # 前綴（統一格式）
+                if (strpos($tag, '#') !== 0) {
+                    $tag = '#' . $tag;
+                }
+                $cleanTags[] = strtolower($tag);
+            }
+        }
+
+        return array_unique($cleanTags);
+    }
+
+    /**
+     * 【新增】從 FAQ API 取得所有 FAQ 資料（帶快取）
+     *
+     * 快取策略：5 分鐘內重複請求使用快取
+     *
+     * @return array FAQ 資料陣列
+     */
+    private static function fetchFAQData()
+    {
+        // 快取鍵名
+        $cacheKey = 'faq_data_cache_zh';
+
+        // 檢查是否有快取（5 分鐘）
+        if (isset($GLOBALS[$cacheKey]) && isset($GLOBALS[$cacheKey . '_time'])) {
+            if ((time() - $GLOBALS[$cacheKey . '_time']) < 300) {
+                return $GLOBALS[$cacheKey];
+            }
+        }
+
+        // 從 FAQ API 取得資料
+        $apiUrl = 'https://faq-api-v1.zeabur.app/api/v1/faq/all?lang=zh';
+
+        $options = array(
+            'http' => array(
+                'method' => 'GET',
+                'timeout' => 5,  // 5 秒超時
+                'user_agent' => 'SKIDIY Content Repository/1.0'
+            )
+        );
+
+        $context = stream_context_create($options);
+        $response = @file_get_contents($apiUrl, false, $context);
+
+        if ($response === false) {
+            throw new Exception('Failed to connect to FAQ API');
+        }
+
+        $jsonData = json_decode($response, true);
+        if (empty($jsonData) || !isset($jsonData['data']['items'])) {
+            throw new Exception('Invalid FAQ API response structure');
+        }
+
+        // 存入快取
+        $GLOBALS[$cacheKey] = $jsonData['data'];
+        $GLOBALS[$cacheKey . '_time'] = time();
+
+        return $jsonData['data'];
     }
 
     private static function resolveHeroImage($name, $park_info)
