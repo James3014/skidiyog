@@ -37,7 +37,6 @@ function renderNav($context = array())
             echo '<a class="waves-effect waves-light btn btn-outline header-login" href="https://booking.diy.ski/schedule?action=login&redirect=/schedule" >登入</a>';
           }
           ?>
-          <button class="help-entry-btn" type="button" data-help-entry>需要幫忙？</button>
         </div>
       </nav>
     </div>
