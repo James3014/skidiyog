@@ -35,12 +35,24 @@ $parkSchema = [
   'url' => 'https://' . domain_name . $_SERVER['REQUEST_URI'],
   'image' => [$hero_image],
   'touristType' => 'Skiers',
+  'sameAs' => 'https://diy.ski/parkList.php',  // Link to main listing
   'provider' => [
     '@type' => 'Organization',
-    'name' => 'SKIDIY 自助滑雪'
+    'name' => 'SKIDIY 自助滑雪',
+    'url' => 'https://' . domain_name,
+    'logo' => 'https://diy.ski/assets/images/logo-skidiy.png'
   ]
 ];
 
+// Generate Breadcrumb schema for SEO
+$breadcrumbs = [
+  ['name' => 'SKIDIY 自助滑雪', 'url' => 'https://' . domain_name . '/'],
+  ['name' => '雪場介紹', 'url' => 'https://' . domain_name . '/parkList.php'],
+  ['name' => $display_name, 'url' => 'https://' . domain_name . $_SERVER['REQUEST_URI']]
+];
+$breadcrumbSchema = ContentRepository::generateBreadcrumbSchema($breadcrumbs);
+
+// Location & Geography
 if (!empty($park_info['location'])) {
   $parkSchema['areaServed'] = strip_tags($park_info['location']);
 }
@@ -59,6 +71,7 @@ if (!empty($park_info['address'])) {
   ];
 }
 
+// Opening Hours
 if (!empty($park_info['time_section'])) {
   $parkSchema['openingHoursSpecification'] = [
     '@type' => 'OpeningHoursSpecification',
@@ -66,13 +79,52 @@ if (!empty($park_info['time_section'])) {
   ];
 }
 
+// Pricing
 if (!empty($park_info['ticket_section'])) {
-  $parkSchema['priceRange'] = strip_tags($park_info['ticket_section']);
+  $ticketText = strip_tags($park_info['ticket_section']);
+  $parkSchema['priceRange'] = substr($ticketText, 0, 100);  // Snippet for price range
 }
 
+// Access & Directions
 if (!empty($park_info['access_section'])) {
   $parkSchema['hasMap'] = strip_tags($park_info['access_section']);
 }
+
+// Amenities & Features
+$amenities = [];
+if (!empty($park_info['rental_section'])) {
+  $amenities[] = 'Equipment Rental';
+}
+if (!empty($park_info['live_section'])) {
+  $amenities[] = 'Lodging';
+}
+if (!empty($park_info['time_section'])) {
+  $amenities[] = 'Ski School';
+}
+if (!empty($amenities)) {
+  $parkSchema['amenityFeature'] = array_map(function($amenity) {
+    return [
+      '@type' => 'LocationFeatureSpecification',
+      'name' => $amenity
+    ];
+  }, $amenities);
+}
+
+// Contact Point for Inquiries
+$parkSchema['contactPoint'] = [
+  '@type' => 'ContactPoint',
+  'contactType' => 'Customer Service',
+  'url' => 'https://diy.ski',
+  'name' => 'SKIDIY 自助滑雪'
+];
+
+// Recommended For
+$parkSchema['knowsAbout'] = [
+  'Beginner Skiing',
+  'Ski Lessons',
+  'Ski Equipment Rental',
+  'Japanese Ski Resorts'
+];
 ?>
 <!DOCTYPE html>
   <html>
@@ -81,6 +133,9 @@ if (!empty($park_info['access_section'])) {
       <?php require_once __DIR__ . '/includes/ga4_tracking.php'; renderGA4Head(); ?>
       <script type="application/ld+json">
         <?=json_encode($parkSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);?>
+      </script>
+      <script type="application/ld+json">
+        <?=json_encode($breadcrumbSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);?>
       </script>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
       <!--Import materialize.css-->
@@ -142,7 +197,7 @@ if (!empty($park_info['access_section'])) {
           )); ?>
 
           <!-- Main content -->
-          <div class="col s12 l9 right resort-content">
+          <div class="col s12 l9 resort-content">
             <?php
             renderSectionList($parkData['sections']);
             ?>
@@ -173,7 +228,7 @@ if (!empty($park_info['access_section'])) {
         </div>
       </section>
 
-      <?php $faqs = getParkFAQs($name); ?>
+      <?php $faqs = ContentRepository::getParkFAQs($name); ?>
       <div class="container">
         <?php renderFAQSection($faqs, $display_name . ' 常見問題'); ?>
       </div>

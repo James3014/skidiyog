@@ -89,5 +89,14 @@ function normalize_rich_text($content){
 		return '<p class="section-heading section-heading-'.$level.'">';
 	}, $content);
 	$content = preg_replace('/<\/h[1-6]>/', '</p>', $content);
+
+	// Add lazy loading to images for performance optimization
+	// Skip images that already have loading attribute
+	$content = preg_replace_callback('/<img\s+(?!.*\sloading\s*=)([^>]*?)>/i', function($matches){
+		$imgTag = $matches[0];
+		// Insert loading="lazy" before the closing >
+		return substr_replace($imgTag, ' loading="lazy"', -1, 0);
+	}, $content);
+
 	return $content;
 }

@@ -59,6 +59,14 @@
         $articleSchema['datePublished'] = $published;
         $articleSchema['dateModified'] = $published;
       }
+
+      // Generate Breadcrumb schema for article pages
+      $breadcrumbs = [
+        ['name' => 'SKIDIY 自助滑雪', 'url' => 'https://'.domain_name.'/'],
+        ['name' => '文章', 'url' => 'https://'.domain_name.'/articleList.php'],
+        ['name' => $article_title, 'url' => 'https://'.domain_name.$_SERVER['REQUEST_URI']]
+      ];
+      $breadcrumbSchema = ContentRepository::generateBreadcrumbSchema($breadcrumbs);
       //var_dump($article_data);
  
 ?>
@@ -70,6 +78,9 @@
       <?php require_once __DIR__ . '/includes/ga4_tracking.php'; renderGA4Head(); ?>
       <script type="application/ld+json">
         <?=json_encode($articleSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);?>
+      </script>
+      <script type="application/ld+json">
+        <?=json_encode($breadcrumbSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);?>
       </script>
 
       <!--swiper-->

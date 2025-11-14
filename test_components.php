@@ -147,7 +147,7 @@ require_once 'includes/booking_cta.php';
 
             <?php
             // Test 1: 苗場雪場專屬 FAQ
-            $naeba_faqs = getParkFAQs('naeba');
+            $naeba_faqs = ContentRepository::getParkFAQs('naeba');
             renderFAQSection($naeba_faqs, "苗場雪場常見問題");
             ?>
         </div>

@@ -38,5 +38,5 @@ Allow: /instructor.php
 Allow: /assets/
 Allow: /photos/
 
-# Sitemap
-Sitemap: https://skidiyog.zeabur.app/sitemap.php
+# Sitemap - Production version with priority and changefreq
+Sitemap: https://diy.ski/sitemap.xml.php
