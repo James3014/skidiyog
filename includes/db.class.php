@@ -209,21 +209,33 @@ class DB{/* DBv16.09.03 By Ko - Modified for SQLite */
 
 			// Group parks data by name (each park has multiple sections in parks.json)
 			$parks_by_name = array();
+			$park_idx = 1;
+
 			foreach ($parks_data as $record) {
 				$name = $record['name'] ?? '';
 				if ($name && !isset($parks_by_name[$name])) {
+					// Extract cname from records with section='cname'
+					$cname = $name;
+					foreach ($parks_data as $r) {
+						if (($r['name'] ?? '') === $name && ($r['section'] ?? '') === 'cname') {
+							$cname = $r['content'] ?? $name;
+							break;
+						}
+					}
+
 					$parks_by_name[$name] = array(
-						'idx' => $record['idx'] ?? 0,
+						'idx' => $park_idx,
 						'name' => $name,
-						'cname' => $record['cname'] ?? $name,
+						'cname' => $cname,
 						'description' => '',
 						'location' => ''
 					);
+					$park_idx++;
 				}
 			}
 
 			// Insert parks into database
-			$insert_stmt = $this->pdo->prepare("INSERT INTO parks (idx, name, cname, description, location) VALUES (?, ?, ?, ?, ?)");
+			$insert_stmt = $this->pdo->prepare("INSERT OR IGNORE INTO parks (idx, name, cname, description, location) VALUES (?, ?, ?, ?, ?)");
 
 			foreach ($parks_by_name as $park) {
 				if (!empty($park['name'])) {
