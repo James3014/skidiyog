@@ -47,6 +47,7 @@ class ContentRepository
     private static $hiddenArticleIds = array(24, 25);
 
     // FAQ Data Layer: Centralized FAQ definitions by park
+    // 硬編碼常見公園，其他公園從 API 動態取得
     private static $parkFAQs = array(
         'naeba' => array(
             array(
@@ -68,6 +69,7 @@ class ContentRepository
                 'a' => '<p>官方租借中心提供全套裝備，也能在 <a href="https://diy.ski/articles.php">文章專區</a> 看裝備攻略。</p>'
             )
         ),
+        // 預設 FAQ：適用於所有未特別定義的公園（包括新加的 12 個）
         '_default' => array(
             array(
                 'q' => '如何預約中文教練？',
@@ -76,6 +78,14 @@ class ContentRepository
             array(
                 'q' => '哪裡可以找到更多 FAQ？',
                 'a' => '<p>可到 <a href="https://faq.diy.ski" target="_blank" rel="noopener">faq.diy.ski</a> 搜索所有常見問題，或使用頁面右下角的幫助入口。</p>'
+            ),
+            array(
+                'q' => '有哪些交通方式前往滑雪場？',
+                'a' => '<p>大多數日本滑雪場可透過新幹線或電車到達，詳細的交通資訊請查看本頁面的「交通」段落。</p>'
+            ),
+            array(
+                'q' => '可以租借滑雪裝備嗎？',
+                'a' => '<p>大多數滑雪場都提供滑雪板、靴子、雪杖等裝備租借服務，詳情請參閱本頁「租借」段落或 <a href="https://booking.diy.ski/schedule">預訂系統</a>。</p>'
             )
         )
     );
@@ -93,17 +103,85 @@ class ContentRepository
 
     /**
      * Get FAQs for a specific park
-     * Returns park-specific FAQs or default FAQs if park not found
+     *
+     * 策略：
+     * 1. 優先返回硬編碼的公園特定 FAQ（naeba, karuizawa）
+     * 2. 如果沒有硬編碼，嘗試從 FAQ API 取得公園相關 FAQ
+     * 3. 如果 API 失敗或無結果，回傳預設 FAQ
+     *
      * @param string $name Park name/slug
      * @return array Array of FAQ items with 'q' (question) and 'a' (answer) keys
      */
     public static function getParkFAQs($name)
     {
         $slug = strtolower($name);
+
+        // 優先級 1：硬編碼的特定公園 FAQ
         if (isset(self::$parkFAQs[$slug])) {
             return self::$parkFAQs[$slug];
         }
+
+        // 優先級 2：嘗試從 API 取得公園相關 FAQ（適用於新雪場）
+        try {
+            $apiFAQs = self::getAPIParkFAQs($name);
+            if (!empty($apiFAQs)) {
+                return $apiFAQs;
+            }
+        } catch (Exception $e) {
+            error_log('[ContentRepository] Failed to fetch API FAQs for park ' . $name . ': ' . $e->getMessage());
+        }
+
+        // 優先級 3：預設 FAQ
         return self::$parkFAQs['_default'];
+    }
+
+    /**
+     * 從 FAQ API 取得公園相關 FAQ
+     * 根據公園名稱搜尋相關 FAQ 項目
+     * @param string $parkName Park name/slug
+     * @return array 相關 FAQ 項目（轉換為 ['q' => ..., 'a' => ...] 格式）
+     */
+    private static function getAPIParkFAQs($parkName)
+    {
+        try {
+            // 取得 API 資料
+            $faqData = self::fetchFAQData();
+            if (empty($faqData) || empty($faqData['items'])) {
+                return array();
+            }
+
+            $parkNameLower = strtolower($parkName);
+            $relatedFAQs = array();
+
+            // 按 crm_tags 搜尋相關 FAQ（針對特定公園的標籤）
+            foreach ($faqData['items'] as $faq) {
+                $faqTags = isset($faq['metadata']['crm_tags']) ? $faq['metadata']['crm_tags'] : array();
+
+                // 檢查是否有公園名稱相關標籤
+                foreach ($faqTags as $tag) {
+                    $tagClean = strtolower(str_replace('#', '', $tag));
+                    if (strpos($tagClean, $parkNameLower) !== false || strpos($parkNameLower, $tagClean) !== false) {
+                        // 轉換為 ['q' => ..., 'a' => ...] 格式
+                        $relatedFAQs[] = array(
+                            'q' => isset($faq['content']['question']) ? $faq['content']['question'] : '',
+                            'a' => '<p>' . (isset($faq['content']['answer']) ? $faq['content']['answer'] : '') . '</p>'
+                        );
+                        break;
+                    }
+                }
+
+                // 最多 5 個相關 FAQ
+                if (count($relatedFAQs) >= 5) {
+                    break;
+                }
+            }
+
+            return $relatedFAQs;
+
+        } catch (Exception $e) {
+            error_log('[ContentRepository] Error fetching API Park FAQs: ' . $e->getMessage());
+            return array();
+        }
     }
 
     /**

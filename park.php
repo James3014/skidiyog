@@ -297,12 +297,26 @@ $parkSchema['knowsAbout'] = [
       <!--left nav & smooth scroll -->
       <script>
         $(function() {
+          // Helper function to calculate scroll offset
+          // Accounts for fixed header and potentially fixed leftnav
+          function calculateScrollOffset() {
+            var offset = 100; // Default offset for fixed header
+            // If leftnav is fixed, add its width as extra offset for better visibility
+            if ($('.leftnav').hasClass('fixed')) {
+              var leftnavWidth = $('.leftnav').outerWidth();
+              if (leftnavWidth) {
+                offset += 20; // Extra padding to show content beyond leftnav
+              }
+            }
+            return offset;
+          }
+
           $('.leftnav a').click(function () {
               $('.leftnav a').removeClass('leftnav-active');
               $(this).addClass('leftnav-active');
            });
 
-          $('.leftnav a, .sidenav a').click(function() {
+          $('.leftnav a, .sidenav a').click(function(e) {
             if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
           && location.hostname == this.hostname) {
 
@@ -315,9 +329,11 @@ $parkSchema['knowsAbout'] = [
                     sidenavInstance.close();
                   }
 
+                  var scrollOffset = calculateScrollOffset();
                   $('html,body').animate({
-                    scrollTop: target.offset().top - 100 //offsets for fixed header
+                    scrollTop: target.offset().top - scrollOffset
                   }, 500);
+                  e.preventDefault();
                   return false;
                 }
               }
@@ -326,8 +342,9 @@ $parkSchema['knowsAbout'] = [
             if($(location.href.split("#")[1])) {
                 var target = $('#'+location.href.split("#")[1]);
                 if (target.length) {
+                  var scrollOffset = calculateScrollOffset();
                   $('html,body').animate({
-                    scrollTop: target.offset().top - 100 //offset height of header here too.
+                    scrollTop: target.offset().top - scrollOffset
                   }, 500);
                   return false;
                 }

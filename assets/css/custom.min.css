@@ -282,6 +282,18 @@ body.index-bg{background-color:var(--surface-alt)}
   /* Removed min-width and position:sticky - they break Materialize grid */
 }
 
+.leftnav.fixed {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  width: 25%;
+  max-width: 280px;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+  z-index: 100;
+}
+
 .leftnav-brand{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;margin-bottom:18px}
 .leftnav-brand img{width:40px}
 .leftnav-brand span{font-weight:700;color:var(--accent-blue);letter-spacing:3px;font-size:13px;text-transform:uppercase}
