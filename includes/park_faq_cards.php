@@ -13,7 +13,22 @@
  */
 
 // API endpoint configuration
-define('PARK_FAQ_API_ENDPOINT', 'http://localhost:3000/api/v1/park-faq');
+// Use environment variable or default to production API
+$API_HOST = getenv('FAQ_API_HOST');
+if (!$API_HOST) {
+  // Auto-detect based on current host
+  $is_production = strpos($_SERVER['HTTP_HOST'], 'localhost') === false &&
+                   strpos($_SERVER['HTTP_HOST'], '127.0.0.1') === false;
+
+  if ($is_production) {
+    // Production: use Zeabur FAQ API service
+    $API_HOST = 'https://faq-api-v1.zeabur.app';
+  } else {
+    // Development: use local backend
+    $API_HOST = 'http://localhost:3000';
+  }
+}
+define('PARK_FAQ_API_ENDPOINT', $API_HOST . '/api/v1/park-faq');
 
 /**
  * Get or create session ID for anonymous user tracking
