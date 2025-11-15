@@ -228,6 +228,14 @@ $parkSchema['knowsAbout'] = [
         </div>
       </section>
 
+      <!-- Park FAQ Cards Component -->
+      <div class="container">
+        <?php
+        require_once __DIR__ . '/includes/park_faq_cards.php';
+        renderParkFAQCards($name, $display_name);
+        ?>
+      </div>
+
       <?php $faqs = ContentRepository::getParkFAQs($name); ?>
       <div class="container">
         <?php renderFAQSection($faqs, $display_name . ' 常見問題'); ?>
